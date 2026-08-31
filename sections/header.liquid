@@ -35,8 +35,12 @@
       {%- if shop.customer_accounts_enabled -%}
         <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
       {%- endif -%}
-      <a class="icon-button" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}">
-        {% render 'icon', icon: 'cart' %}
+      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}">
+        {% if settings.cart_icon_style == 'doghouse' %}
+          {% render 'icon', icon: 'doghouse-cart' %}
+        {% else %}
+          {% render 'icon', icon: 'cart' %}
+        {% endif %}
         <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
       </a>
       <button class="icon-button menu-toggle" type="button" aria-label="Menu" aria-expanded="false" data-menu-toggle>{% render 'icon', icon: 'menu' %}</button>
