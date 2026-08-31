@@ -1,0 +1,33 @@
+{%- if settings.show_paw_trail or settings.show_corner_doodles -%}
+  <div
+    class="pack-decorations{% if settings.animate_paw_trail %} pack-decorations--animated{% endif %}"
+    style="--decoration-paw: {{ settings.paw_trail_color }}; --decoration-paw-opacity: {{ settings.paw_trail_opacity | divided_by: 100.0 }}; --decoration-doodle: {{ settings.corner_doodle_color }};"
+    aria-hidden="true"
+  >
+    {%- if settings.show_paw_trail -%}
+      {%- if settings.paw_trail_position == 'left' or settings.paw_trail_position == 'both' -%}
+        <div class="paw-trail paw-trail--left">
+          {%- for index in (1..5) -%}<span class="paw-trail__paw paw-trail__paw--{{ index }}">{% render 'icon', icon: 'paw' %}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if settings.paw_trail_position == 'right' or settings.paw_trail_position == 'both' -%}
+        <div class="paw-trail paw-trail--right">
+          {%- for index in (1..5) -%}<span class="paw-trail__paw paw-trail__paw--{{ index }}">{% render 'icon', icon: 'paw' %}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if settings.show_corner_doodles -%}
+      <div class="corner-doodles corner-doodles--{{ settings.corner_doodle_style }}">
+        {%- if settings.corner_doodle_style == 'bones' or settings.corner_doodle_style == 'mixed' -%}
+          <span class="corner-doodle corner-doodle--bone-one">{% render 'icon', icon: 'bone' %}</span>
+          <span class="corner-doodle corner-doodle--bone-two">{% render 'icon', icon: 'bone' %}</span>
+        {%- endif -%}
+        {%- if settings.corner_doodle_style == 'hearts' or settings.corner_doodle_style == 'mixed' -%}
+          <span class="corner-doodle corner-doodle--heart-one">{% render 'icon', icon: 'heart' %}</span>
+          <span class="corner-doodle corner-doodle--heart-two">{% render 'icon', icon: 'heart' %}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
