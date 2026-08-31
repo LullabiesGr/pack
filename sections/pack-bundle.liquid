@@ -1,12 +1,12 @@
 <section class="pack-bundle section-pad">
   <div class="bundle-grid page-width">
-    <div class="bundle-copy">
+    <div class="bundle-copy"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.bundle_eyebrow }}</p>
       <h2 class="pack-subheading">{{ section.settings.bundle_heading }}</h2>
       <div class="rte">{{ section.settings.bundle_text }}</div>
       <a class="pack-button pack-button--blue" href="{{ section.settings.bundle_button_link | default: routes.all_products_collection_url }}">{{ section.settings.bundle_button_label }}</a>
     </div>
-    <div class="bundle-products">
+    <div class="bundle-products"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       {%- for block in section.blocks -%}
         <div class="bundle-product" style="--bundle-rotate: {% cycle '-5deg', '3deg', '-2deg' %}" {{ block.shopify_attributes }}>
           {%- if block.settings.product_image != blank -%}
@@ -17,7 +17,7 @@
         </div>
       {%- endfor -%}
     </div>
-    <div class="bundle-box">
+    <div class="bundle-box"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: 2 }}ms"{% endif %}>
       <div class="bundle-box__shape"><span>{{ section.settings.bundle_box_label }}</span></div>
       <div class="bundle-save">{{ section.settings.bundle_save_label }}</div>
     </div>
@@ -35,7 +35,11 @@
     { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Build your box" },
     { "type": "url", "id": "bundle_button_link", "label": "Button link" },
     { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },
-    { "type": "text", "id": "bundle_save_label", "label": "Save badge", "default": "SAVE UP TO 15%" }
+    { "type": "text", "id": "bundle_save_label", "label": "Save badge", "default": "SAVE UP TO 15%" },
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "bundle_animation", "label": "Bundle animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "pop", "label": "Playful pop" }
+    ], "default": "none" }
   ],
   "blocks": [
     {

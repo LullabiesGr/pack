@@ -1,10 +1,10 @@
 <section class="subscribe-band">
   <div class="subscribe-band__inner page-width">
-    <div>
+    <div{% if section.settings.subscribe_animation != 'none' %} data-pack-reveal="{{ section.settings.subscribe_animation }}"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.subscribe_eyebrow }}</p>
       <h2>{{ section.settings.subscribe_heading }}</h2>
     </div>
-    <div>
+    <div{% if section.settings.subscribe_animation != 'none' %} data-pack-reveal="{{ section.settings.subscribe_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       <p>{{ section.settings.subscribe_text }}</p>
       {%- form 'customer', class: 'subscribe-band__form' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
@@ -23,7 +23,11 @@
     { "type": "text", "id": "subscribe_eyebrow", "label": "Eyebrow", "default": "Never run out of the good stuff" },
     { "type": "text", "id": "subscribe_heading", "label": "Heading", "default": "Subscribe, save, repeat." },
     { "type": "textarea", "id": "subscribe_text", "label": "Text", "default": "Save up to 15%, choose your schedule, and skip or pause anytime." },
-    { "type": "text", "id": "subscribe_button_label", "label": "Button label", "default": "Get started" }
+    { "type": "text", "id": "subscribe_button_label", "label": "Button label", "default": "Get started" },
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "subscribe_animation", "label": "Band animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "fade-in", "label": "Fade in" }
+    ], "default": "none" }
   ],
   "presets": [{ "name": "Subscribe band" }]
 }

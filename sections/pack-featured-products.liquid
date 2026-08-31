@@ -1,6 +1,6 @@
 <section class="featured-products section-pad">
   <div class="featured-layout page-width">
-    <div class="featured-intro">
+    <div class="featured-intro"{% if section.settings.featured_intro_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_intro_animation }}"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.featured_eyebrow }}</p>
       <h2 class="pack-subheading">{{ section.settings.featured_heading }}</h2>
       <div class="rte">{{ section.settings.featured_text }}</div>
@@ -10,11 +10,11 @@
       {%- if section.settings.featured_collection != blank -%}
         {%- for product in section.settings.featured_collection.products limit: section.settings.featured_limit -%}
           {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
-          {% render 'product-card', product: product, card_color: card_color, index: forloop.index %}
+          {% render 'product-card', product: product, card_color: card_color, index: forloop.index, reveal_style: section.settings.featured_cards_animation %}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..6) -%}
-          <article class="product-card">
+          <article class="product-card"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}>
             <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}">{{ 'product-' | append: i | placeholder_svg_tag: 'pack-placeholder' }}</div>
             <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | times: 100 | money }}</span></div>
           </article>
@@ -33,7 +33,14 @@
     { "type": "richtext", "id": "featured_text", "label": "Text", "default": "<p>Treats, chews and good stuff—hand-picked for happy tails.</p>" },
     { "type": "collection", "id": "featured_collection", "label": "Collection" },
     { "type": "range", "id": "featured_limit", "min": 3, "max": 9, "step": 1, "label": "Products", "default": 6 },
-    { "type": "text", "id": "featured_link_label", "label": "Link label", "default": "Shop all products" }
+    { "type": "text", "id": "featured_link_label", "label": "Link label", "default": "Shop all products" },
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "featured_intro_animation", "label": "Intro animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "fade-in", "label": "Fade in" }
+    ], "default": "none" },
+    { "type": "select", "id": "featured_cards_animation", "label": "Product card animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }
+    ], "default": "none" }
   ],
   "presets": [{ "name": "PACK featured products" }]
 }

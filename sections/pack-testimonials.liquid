@@ -9,7 +9,7 @@
     </div>
     <div class="testimonial-grid">
       {%- for block in section.blocks -%}
-        <article class="testimonial-card" {{ block.shopify_attributes }}>
+        <article class="testimonial-card"{% if section.settings.testimonial_animation != 'none' %} data-pack-reveal="{{ section.settings.testimonial_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %} {{ block.shopify_attributes }}>
           <div class="testimonial-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
           <blockquote>“{{ block.settings.quote }}”</blockquote>
           <div class="testimonial-card__author">
@@ -35,7 +35,11 @@
   "settings": [
     { "type": "text", "id": "testimonial_eyebrow", "label": "Eyebrow", "default": "Real reviews from real pals" },
     { "type": "text", "id": "testimonial_heading", "label": "Heading", "default": "What pet parents say" },
-    { "type": "text", "id": "testimonial_note", "label": "Side note", "default": "Loved by pets. Trusted by humans." }
+    { "type": "text", "id": "testimonial_note", "label": "Side note", "default": "Loved by pets. Trusted by humans." },
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "testimonial_animation", "label": "Review animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }
+    ], "default": "none" }
   ],
   "blocks": [
     {

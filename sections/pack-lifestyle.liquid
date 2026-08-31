@@ -1,6 +1,6 @@
 <section class="lifestyle-grid">
   {%- for block in section.blocks -%}
-    <article class="lifestyle-card" {{ block.shopify_attributes }}>
+    <article class="lifestyle-card"{% if section.settings.lifestyle_animation != 'none' %} data-pack-reveal="{{ section.settings.lifestyle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %} {{ block.shopify_attributes }}>
       {%- if block.settings.lifestyle_image != blank -%}
         {{ block.settings.lifestyle_image | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', alt: block.settings.lifestyle_image.alt | default: block.settings.lifestyle_heading }}
       {%- else -%}
@@ -19,7 +19,12 @@
 {
   "name": "Pet lifestyle pair",
   "max_blocks": 2,
-  "settings": [],
+  "settings": [
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "lifestyle_animation", "label": "Card animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "zoom-in", "label": "Zoom in" }
+    ], "default": "none" }
+  ],
   "blocks": [
     {
       "type": "lifestyle",

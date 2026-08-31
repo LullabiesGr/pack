@@ -21,7 +21,12 @@
     "corner_doodle_color": "#F49AC2",
     "cart_icon_style": "standard",
     "cart_page_style": "standard",
-    "show_button_paws": false
+    "show_button_paws": false,
+    "motion_duration": 700,
+    "motion_distance": 60,
+    "motion_stagger": 100,
+    "motion_easing": "smooth",
+    "motion_repeat": false
   },
   "presets": {
     "PACK": {}

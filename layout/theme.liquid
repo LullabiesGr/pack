@@ -42,6 +42,15 @@
         --pack-page: {{ settings.page_width }}px;
         --pack-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --pack-display: {{ settings.type_display_font.family }}, {{ settings.type_display_font.fallback_families }};
+        --pack-motion-duration: {{ settings.motion_duration }}ms;
+        --pack-motion-distance: {{ settings.motion_distance }}px;
+        --pack-motion-distance-negative: -{{ settings.motion_distance }}px;
+        --pack-motion-stagger: {{ settings.motion_stagger }}ms;
+        {%- case settings.motion_easing -%}
+          {%- when 'snappy' -%}--pack-motion-ease: cubic-bezier(.2,.85,.25,1);
+          {%- when 'playful' -%}--pack-motion-ease: cubic-bezier(.2,1.35,.4,1);
+          {%- else -%}--pack-motion-ease: cubic-bezier(.22,.7,.2,1);
+        {%- endcase -%}
       }
     </style>
 
@@ -51,7 +60,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}">
+  <body class="template-{{ template.name | handle }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}">
     <a class="skip-to-content-link" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
     {% sections 'header-group' %}
     {% render 'pack-decorations' %}

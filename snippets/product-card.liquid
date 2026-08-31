@@ -6,9 +6,11 @@
   if card_index <= 3
     assign loading_strategy = 'eager'
   endif
+  assign reveal_index = card_index | minus: 1
+  assign reveal_delay = settings.motion_stagger | times: reveal_index
 -%}
 
-<article class="product-card" style="--card-bg: {{ card_color }}">
+<article class="product-card" style="--card-bg: {{ card_color }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}>
   <a class="product-card__media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
     {%- if card_product.featured_media -%}
       {{ card_product.featured_media

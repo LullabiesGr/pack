@@ -52,8 +52,52 @@ class PackQuickAdd {
   }
 }
 
+class PackReveal {
+  constructor(root = document) {
+    this.repeat = document.body?.dataset.packMotionRepeat === 'true';
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.observer = null;
+    this.observe(root);
+  }
+  observe(root = document) {
+    const elements = [...root.querySelectorAll('[data-pack-reveal]')];
+    if (!elements.length) return;
+
+    if (this.reducedMotion || !('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-visible'));
+      return;
+    }
+
+    document.documentElement.classList.add('pack-reveal-ready');
+    if (!this.observer) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            if (!this.repeat) this.observer.unobserve(entry.target);
+          } else if (this.repeat) {
+            entry.target.classList.remove('is-visible');
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    }
+
+    elements.forEach((element) => {
+      if (element.dataset.packRevealBound === 'true') return;
+      element.dataset.packRevealBound = 'true';
+      this.observer.observe(element);
+    });
+  }
+}
+
 customElements.define('pack-menu', class extends HTMLElement {});
 document.addEventListener('DOMContentLoaded', () => {
   new PackMenu();
   new PackQuickAdd();
+  window.packReveal = new PackReveal();
+});
+
+document.addEventListener('shopify:section:load', (event) => {
+  if (!window.packReveal) window.packReveal = new PackReveal(event.target);
+  else window.packReveal.observe(event.target);
 });

@@ -8,7 +8,7 @@
     </div>
     <div class="personality-grid">
       {%- for block in section.blocks -%}
-        <a class="personality-card" href="{{ block.settings.link | default: routes.all_products_collection_url }}" style="--card-bg: {{ block.settings.card_background }}" {{ block.shopify_attributes }}>
+        <a class="personality-card" href="{{ block.settings.link | default: routes.all_products_collection_url }}" style="--card-bg: {{ block.settings.card_background }}{% if section.settings.personality_animation != 'none' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms{% endif %}"{% if section.settings.personality_animation != 'none' %} data-pack-reveal="{{ section.settings.personality_animation }}"{% endif %} {{ block.shopify_attributes }}>
           <div class="personality-card__media">
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: block.settings.image.alt | default: block.settings.title }}
@@ -30,7 +30,11 @@
   "settings": [
     { "type": "text", "id": "personality_heading", "label": "Heading", "default": "Shop by personality" },
     { "type": "text", "id": "personality_link_label", "label": "Link label", "default": "View all" },
-    { "type": "url", "id": "personality_link", "label": "Link" }
+    { "type": "url", "id": "personality_link", "label": "Link" },
+    { "type": "header", "content": "Animation" },
+    { "type": "select", "id": "personality_animation", "label": "Card animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }
+    ], "default": "none" }
   ],
   "blocks": [
     {

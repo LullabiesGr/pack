@@ -90,5 +90,26 @@
       },
       { "type": "checkbox", "id": "show_button_paws", "label": "Show paw detail on buttons", "default": false }
     ]
+  },
+  {
+    "name": "Motion",
+    "settings": [
+      { "type": "paragraph", "content": "Animations remain off until an animation style is selected inside a section." },
+      { "type": "range", "id": "motion_duration", "min": 400, "max": 1200, "step": 100, "unit": "ms", "label": "Animation duration", "default": 700 },
+      { "type": "range", "id": "motion_distance", "min": 20, "max": 120, "step": 10, "unit": "px", "label": "Slide distance", "default": 60 },
+      { "type": "range", "id": "motion_stagger", "min": 40, "max": 200, "step": 20, "unit": "ms", "label": "Stagger between items", "default": 100 },
+      {
+        "type": "select",
+        "id": "motion_easing",
+        "label": "Motion feel",
+        "options": [
+          { "value": "smooth", "label": "Smooth" },
+          { "value": "snappy", "label": "Snappy" },
+          { "value": "playful", "label": "Playful" }
+        ],
+        "default": "smooth"
+      },
+      { "type": "checkbox", "id": "motion_repeat", "label": "Repeat when elements re-enter the screen", "default": false }
+    ]
   }
 ]

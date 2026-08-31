@@ -1,13 +1,13 @@
 <section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}">
   <div class="pack-quiz__inner page-width">
-    <div class="pack-quiz__peek">
+    <div class="pack-quiz__peek"{% if section.settings.quiz_image_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_image_animation }}"{% endif %}>
       {%- if section.settings.quiz_image != blank -%}
         {{ section.settings.quiz_image | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', alt: section.settings.quiz_image.alt | default: section.settings.quiz_heading }}
       {%- else -%}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
     </div>
-    <div class="pack-quiz__content">
+    <div class="pack-quiz__content"{% if section.settings.quiz_content_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_content_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.quiz_eyebrow }}</p>
       <h2 class="pack-subheading">{{ section.settings.quiz_heading }}</h2>
       <p>{{ section.settings.quiz_text }}</p>
@@ -33,7 +33,35 @@
     { "type": "image_picker", "id": "quiz_image", "label": "Peeking pet image" },
     { "type": "text", "id": "quiz_button_label", "label": "Button label", "default": "Take the quiz" },
     { "type": "url", "id": "quiz_button_link", "label": "Button link" },
-    { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" }
+    { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" },
+    { "type": "header", "content": "Animation" },
+    {
+      "type": "select",
+      "id": "quiz_image_animation",
+      "label": "Pet image animation",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "slide-left", "label": "Slide left to right" },
+        { "value": "slide-right", "label": "Slide right to left" },
+        { "value": "fade-up", "label": "Fade up" },
+        { "value": "zoom-in", "label": "Zoom in" },
+        { "value": "pop", "label": "Playful pop" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "quiz_content_animation",
+      "label": "Quiz content animation",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "fade-up", "label": "Fade up" },
+        { "value": "slide-left", "label": "Slide left to right" },
+        { "value": "slide-right", "label": "Slide right to left" }
+      ],
+      "default": "none"
+    }
   ],
   "blocks": [
     {
