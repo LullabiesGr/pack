@@ -1,0 +1,88 @@
+{%- if section.settings.overlay_enabled -%}
+  <div
+    class="pack-playful-overlay{% if section.settings.hide_on_mobile %} pack-playful-overlay--hide-mobile{% endif %}"
+    style="--overlay-z: {{ section.settings.overlay_z_index }};"
+    aria-hidden="true"
+  >
+    {%- for block in section.blocks -%}
+      {%- if block.settings.show_detail -%}
+        <span
+          class="pack-playful-detail pack-playful-detail--{{ block.settings.animation }}{% unless block.settings.show_on_mobile %} pack-playful-detail--desktop-only{% endunless %}"
+          style="--detail-x: {{ block.settings.x_position }}%; --detail-y: {{ block.settings.y_position }}%; --detail-size: {{ block.settings.size }}px; --detail-rotation: {{ block.settings.rotation }}deg; --detail-opacity: {{ block.settings.opacity | divided_by: 100.0 }}; --detail-color: {{ block.settings.color }}; --detail-speed: {{ block.settings.animation_speed }}s;"
+          {{ block.shopify_attributes }}
+        >
+          {% render 'icon', icon: block.settings.icon %}
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Playful details overlay",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "checkbox", "id": "overlay_enabled", "label": "Show playful details", "default": false },
+    { "type": "checkbox", "id": "hide_on_mobile", "label": "Hide all on mobile", "default": false },
+    { "type": "range", "id": "overlay_z_index", "min": 1, "max": 40, "step": 1, "label": "Layer position", "default": 18 },
+    { "type": "paragraph", "content": "Each detail uses viewport coordinates. X: 0 is left and 100 is right. Y: 0 is top and 100 is bottom." }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Playful detail",
+      "settings": [
+        { "type": "checkbox", "id": "show_detail", "label": "Show this detail", "default": true },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Detail",
+          "options": [
+            { "value": "paw", "label": "Paw" },
+            { "value": "bone", "label": "Bone" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "tennis-ball", "label": "Tennis ball" },
+            { "value": "fish", "label": "Fish" },
+            { "value": "treat", "label": "Treat" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "starburst", "label": "Starburst" }
+          ],
+          "default": "paw"
+        },
+        { "type": "range", "id": "x_position", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "X coordinate", "default": 90 },
+        { "type": "range", "id": "y_position", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Y coordinate", "default": 20 },
+        { "type": "range", "id": "size", "min": 16, "max": 140, "step": 4, "unit": "px", "label": "Size", "default": 40 },
+        { "type": "range", "id": "rotation", "min": -180, "max": 180, "step": 5, "unit": "deg", "label": "Rotation", "default": 0 },
+        { "type": "range", "id": "opacity", "min": 10, "max": 100, "step": 5, "unit": "%", "label": "Opacity", "default": 75 },
+        { "type": "color", "id": "color", "label": "Color", "default": "#FFD23F" },
+        {
+          "type": "select",
+          "id": "animation",
+          "label": "Animation",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "float", "label": "Float" },
+            { "value": "wiggle", "label": "Wiggle" },
+            { "value": "pulse", "label": "Pulse" },
+            { "value": "spin", "label": "Spin" }
+          ],
+          "default": "none"
+        },
+        { "type": "range", "id": "animation_speed", "min": 2, "max": 12, "step": 1, "unit": "s", "label": "Animation speed", "default": 5 },
+        { "type": "checkbox", "id": "show_on_mobile", "label": "Show on mobile", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Playful details overlay",
+      "blocks": [
+        { "type": "detail", "settings": { "icon": "paw", "x_position": 94, "y_position": 18, "size": 40, "rotation": 15, "color": "#FFD23F", "animation": "float" } },
+        { "type": "detail", "settings": { "icon": "bone", "x_position": 6, "y_position": 72, "size": 52, "rotation": -20, "color": "#F49AC2", "animation": "wiggle" } },
+        { "type": "detail", "settings": { "icon": "sparkle", "x_position": 88, "y_position": 86, "size": 32, "rotation": 0, "color": "#B9E769", "animation": "pulse" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -22,6 +22,16 @@
       "block_order": ["real", "happy", "care", "results"],
       "settings": { "ticker_background": "#B9E769" }
     },
+    "playful": {
+      "type": "pack-playful-overlay",
+      "blocks": {
+        "paw": { "type": "detail", "settings": { "show_detail": true, "icon": "paw", "x_position": 95, "y_position": 18, "size": 40, "rotation": 15, "opacity": 75, "color": "#FFD23F", "animation": "float", "animation_speed": 5, "show_on_mobile": true } },
+        "bone": { "type": "detail", "settings": { "show_detail": true, "icon": "bone", "x_position": 5, "y_position": 72, "size": 52, "rotation": -20, "opacity": 70, "color": "#F49AC2", "animation": "wiggle", "animation_speed": 4, "show_on_mobile": false } },
+        "sparkle": { "type": "detail", "settings": { "show_detail": true, "icon": "sparkle", "x_position": 89, "y_position": 86, "size": 32, "rotation": 0, "opacity": 80, "color": "#B9E769", "animation": "pulse", "animation_speed": 4, "show_on_mobile": true } }
+      },
+      "block_order": ["paw", "bone", "sparkle"],
+      "settings": { "overlay_enabled": false, "hide_on_mobile": false, "overlay_z_index": 18 }
+    },
     "personalities": {
       "type": "pack-personality",
       "blocks": {
@@ -105,5 +115,5 @@
       }
     }
   },
-  "order": ["hero", "ticker", "personalities", "products", "quiz", "bundle", "lifestyle", "reviews", "subscribe"]
+  "order": ["hero", "ticker", "playful", "personalities", "products", "quiz", "bundle", "lifestyle", "reviews", "subscribe"]
 }

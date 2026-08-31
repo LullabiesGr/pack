@@ -8,6 +8,10 @@
   endif
   assign reveal_index = card_index | minus: 1
   assign reveal_delay = settings.motion_stagger | times: reveal_index
+  assign placeholder_index = card_index | modulo: 6
+  if placeholder_index == 0
+    assign placeholder_index = 6
+  endif
 -%}
 
 <article class="product-card" style="--card-bg: {{ card_color }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}>
@@ -22,7 +26,7 @@
           alt: card_product.featured_media.alt | default: card_product.title
       }}
     {%- else -%}
-      {{ 'product-' | append: card_index | placeholder_svg_tag: 'pack-placeholder' }}
+      {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'pack-placeholder' }}
     {%- endif -%}
     {%- if card_product.compare_at_price > card_product.price -%}
       <span class="product-card__badge">Save</span>

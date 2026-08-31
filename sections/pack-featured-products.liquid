@@ -7,16 +7,17 @@
       <a class="pack-link" href="{{ section.settings.featured_collection.url | default: routes.all_products_collection_url }}">{{ section.settings.featured_link_label }} {% render 'icon', icon: 'arrow' %}</a>
     </div>
     <div class="product-grid">
-      {%- if section.settings.featured_collection != blank -%}
+      {%- if section.settings.featured_collection != blank and section.settings.featured_collection.products_count > 0 -%}
         {%- for product in section.settings.featured_collection.products limit: section.settings.featured_limit -%}
           {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
           {% render 'product-card', product: product, card_color: card_color, index: forloop.index, reveal_style: section.settings.featured_cards_animation %}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..6) -%}
+          {%- capture placeholder_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone', 'heart', 'fish' %}{%- endcapture -%}
           <article class="product-card"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}>
-            <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}">{{ 'product-' | append: i | placeholder_svg_tag: 'pack-placeholder' }}</div>
-            <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | times: 100 | money }}</span></div>
+            <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}"><span class="pack-product-placeholder">{% render 'icon', icon: placeholder_icon %}</span></div>
+            <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | money }}</span></div>
           </article>
         {%- endfor -%}
       {%- endif -%}

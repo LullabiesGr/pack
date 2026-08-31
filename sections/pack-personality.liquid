@@ -13,7 +13,8 @@
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: block.settings.image.alt | default: block.settings.title }}
             {%- else -%}
-              {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
+              {%- capture personality_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone' %}{%- endcapture -%}
+              <span class="pack-personality-placeholder">{% render 'icon', icon: personality_icon %}</span>
             {%- endif -%}
           </div>
           <div class="personality-card__label"><span>{{ block.settings.title }}</span><span class="circle-arrow">→</span></div>
