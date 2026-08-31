@@ -10,7 +10,18 @@
     "type_display_font": "assistant_n7",
     "type_body_font": "assistant_n4",
     "page_width": 1360,
-    "card_radius": 18
+    "card_radius": 18,
+    "show_paw_trail": false,
+    "paw_trail_position": "right",
+    "paw_trail_color": "#FFD23F",
+    "paw_trail_opacity": 65,
+    "animate_paw_trail": true,
+    "show_corner_doodles": false,
+    "corner_doodle_style": "mixed",
+    "corner_doodle_color": "#F49AC2",
+    "cart_icon_style": "standard",
+    "cart_page_style": "standard",
+    "show_button_paws": false
   },
   "presets": {
     "PACK": {}
