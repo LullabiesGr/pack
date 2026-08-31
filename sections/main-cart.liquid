@@ -21,7 +21,10 @@
             </div>
           {%- endfor -%}
         </div>
-        <div class="cart-summary">
+        <div class="cart-summary{% if settings.cart_page_style == 'doghouse' %} cart-summary--doghouse{% endif %}">
+          {%- if settings.cart_page_style == 'doghouse' -%}
+            <div class="cart-summary__doghouse-mark" aria-hidden="true">{% render 'icon', icon: 'paw' %}</div>
+          {%- endif -%}
           <p><strong>{{ 'cart.general.subtotal' | t }}: {{ cart.total_price | money }}</strong></p>
           <button class="pack-button pack-button--blue" type="submit" name="update">Update cart</button>
           <button class="pack-button" type="submit" name="checkout">{{ 'cart.general.checkout' | t }}</button>
