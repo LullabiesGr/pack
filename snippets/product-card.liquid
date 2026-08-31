@@ -15,45 +15,47 @@
 -%}
 
 <article class="product-card pack-interaction--{{ interaction_style | default: 'lift' }}" style="--card-bg: {{ card_color }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}{% if interaction_style == 'tilt' %} data-pack-tilt{% endif %}>
-  <a class="product-card__media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
-    {%- if card_product.featured_media -%}
-      {{ card_product.featured_media
-        | image_url: width: 900
-        | image_tag:
-          widths: '280, 420, 560, 720, 900',
-          sizes: '(min-width: 990px) 25vw, 50vw',
-          loading: loading_strategy,
-          class: 'product-card__image product-card__image--primary',
-          alt: card_product.featured_media.alt | default: card_product.title
-      }}
-      {%- if settings.card_show_secondary_image and card_product.images.size > 1 -%}
-        {{ card_product.images[1]
+  <div class="product-card__media-wrap">
+    <a class="product-card__media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
+      {%- if card_product.featured_media -%}
+        {{ card_product.featured_media
           | image_url: width: 900
           | image_tag:
             widths: '280, 420, 560, 720, 900',
             sizes: '(min-width: 990px) 25vw, 50vw',
-            loading: 'lazy',
-            class: 'product-card__image product-card__image--secondary',
-            alt: card_product.images[1].alt | default: card_product.title
+            loading: loading_strategy,
+            class: 'product-card__image product-card__image--primary',
+            alt: card_product.featured_media.alt | default: card_product.title
         }}
+        {%- if settings.card_show_secondary_image and card_product.images.size > 1 -%}
+          {{ card_product.images[1]
+            | image_url: width: 900
+            | image_tag:
+              widths: '280, 420, 560, 720, 900',
+              sizes: '(min-width: 990px) 25vw, 50vw',
+              loading: 'lazy',
+              class: 'product-card__image product-card__image--secondary',
+              alt: card_product.images[1].alt | default: card_product.title
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
-    {%- else -%}
-      {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'pack-placeholder' }}
-    {%- endif -%}
-    {%- if settings.card_show_sale_badge and card_product.compare_at_price > card_product.price -%}
-      <span class="product-card__badge">Save</span>
-    {%- endif -%}
-  </a>
+      {%- if settings.card_show_sale_badge and card_product.compare_at_price > card_product.price -%}
+        <span class="product-card__badge">Save</span>
+      {%- endif -%}
+    </a>
 
-  {%- if settings.card_enable_quick_add and card_product.available -%}
-    <form method="post" action="{{ routes.cart_add_url }}" class="product-card__quick-form" data-quick-add>
-      <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
-      <input type="hidden" name="quantity" value="1">
-      <button class="product-card__quick" type="submit" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ card_product.title | escape }}">
-        {% render 'icon', icon: 'plus' %}
-      </button>
-    </form>
-  {%- endif -%}
+    {%- if settings.card_enable_quick_add and card_product.available -%}
+      <form method="post" action="{{ routes.cart_add_url }}" class="product-card__quick-form" data-quick-add>
+        <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button class="product-card__quick" type="submit" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ card_product.title | escape }}">
+          {% render 'icon', icon: 'plus' %}
+        </button>
+      </form>
+    {%- endif -%}
+  </div>
 
   <div class="product-card__info">
     <div>{%- if settings.card_show_vendor and card_product.vendor != blank -%}<span class="product-card__vendor">{{ card_product.vendor }}</span>{%- endif -%}<a class="product-card__title" href="{{ card_product.url }}">{{ card_product.title }}</a></div>

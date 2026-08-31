@@ -1,0 +1,125 @@
+<section
+  class="main-list-collections section-pad"
+  style="--list-collections-bg: {{ section.settings.list_background }};"
+>
+  <div class="page-width">
+    <header class="main-list-collections__header">
+      <div>
+        {%- if section.settings.list_eyebrow != blank -%}
+          <p class="pack-eyebrow">{{ section.settings.list_eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="main-list-collections__title">{{ section.settings.list_heading }}</h1>
+      </div>
+      {%- if section.settings.list_text != blank -%}
+        <div class="main-list-collections__text rte">{{ section.settings.list_text }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- paginate collections by section.settings.list_collections_per_page -%}
+      <div class="pack-collection-grid pack-collection-grid--{{ section.settings.list_columns }}">
+        {%- assign rendered_collections = 0 -%}
+        {%- for card_collection in collections -%}
+          {%- if card_collection.products_count > 0 or section.settings.list_show_empty -%}
+            {%- liquid
+              assign collection_media = card_collection.image
+              if collection_media == blank
+                assign collection_media = card_collection.products.first.featured_media
+              endif
+              assign rendered_collections = rendered_collections | plus: 1
+            -%}
+            <a
+              class="pack-collection-card pack-interaction--{{ section.settings.list_interaction }}"
+              href="{{ card_collection.url }}"
+              style="--collection-card-bg: {% cycle '#FFD23F', '#F49AC2', '#B9E769', '#9ED8FF', '#F04B32', '#FFF8E9' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms;"
+              {% if section.settings.list_animation != 'none' %}data-pack-reveal="{{ section.settings.list_animation }}"{% endif %}
+              {% if section.settings.list_interaction == 'tilt' %}data-pack-tilt{% endif %}
+            >
+              <div class="pack-collection-card__media">
+                {%- if collection_media != blank -%}
+                  {{ collection_media
+                    | image_url: width: 1200
+                    | image_tag:
+                      widths: '360, 520, 760, 1000, 1200',
+                      sizes: '(min-width: 990px) 33vw, 84vw',
+                      loading: 'lazy',
+                      alt: collection_media.alt | default: card_collection.title
+                  }}
+                {%- else -%}
+                  <span class="pack-product-placeholder">{% render 'icon', icon: 'paw' %}</span>
+                {%- endif -%}
+              </div>
+              <div class="pack-collection-card__content">
+                <div>
+                  <h2>{{ card_collection.title }}</h2>
+                  {%- if section.settings.list_show_count -%}
+                    <p>{{ card_collection.products_count }} products</p>
+                  {%- endif -%}
+                </div>
+                <span class="circle-arrow" aria-hidden="true">→</span>
+              </div>
+              {%- if section.settings.list_show_description and card_collection.description != blank -%}
+                <div class="pack-collection-card__description">
+                  {{ card_collection.description | strip_html | truncatewords: 22 }}
+                </div>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if rendered_collections == 0 -%}
+        <div class="pack-editor-note">Create a collection and add products to show it here.</div>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="Previous page">←</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span{% if part.title == paginate.current_page %} class="current" aria-current="page"{% endif %}>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Next page">→</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections directory",
+  "settings": [
+    { "type": "text", "id": "list_eyebrow", "label": "Eyebrow", "default": "Pick their favorites" },
+    { "type": "text", "id": "list_heading", "label": "Heading", "default": "Shop all collections" },
+    { "type": "richtext", "id": "list_text", "label": "Text", "default": "<p>Real collections from your Shopify catalog, ready for every kind of best friend.</p>" },
+    { "type": "select", "id": "list_columns", "label": "Desktop columns", "options": [
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" },
+      { "value": "4", "label": "4" }
+    ], "default": "3" },
+    { "type": "range", "id": "list_collections_per_page", "min": 6, "max": 24, "step": 3, "label": "Collections per page", "default": 12 },
+    { "type": "checkbox", "id": "list_show_count", "label": "Show product count", "default": true },
+    { "type": "checkbox", "id": "list_show_description", "label": "Show collection description", "default": false },
+    { "type": "checkbox", "id": "list_show_empty", "label": "Show empty collections", "default": false },
+    { "type": "color", "id": "list_background", "label": "Background", "default": "#FFF8E9" },
+    { "type": "select", "id": "list_animation", "label": "Card entrance", "options": [
+      { "value": "none", "label": "None" },
+      { "value": "fade-up", "label": "Fade up" },
+      { "value": "pop", "label": "Playful pop" },
+      { "value": "blur-in", "label": "Candy blur" },
+      { "value": "flip-up", "label": "Editorial flip" },
+      { "value": "squish", "label": "Playful squish" }
+    ], "default": "pop" },
+    { "type": "select", "id": "list_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" },
+      { "value": "tilt", "label": "3D tilt" },
+      { "value": "jelly", "label": "Jelly" },
+      { "value": "bounce", "label": "Bounce" },
+      { "value": "none", "label": "None" }
+    ], "default": "tilt" }
+  ]
+}
+{% endschema %}

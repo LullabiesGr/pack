@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "list_eyebrow": "Pick their favorites",
+        "list_heading": "Shop all collections",
+        "list_text": "<p>Real collections from your Shopify catalog, ready for every kind of best friend.</p>",
+        "list_columns": "3",
+        "list_collections_per_page": 12,
+        "list_show_count": true,
+        "list_show_description": false,
+        "list_show_empty": false,
+        "list_background": "#FFF8E9",
+        "list_animation": "pop",
+        "list_interaction": "tilt"
+      }
+    }
+  },
+  "order": ["main"]
+}
