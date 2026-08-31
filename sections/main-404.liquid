@@ -1,0 +1,19 @@
+<section class="main-404">
+  <div class="page-width" style="text-align:center">
+    <p class="pack-eyebrow">404 — Wrong trail</p>
+    <h1 class="pack-heading">{{ section.settings.not_found_heading }}</h1>
+    <p>{{ section.settings.not_found_text }}</p>
+    <a class="pack-button pack-button--pink" href="{{ routes.root_url }}">{{ section.settings.not_found_button }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main 404",
+  "settings": [
+    { "type": "text", "id": "not_found_heading", "label": "Heading", "default": "Looks like this page ran off." },
+    { "type": "textarea", "id": "not_found_text", "label": "Text", "default": "Let's get you and your pal back home." },
+    { "type": "text", "id": "not_found_button", "label": "Button", "default": "Go home" }
+  ]
+}
+{% endschema %}

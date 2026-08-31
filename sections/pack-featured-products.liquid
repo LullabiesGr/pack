@@ -1,0 +1,40 @@
+<section class="featured-products section-pad">
+  <div class="featured-layout page-width">
+    <div class="featured-intro">
+      <p class="pack-eyebrow">{{ section.settings.featured_eyebrow }}</p>
+      <h2 class="pack-subheading">{{ section.settings.featured_heading }}</h2>
+      <div class="rte">{{ section.settings.featured_text }}</div>
+      <a class="pack-link" href="{{ section.settings.featured_collection.url | default: routes.all_products_collection_url }}">{{ section.settings.featured_link_label }} {% render 'icon', icon: 'arrow' %}</a>
+    </div>
+    <div class="product-grid">
+      {%- if section.settings.featured_collection != blank -%}
+        {%- for product in section.settings.featured_collection.products limit: section.settings.featured_limit -%}
+          {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
+          {% render 'product-card', product: product, card_color: card_color, index: forloop.index %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..6) -%}
+          <article class="product-card">
+            <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}">{{ 'product-' | append: i | placeholder_svg_tag: 'pack-placeholder' }}</div>
+            <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | times: 100 | money }}</span></div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PACK featured products",
+  "settings": [
+    { "type": "text", "id": "featured_eyebrow", "label": "Eyebrow", "default": "Fan favorites" },
+    { "type": "text", "id": "featured_heading", "label": "Heading", "default": "Best sniffers" },
+    { "type": "richtext", "id": "featured_text", "label": "Text", "default": "<p>Treats, chews and good stuff—hand-picked for happy tails.</p>" },
+    { "type": "collection", "id": "featured_collection", "label": "Collection" },
+    { "type": "range", "id": "featured_limit", "min": 3, "max": 9, "step": 1, "label": "Products", "default": 6 },
+    { "type": "text", "id": "featured_link_label", "label": "Link label", "default": "Shop all products" }
+  ],
+  "presets": [{ "name": "PACK featured products" }]
+}
+{% endschema %}

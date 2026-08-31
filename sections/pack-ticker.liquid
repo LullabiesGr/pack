@@ -1,0 +1,42 @@
+<div class="ticker" style="--ticker-bg: {{ section.settings.ticker_background }}" aria-label="{{ section.settings.ticker_label | escape }}">
+  <div class="ticker__track">
+    {%- for repeat in (1..2) -%}
+      {%- for block in section.blocks -%}
+        <div class="ticker__item" {% if repeat == 1 %}{{ block.shopify_attributes }}{% else %}aria-hidden="true"{% endif %}>
+          <span>{{ block.settings.text }}</span><span class="ticker__dot">{{ block.settings.symbol }}</span>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PACK ticker",
+  "settings": [
+    { "type": "text", "id": "ticker_label", "label": "Accessibility label", "default": "Brand benefits" },
+    { "type": "color", "id": "ticker_background", "label": "Background", "default": "#B9E769" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Real ingredients" },
+        { "type": "text", "id": "symbol", "label": "Separator", "default": "♥" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PACK ticker",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Real ingredients" } },
+        { "type": "message", "settings": { "text": "Happy pets", "symbol": "✹" } },
+        { "type": "message", "settings": { "text": "Thoughtful nutrition" } },
+        { "type": "message", "settings": { "text": "Wag-worthy results", "symbol": "✹" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

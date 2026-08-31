@@ -1,0 +1,30 @@
+<section class="subscribe-band">
+  <div class="subscribe-band__inner page-width">
+    <div>
+      <p class="pack-eyebrow">{{ section.settings.subscribe_eyebrow }}</p>
+      <h2>{{ section.settings.subscribe_heading }}</h2>
+    </div>
+    <div>
+      <p>{{ section.settings.subscribe_text }}</p>
+      {%- form 'customer', class: 'subscribe-band__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">Email</label>
+        <input id="NewsletterEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="Email address" autocorrect="off" autocapitalize="off" autocomplete="email" required>
+        <button class="pack-button pack-button--pink" type="submit">{{ section.settings.subscribe_button_label }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Subscribe band",
+  "settings": [
+    { "type": "text", "id": "subscribe_eyebrow", "label": "Eyebrow", "default": "Never run out of the good stuff" },
+    { "type": "text", "id": "subscribe_heading", "label": "Heading", "default": "Subscribe, save, repeat." },
+    { "type": "textarea", "id": "subscribe_text", "label": "Text", "default": "Save up to 15%, choose your schedule, and skip or pause anytime." },
+    { "type": "text", "id": "subscribe_button_label", "label": "Button label", "default": "Get started" }
+  ],
+  "presets": [{ "name": "Subscribe band" }]
+}
+{% endschema %}

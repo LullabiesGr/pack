@@ -1,0 +1,31 @@
+<section class="main-search">
+  <div class="page-width">
+    <h1 class="main-search__title">{{ 'general.search.search' | t }}</h1>
+    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="pack-button pack-button--blue" type="submit">Search</button>
+    </form>
+    {%- if search.performed -%}
+      {%- paginate search.results by 18 -%}
+        <div class="search-results product-grid">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769' %}{%- endcapture -%}
+              {% render 'product-card', product: item, card_color: card_color, index: forloop.index %}
+            {%- else -%}
+              <article class="testimonial-card"><p class="pack-eyebrow">{{ item.object_type }}</p><h2><a href="{{ item.url }}">{{ item.title }}</a></h2><p>{{ item.content | strip_html | truncate: 140 }}</p></article>
+            {%- endif -%}
+          {%- else -%}
+            <p>No results for “{{ search.terms }}”.</p>
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}<div class="pagination">{{ paginate | default_pagination }}</div>{%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Main search", "settings": [] }
+{% endschema %}

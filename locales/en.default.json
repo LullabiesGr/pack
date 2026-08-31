@@ -1,0 +1,34 @@
+{
+  "accessibility": {
+    "skip_to_text": "Skip to content",
+    "close": "Close",
+    "loading": "Loading"
+  },
+  "general": {
+    "meta": {
+      "tags": "Tagged {{ tags }}",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "search": "Search",
+      "placeholder": "Search treats, toys and care"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your good stuff",
+      "empty": "Your cart is waiting for a treat.",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "remove": "Remove"
+    }
+  }
+}

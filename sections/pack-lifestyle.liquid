@@ -1,0 +1,46 @@
+<section class="lifestyle-grid">
+  {%- for block in section.blocks -%}
+    <article class="lifestyle-card" {{ block.shopify_attributes }}>
+      {%- if block.settings.lifestyle_image != blank -%}
+        {{ block.settings.lifestyle_image | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', alt: block.settings.lifestyle_image.alt | default: block.settings.lifestyle_heading }}
+      {%- else -%}
+        {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
+      {%- endif -%}
+      <div class="lifestyle-card__copy">
+        <h3>{{ block.settings.lifestyle_heading }}</h3>
+        <p>{{ block.settings.lifestyle_text }}</p>
+        {%- if block.settings.lifestyle_link_label != blank -%}<a class="pack-link" href="{{ block.settings.lifestyle_link | default: routes.all_products_collection_url }}">{{ block.settings.lifestyle_link_label }} →</a>{%- endif -%}
+      </div>
+    </article>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Pet lifestyle pair",
+  "max_blocks": 2,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "lifestyle",
+      "name": "Lifestyle card",
+      "settings": [
+        { "type": "image_picker", "id": "lifestyle_image", "label": "Image" },
+        { "type": "text", "id": "lifestyle_heading", "label": "Heading", "default": "Good days, better together." },
+        { "type": "textarea", "id": "lifestyle_text", "label": "Text", "default": "Products that fit your life—and your pet's kind of joy." },
+        { "type": "text", "id": "lifestyle_link_label", "label": "Link label", "default": "Shop now" },
+        { "type": "url", "id": "lifestyle_link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pet lifestyle pair",
+      "blocks": [
+        { "type": "lifestyle", "settings": { "lifestyle_heading": "Good days, better together." } },
+        { "type": "lifestyle", "settings": { "lifestyle_heading": "Rest well. Play harder.", "lifestyle_text": "Beds, toys and everyday essentials made for their best life." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+<section class="pack-bundle section-pad">
+  <div class="bundle-grid page-width">
+    <div class="bundle-copy">
+      <p class="pack-eyebrow">{{ section.settings.bundle_eyebrow }}</p>
+      <h2 class="pack-subheading">{{ section.settings.bundle_heading }}</h2>
+      <div class="rte">{{ section.settings.bundle_text }}</div>
+      <a class="pack-button pack-button--blue" href="{{ section.settings.bundle_button_link | default: routes.all_products_collection_url }}">{{ section.settings.bundle_button_label }}</a>
+    </div>
+    <div class="bundle-products">
+      {%- for block in section.blocks -%}
+        <div class="bundle-product" style="--bundle-rotate: {% cycle '-5deg', '3deg', '-2deg' %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.product_image != blank -%}
+            {{ block.settings.product_image | image_url: width: 500 | image_tag: widths: '220, 360, 500', sizes: '20vw', loading: 'lazy', alt: block.settings.product_image.alt | default: block.settings.product_label }}
+          {%- else -%}
+            {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="bundle-box">
+      <div class="bundle-box__shape"><span>{{ section.settings.bundle_box_label }}</span></div>
+      <div class="bundle-save">{{ section.settings.bundle_save_label }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Build a happy box",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "bundle_eyebrow", "label": "Eyebrow", "default": "Their favorites, your schedule" },
+    { "type": "text", "id": "bundle_heading", "label": "Heading", "default": "Build a happy box" },
+    { "type": "richtext", "id": "bundle_text", "label": "Text", "default": "<p>Pick their favorites. Skip what they don't need. Happiness, delivered your way.</p>" },
+    { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Build your box" },
+    { "type": "url", "id": "bundle_button_link", "label": "Button link" },
+    { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },
+    { "type": "text", "id": "bundle_save_label", "label": "Save badge", "default": "SAVE UP TO 15%" }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_product",
+      "name": "Bundle product",
+      "settings": [
+        { "type": "image_picker", "id": "product_image", "label": "Transparent product image" },
+        { "type": "text", "id": "product_label", "label": "Alt text", "default": "Bundle product" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Build a happy box",
+      "blocks": [
+        { "type": "bundle_product" },
+        { "type": "bundle_product" },
+        { "type": "bundle_product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,71 @@
+<div class="announcement" role="region" aria-label="Announcement">
+  <div class="announcement__inner page-width">
+    <span>{{ section.settings.announcement_primary }}</span>
+    <span aria-hidden="true">•</span>
+    <span>{{ section.settings.announcement_secondary }}</span>
+    <span aria-hidden="true">•</span>
+    <span>{{ section.settings.announcement_tertiary }}</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner page-width">
+    <a class="site-header__logo" href="{{ routes.root_url }}">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 360 | image_tag: widths: '180, 240, 360', alt: shop.name }}
+      {%- else -%}
+        {{ section.settings.wordmark | escape }}
+      {%- endif -%}
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- else -%}
+        <a href="{{ routes.all_products_collection_url }}">Shop</a>
+        <a href="{{ routes.collections_url }}">Dog</a>
+        <a href="{{ routes.collections_url }}">Cat</a>
+        <a href="/pages/build-a-box">Build a box</a>
+        <a href="/pages/about">About</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="icon-button" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">{% render 'icon', icon: 'search' %}</a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
+      {%- endif -%}
+      <a class="icon-button" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}">
+        {% render 'icon', icon: 'cart' %}
+        <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+      <button class="icon-button menu-toggle" type="button" aria-label="Menu" aria-expanded="false" data-menu-toggle>{% render 'icon', icon: 'menu' %}</button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
+  {%- for link in section.settings.menu.links -%}
+    <a href="{{ link.url }}">{{ link.title }}</a>
+  {%- else -%}
+    <a href="{{ routes.all_products_collection_url }}">Shop</a>
+    <a href="{{ routes.collections_url }}">Dog</a>
+    <a href="{{ routes.collections_url }}">Cat</a>
+    <a href="/pages/build-a-box">Build a box</a>
+    <a href="/pages/about">About</a>
+  {%- endfor -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "announcement_primary", "label": "Primary announcement", "default": "Free shipping on orders $49+" },
+    { "type": "text", "id": "announcement_secondary", "label": "Secondary announcement", "default": "Real, recognizable ingredients" },
+    { "type": "text", "id": "announcement_tertiary", "label": "Tertiary announcement", "default": "Love it or it's on us" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "wordmark", "label": "Text logo", "default": "PALS!" },
+    { "type": "link_list", "id": "menu", "label": "Menu" }
+  ]
+}
+{% endschema %}

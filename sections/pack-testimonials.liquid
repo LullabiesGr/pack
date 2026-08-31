@@ -1,0 +1,63 @@
+<section class="testimonials section-pad">
+  <div class="page-width">
+    <div class="section-heading-row">
+      <div>
+        <p class="pack-eyebrow">{{ section.settings.testimonial_eyebrow }}</p>
+        <h2 class="pack-subheading">{{ section.settings.testimonial_heading }}</h2>
+      </div>
+      <span class="pack-link">{{ section.settings.testimonial_note }}</span>
+    </div>
+    <div class="testimonial-grid">
+      {%- for block in section.blocks -%}
+        <article class="testimonial-card" {{ block.shopify_attributes }}>
+          <div class="testimonial-card__stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>“{{ block.settings.quote }}”</blockquote>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">
+              {%- if block.settings.pet_avatar != blank -%}
+                {{ block.settings.pet_avatar | image_url: width: 120 | image_tag: widths: '60, 90, 120', loading: 'lazy', alt: block.settings.pet_name }}
+              {%- else -%}
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
+              {%- endif -%}
+            </div>
+            <span>{{ block.settings.author }} &amp; {{ block.settings.pet_name }}</span>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pet parent reviews",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "testimonial_eyebrow", "label": "Eyebrow", "default": "Real reviews from real pals" },
+    { "type": "text", "id": "testimonial_heading", "label": "Heading", "default": "What pet parents say" },
+    { "type": "text", "id": "testimonial_note", "label": "Side note", "default": "Loved by pets. Trusted by humans." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "My dog goes wild for these treats. Clean ingredients and zero weird stuff." },
+        { "type": "text", "id": "author", "label": "Customer", "default": "Jess" },
+        { "type": "text", "id": "pet_name", "label": "Pet", "default": "Maple" },
+        { "type": "image_picker", "id": "pet_avatar", "label": "Pet photo" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pet parent reviews",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review", "settings": { "quote": "The quiz nailed it. My cat loves everything in our box.", "author": "Taylor", "pet_name": "Miso" } },
+        { "type": "review", "settings": { "quote": "Finally, a brand that gets it. Great products and even better customer service.", "author": "Alex", "pet_name": "Cooper" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

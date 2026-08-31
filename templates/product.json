@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": { "type": "main-product", "settings": { "product_show_vendor": true, "product_show_trust": true } },
+    "reviews": {
+      "type": "pack-testimonials",
+      "blocks": {
+        "one": { "type": "review", "settings": { "quote": "Clean ingredients and an instant favorite.", "author": "Jess", "pet_name": "Maple" } },
+        "two": { "type": "review", "settings": { "quote": "A permanent part of our daily routine.", "author": "Taylor", "pet_name": "Miso" } },
+        "three": { "type": "review", "settings": { "quote": "The tail starts wagging when the bag opens.", "author": "Alex", "pet_name": "Cooper" } }
+      },
+      "block_order": ["one", "two", "three"],
+      "settings": { "testimonial_heading": "Pet-approved" }
+    }
+  },
+  "order": ["main", "reviews"]
+}

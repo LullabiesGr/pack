@@ -1,0 +1,48 @@
+<section class="pack-hero" style="--hero-bg: {{ section.settings.hero_background }}; --hero-text: {{ section.settings.hero_text_color }}">
+  <div class="pack-hero__inner page-width">
+    <div class="pack-hero__copy">
+      {%- if section.settings.hero_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.hero_eyebrow }}</p>{%- endif -%}
+      <h1 class="pack-hero__title">{{ section.settings.hero_heading }}</h1>
+      {%- if section.settings.hero_button_label != blank -%}
+        <a class="pack-button pack-button--pink" href="{{ section.settings.hero_button_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.hero_button_label }} {% render 'icon', icon: 'arrow' %}
+        </a>
+      {%- endif -%}
+    </div>
+    <div class="pack-hero__media">
+      <span class="pack-hero__treat" aria-hidden="true"></span>
+      <div class="pack-hero__badge">{{ section.settings.hero_badge }}</div>
+      {%- if section.settings.hero_image != blank -%}
+        {{ section.settings.hero_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '500, 750, 1000, 1250, 1600',
+            sizes: '(min-width: 990px) 55vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: section.settings.hero_image.alt | default: section.settings.hero_heading
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'pack-placeholder' }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PACK hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Made for pets with personality" },
+    { "type": "inline_richtext", "id": "hero_heading", "label": "Heading", "default": "GOOD STUFF FOR <em>GREAT</em> PETS." },
+    { "type": "text", "id": "hero_button_label", "label": "Button label", "default": "Shop the good stuff" },
+    { "type": "url", "id": "hero_button_link", "label": "Button link" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero pet and products image" },
+    { "type": "textarea", "id": "hero_badge", "label": "Badge", "default": "Real ingredients. Wag-worthy results." },
+    { "type": "color", "id": "hero_background", "label": "Background", "default": "#0755D9" },
+    { "type": "color", "id": "hero_text_color", "label": "Text", "default": "#FFF8E9" }
+  ],
+  "presets": [{ "name": "PACK hero" }]
+}
+{% endschema %}

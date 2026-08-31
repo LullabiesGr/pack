@@ -1,0 +1,18 @@
+{
+  "current": {
+    "color_primary": "#0755D9",
+    "color_secondary": "#FFD23F",
+    "color_accent": "#F49AC2",
+    "color_green": "#B9E769",
+    "color_red": "#F04B32",
+    "color_background": "#FFF8E9",
+    "color_text": "#111111",
+    "type_display_font": "assistant_n7",
+    "type_body_font": "assistant_n4",
+    "page_width": 1360,
+    "card_radius": 18
+  },
+  "presets": {
+    "PACK": {}
+  }
+}

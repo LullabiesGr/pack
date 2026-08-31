@@ -1,0 +1,37 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "PACK",
+    "theme_version": "1.0.0",
+    "theme_author": "LullabiesGr",
+    "theme_documentation_url": "https://github.com/LullabiesGr/pack",
+    "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "color", "id": "color_primary", "label": "Cobalt", "default": "#0755D9" },
+      { "type": "color", "id": "color_secondary", "label": "Butter yellow", "default": "#FFD23F" },
+      { "type": "color", "id": "color_accent", "label": "Bubblegum pink", "default": "#F49AC2" },
+      { "type": "color", "id": "color_green", "label": "Pistachio", "default": "#B9E769" },
+      { "type": "color", "id": "color_red", "label": "Tomato", "default": "#F04B32" },
+      { "type": "color", "id": "color_background", "label": "Cream", "default": "#FFF8E9" },
+      { "type": "color", "id": "color_text", "label": "Ink", "default": "#111111" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "type_display_font", "label": "Display font", "default": "assistant_n7" },
+      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "assistant_n4" }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      { "type": "range", "id": "page_width", "min": 1080, "max": 1600, "step": 40, "unit": "px", "label": "Page width", "default": 1360 },
+      { "type": "range", "id": "card_radius", "min": 0, "max": 36, "step": 2, "unit": "px", "label": "Card corner radius", "default": 18 }
+    ]
+  }
+]

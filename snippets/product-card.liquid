@@ -1,0 +1,49 @@
+{%- liquid
+  assign card_product = product
+  assign card_color = card_color | default: '#F49AC2'
+  assign card_index = index | default: 1
+  assign loading_strategy = 'lazy'
+  if card_index <= 3
+    assign loading_strategy = 'eager'
+  endif
+-%}
+
+<article class="product-card" style="--card-bg: {{ card_color }}">
+  <a class="product-card__media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
+    {%- if card_product.featured_media -%}
+      {{ card_product.featured_media
+        | image_url: width: 900
+        | image_tag:
+          widths: '280, 420, 560, 720, 900',
+          sizes: '(min-width: 990px) 25vw, 50vw',
+          loading: loading_strategy,
+          alt: card_product.featured_media.alt | default: card_product.title
+      }}
+    {%- else -%}
+      {{ 'product-' | append: card_index | placeholder_svg_tag: 'pack-placeholder' }}
+    {%- endif -%}
+    {%- if card_product.compare_at_price > card_product.price -%}
+      <span class="product-card__badge">Save</span>
+    {%- endif -%}
+  </a>
+
+  {%- if card_product.available -%}
+    <form method="post" action="{{ routes.cart_add_url }}" class="product-card__quick-form" data-quick-add>
+      <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <button class="product-card__quick" type="submit" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ card_product.title | escape }}">
+        {% render 'icon', icon: 'plus' %}
+      </button>
+    </form>
+  {%- endif -%}
+
+  <div class="product-card__info">
+    <a class="product-card__title" href="{{ card_product.url }}">{{ card_product.title }}</a>
+    <div class="product-card__price">
+      {%- if card_product.compare_at_price > card_product.price -%}
+        <span class="product-card__compare">{{ card_product.compare_at_price | money }}</span>
+      {%- endif -%}
+      <span>{{ card_product.price | money }}</span>
+    </div>
+  </div>
+</article>

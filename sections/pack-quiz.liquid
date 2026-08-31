@@ -1,0 +1,60 @@
+<section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}">
+  <div class="pack-quiz__inner page-width">
+    <div class="pack-quiz__peek">
+      {%- if section.settings.quiz_image != blank -%}
+        {{ section.settings.quiz_image | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', alt: section.settings.quiz_image.alt | default: section.settings.quiz_heading }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'pack-placeholder' }}
+      {%- endif -%}
+    </div>
+    <div class="pack-quiz__content">
+      <p class="pack-eyebrow">{{ section.settings.quiz_eyebrow }}</p>
+      <h2 class="pack-subheading">{{ section.settings.quiz_heading }}</h2>
+      <p>{{ section.settings.quiz_text }}</p>
+      <div class="quiz-steps" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          <span class="quiz-step" style="--step-bg: {{ block.settings.step_color }}; --step-rotate: {{ block.settings.step_rotation }}deg" {{ block.shopify_attributes }}>{{ block.settings.step_text }}</span>
+          {%- unless forloop.last -%}<span class="quiz-arrow">→</span>{%- endunless -%}
+        {%- endfor -%}
+      </div>
+      <a class="pack-button" href="{{ section.settings.quiz_button_link | default: routes.all_products_collection_url }}">{{ section.settings.quiz_button_label }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pet finder quiz",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "quiz_eyebrow", "label": "Eyebrow", "default": "A match made in snack heaven" },
+    { "type": "text", "id": "quiz_heading", "label": "Heading", "default": "Find their perfect treat" },
+    { "type": "textarea", "id": "quiz_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend what they'll love." },
+    { "type": "image_picker", "id": "quiz_image", "label": "Peeking pet image" },
+    { "type": "text", "id": "quiz_button_label", "label": "Button label", "default": "Take the quiz" },
+    { "type": "url", "id": "quiz_button_link", "label": "Button link" },
+    { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Quiz step",
+      "settings": [
+        { "type": "text", "id": "step_text", "label": "Question", "default": "How old are they?" },
+        { "type": "color", "id": "step_color", "label": "Color", "default": "#FFF8E9" },
+        { "type": "range", "id": "step_rotation", "min": -8, "max": 8, "step": 1, "unit": "deg", "label": "Rotation", "default": 0 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pet finder quiz",
+      "blocks": [
+        { "type": "step", "settings": { "step_text": "How old are they?", "step_color": "#FFF8E9", "step_rotation": -3 } },
+        { "type": "step", "settings": { "step_text": "Any sensitivities?", "step_color": "#B9E769", "step_rotation": 2 } },
+        { "type": "step", "settings": { "step_text": "What's their vibe?", "step_color": "#FFD23F", "step_rotation": -2 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

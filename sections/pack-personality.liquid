@@ -1,0 +1,59 @@
+<section class="section-pad">
+  <div class="page-width">
+    <div class="section-heading-row">
+      <h2 class="pack-subheading">{{ section.settings.personality_heading }}</h2>
+      {%- if section.settings.personality_link_label != blank -%}
+        <a class="pack-link" href="{{ section.settings.personality_link | default: routes.collections_url }}">{{ section.settings.personality_link_label }} {% render 'icon', icon: 'arrow' %}</a>
+      {%- endif -%}
+    </div>
+    <div class="personality-grid">
+      {%- for block in section.blocks -%}
+        <a class="personality-card" href="{{ block.settings.link | default: routes.all_products_collection_url }}" style="--card-bg: {{ block.settings.card_background }}" {{ block.shopify_attributes }}>
+          <div class="personality-card__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: block.settings.image.alt | default: block.settings.title }}
+            {%- else -%}
+              {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="personality-card__label"><span>{{ block.settings.title }}</span><span class="circle-arrow">→</span></div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by personality",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "personality_heading", "label": "Heading", "default": "Shop by personality" },
+    { "type": "text", "id": "personality_link_label", "label": "Link label", "default": "View all" },
+    { "type": "url", "id": "personality_link", "label": "Link" }
+  ],
+  "blocks": [
+    {
+      "type": "personality",
+      "name": "Personality",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Pet image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "The Couch Potato" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "color", "id": "card_background", "label": "Background", "default": "#FFD23F" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by personality",
+      "blocks": [
+        { "type": "personality", "settings": { "title": "The Couch Potato", "card_background": "#FFD23F" } },
+        { "type": "personality", "settings": { "title": "The Chaos Agent", "card_background": "#F04B32" } },
+        { "type": "personality", "settings": { "title": "The Food Critic", "card_background": "#F49AC2" } },
+        { "type": "personality", "settings": { "title": "The Explorer", "card_background": "#B9E769" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

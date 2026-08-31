@@ -1,0 +1,81 @@
+<section class="main-product">
+  <div class="main-product__grid page-width">
+    <div class="product-gallery">
+      {%- for media in product.media -%}
+        <div class="product-gallery__item">
+          {%- if media.media_type == 'image' -%}
+            {{ media | image_url: width: 1400 | image_tag: widths: '480, 720, 960, 1200, 1400', sizes: '(min-width: 990px) 55vw, 90vw', loading: 'lazy', alt: media.alt | default: product.title }}
+          {%- else -%}
+            {{ media | media_tag: image_size: '1000x', controls: true }}
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <div class="product-gallery__item">{{ 'product-1' | placeholder_svg_tag: 'pack-placeholder' }}</div>
+      {%- endfor -%}
+    </div>
+
+    <div class="product-details">
+      {%- if section.settings.product_show_vendor and product.vendor != blank -%}<p class="pack-eyebrow">{{ product.vendor }}</p>{%- endif -%}
+      <h1>{{ product.title }}</h1>
+      <div class="product-details__price">
+        {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+          <s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+        <span>{{ product.selected_or_first_available_variant.price | money }}</span>
+      </div>
+      <div class="product-details__description rte">{{ product.description }}</div>
+
+      {%- form 'product', product, class: 'product-form' -%}
+        {%- unless product.has_only_default_variant -%}
+          <div class="product-form__option">
+            <label for="Variant-{{ section.id }}">Options</label>
+            <select id="Variant-{{ section.id }}" name="id">
+              {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>
+                  {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} — {{ 'products.product.sold_out' | t }}{% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {%- endunless -%}
+
+        {%- if product.selling_plan_groups.size > 0 -%}
+          <div class="product-form__option">
+            <label for="SellingPlan-{{ section.id }}">Purchase option</label>
+            <select id="SellingPlan-{{ section.id }}" name="selling_plan">
+              <option value="">One-time purchase</option>
+              {%- for allocation in product.selected_or_first_available_variant.selling_plan_allocations -%}
+                <option value="{{ allocation.selling_plan.id }}">{{ allocation.selling_plan.name }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endif -%}
+
+        <div class="product-form__option">
+          <label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+          <input class="quantity-input" id="Quantity-{{ section.id }}" type="number" name="quantity" min="1" value="1">
+        </div>
+        <button class="pack-button pack-button--pink" type="submit"{% unless product.selected_or_first_available_variant.available %} disabled{% endunless %}>
+          {%- if product.selected_or_first_available_variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </button>
+        {{ form | payment_button }}
+      {%- endform -%}
+
+      {%- if section.settings.product_show_trust -%}
+        <div class="ticker" style="margin-top:30px;--ticker-bg:var(--pack-green)"><div class="ticker__item">Real ingredients <span class="ticker__dot">♥</span> Happiness guaranteed</div></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    { "type": "checkbox", "id": "product_show_vendor", "label": "Show vendor", "default": true },
+    { "type": "checkbox", "id": "product_show_trust", "label": "Show trust strip", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,50 @@
+<footer class="site-footer">
+  <div class="page-width">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand-wrap">
+        <div class="site-footer__brand">{{ section.settings.footer_wordmark }}</div>
+        <p>{{ section.settings.footer_text }}</p>
+      </div>
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.heading }}</h3>
+          <ul>
+            {%- for link in block.settings.menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- else -%}
+              <li><a href="{{ routes.all_products_collection_url }}">All products</a></li>
+              <li><a href="{{ routes.collections_url }}">Collections</a></li>
+              <li><a href="{{ routes.search_url }}">Search</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+      <span>{{ section.settings.footer_note }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "footer_wordmark", "label": "Wordmark", "default": "PALS!" },
+    { "type": "textarea", "id": "footer_text", "label": "Description", "default": "Good stuff for great pets." },
+    { "type": "text", "id": "footer_note", "label": "Bottom note", "default": "Made for pets and their people." }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ]
+}
+{% endschema %}
