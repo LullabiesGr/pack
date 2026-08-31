@@ -16,7 +16,7 @@
 </div>
 {%- endif -%}
 
-<header class="site-header site-header--{{ section.settings.header_style }} site-header--motion-{{ section.settings.header_animation }} site-nav-hover--{{ section.settings.nav_hover }}{% if section.settings.sticky_header %} site-header--sticky{% endif %}" style="--header-bg: {{ section.settings.header_background }}; --header-text: {{ section.settings.header_text_color }}; --header-accent: {{ section.settings.header_accent }};">
+<header class="site-header site-header--{{ section.settings.header_style }} site-header--motion-{{ section.settings.header_animation }} site-nav-hover--{{ section.settings.nav_hover }}{% if section.settings.sticky_header %} site-header--sticky{% endif %}{% unless section.settings.show_header_bottom_gap %} site-header--flush-bottom{% endunless %}" style="--header-bg: {{ section.settings.header_background }}; --header-text: {{ section.settings.header_text_color }}; --header-accent: {{ section.settings.header_accent }};">
   <div class="site-header__inner page-width">
     <a class="site-header__logo" href="{{ routes.root_url }}">
       {%- if section.settings.show_header_mascot -%}<span class="site-header__mascot" aria-hidden="true">{% render 'icon', icon: section.settings.header_mascot %}</span>{%- endif -%}
@@ -44,7 +44,7 @@
       {%- if shop.customer_accounts_enabled -%}
         <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
       {%- endif -%}
-      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}">
+      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
         {% if settings.cart_icon_style == 'doghouse' %}
           {% render 'icon', icon: 'doghouse-cart' %}
         {% else %}
@@ -61,7 +61,7 @@
   {% render 'pack-divider',
     style: section.settings.header_divider_style,
     color: section.settings.header_divider_color,
-    background: section.settings.header_background,
+    background: section.settings.header_divider_background,
     height: 24,
     thickness: 3,
     icon_size: 18,
@@ -104,6 +104,7 @@
     { "type": "select", "id": "header_style", "label": "Header style", "options": [
       { "value": "classic", "label": "Classic" }, { "value": "bubble", "label": "Bubble menu" }, { "value": "ticket", "label": "Ticket edge" }, { "value": "kennel", "label": "Kennel sign" }
     ], "default": "classic" },
+    { "type": "checkbox", "id": "show_header_bottom_gap", "label": "Show contrasting gap below header", "default": true },
     { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": false },
     { "type": "color", "id": "header_background", "label": "Header background", "default": "#0755D9" },
     { "type": "color", "id": "header_text_color", "label": "Header text", "default": "#FFFFFF" },
@@ -123,6 +124,7 @@
       { "value": "none", "label": "None" }, { "value": "solid", "label": "Solid" }, { "value": "dashed", "label": "Dashed" }, { "value": "diagonal", "label": "Diagonal" }, { "value": "zigzag", "label": "Zigzag" }, { "value": "wave", "label": "Wave" }, { "value": "paws", "label": "Paws" }, { "value": "bones", "label": "Bones" }, { "value": "animal-mix", "label": "Animal mix" }
     ], "default": "solid" },
     { "type": "color", "id": "header_divider_color", "label": "Divider color", "default": "#FFD23F" },
+    { "type": "color", "id": "header_divider_background", "label": "Divider background", "default": "#0755D9" },
     { "type": "select", "id": "header_divider_animation", "label": "Divider animation", "options": [
       { "value": "none", "label": "None" }, { "value": "scroll", "label": "Scroll left" }, { "value": "reverse", "label": "Scroll right" }, { "value": "bounce", "label": "Bounce" }, { "value": "draw", "label": "Draw" }
     ], "default": "none" }

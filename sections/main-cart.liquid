@@ -25,6 +25,11 @@
           {%- if settings.cart_page_style == 'doghouse' -%}
             <div class="cart-summary__doghouse-mark" aria-hidden="true">{% render 'icon', icon: 'paw' %}</div>
           {%- endif -%}
+          {% render 'cart-shipping-progress' %}
+          {%- if settings.cart_show_note -%}
+            <label class="cart-note-label" for="CartNote">Order note</label>
+            <textarea class="cart-note" id="CartNote" name="note" rows="3" placeholder="Add delivery details or a note for the store">{{ cart.note }}</textarea>
+          {%- endif -%}
           <p><strong>{{ 'cart.general.subtotal' | t }}: {{ cart.total_price | money }}</strong></p>
           <button class="pack-button pack-button--blue" type="submit" name="update">Update cart</button>
           <button class="pack-button" type="submit" name="checkout">{{ 'cart.general.checkout' | t }}</button>

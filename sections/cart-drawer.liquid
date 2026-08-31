@@ -1,0 +1,85 @@
+{%- if settings.cart_behavior == 'drawer' -%}
+  <aside
+    id="CartDrawer"
+    class="cart-drawer cart-drawer--{{ settings.cart_drawer_style }}"
+    style="--cart-drawer-bg: {{ settings.cart_drawer_background }}; --cart-drawer-accent: {{ settings.cart_drawer_accent }};"
+    data-cart-drawer
+    aria-hidden="true"
+  >
+    <button class="cart-drawer__overlay" type="button" aria-label="Close cart" data-cart-drawer-close></button>
+    <div class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerHeading" tabindex="-1" data-cart-drawer-panel>
+      <header class="cart-drawer__header">
+        <div>
+          <p class="pack-eyebrow">{{ cart.item_count }} item{% unless cart.item_count == 1 %}s{% endunless %}</p>
+          <h2 id="CartDrawerHeading">{{ settings.cart_drawer_heading }}</h2>
+        </div>
+        <button class="cart-drawer__close" type="button" aria-label="Close cart" data-cart-drawer-close>×</button>
+      </header>
+
+      <div class="cart-drawer__body">
+        <p class="cart-drawer__error" role="alert" data-cart-drawer-error hidden></p>
+        {%- if cart.item_count == 0 -%}
+          <div class="cart-drawer__empty">
+            <span class="cart-drawer__empty-icon" aria-hidden="true">{% render 'icon', icon: 'doghouse-cart' %}</span>
+            <p>{{ settings.cart_drawer_empty_text }}</p>
+            <a class="pack-button pack-button--blue" href="{{ routes.all_products_collection_url }}">{{ settings.cart_continue_label }}</a>
+          </div>
+        {%- else -%}
+          <form action="{{ routes.cart_url }}" method="post" id="CartDrawerForm">
+            <div class="cart-drawer__items">
+              {%- for item in cart.items -%}
+                {%- assign minus_quantity = item.quantity | minus: 1 -%}
+                {%- assign plus_quantity = item.quantity | plus: 1 -%}
+                <article class="cart-drawer__item">
+                  <a class="cart-drawer__media" href="{{ item.url }}">
+                    {%- if item.image -%}
+                      {{ item.image | image_url: width: 240 | image_tag: widths: '120, 180, 240', loading: 'lazy', alt: item.image.alt | default: item.product.title }}
+                    {%- else -%}
+                      <span class="pack-product-placeholder">{% render 'icon', icon: 'paw' %}</span>
+                    {%- endif -%}
+                  </a>
+                  <div class="cart-drawer__item-info">
+                    <a class="cart-drawer__item-title" href="{{ item.url }}">{{ item.product.title }}</a>
+                    {%- unless item.product.has_only_default_variant -%}<p>{{ item.variant.title }}</p>{%- endunless -%}
+                    {%- if item.selling_plan_allocation -%}<p>{{ item.selling_plan_allocation.selling_plan.name }}</p>{%- endif -%}
+                    {%- for property in item.properties -%}
+                      {%- assign property_first_character = property.first | slice: 0 -%}
+                      {%- if property.last != blank and property_first_character != '_' -%}<p>{{ property.first }}: {{ property.last }}</p>{%- endif -%}
+                    {%- endfor -%}
+                    <div class="cart-drawer__quantity" aria-label="Quantity for {{ item.product.title | escape }}">
+                      <button type="button" aria-label="Decrease quantity" data-cart-line-change data-line="{{ item.index }}" data-quantity="{{ minus_quantity }}">−</button>
+                      <input type="number" min="0" value="{{ item.quantity }}" aria-label="Quantity" data-cart-quantity data-line="{{ item.index }}">
+                      <button type="button" aria-label="Increase quantity" data-cart-line-change data-line="{{ item.index }}" data-quantity="{{ plus_quantity }}">+</button>
+                    </div>
+                    <button class="cart-drawer__remove" type="button" data-cart-line-change data-line="{{ item.index }}" data-quantity="0">Remove</button>
+                  </div>
+                  <strong class="cart-drawer__price">{{ item.final_line_price | money }}</strong>
+                </article>
+              {%- endfor -%}
+            </div>
+          </form>
+        {%- endif -%}
+      </div>
+
+      {%- if cart.item_count > 0 -%}
+        <footer class="cart-drawer__footer">
+          {% render 'cart-shipping-progress' %}
+          {%- if settings.cart_show_note -%}
+            <label class="cart-note-label" for="CartDrawerNote">Order note</label>
+            <textarea class="cart-note" id="CartDrawerNote" rows="2" data-cart-note placeholder="Add delivery details or a note for the store">{{ cart.note }}</textarea>
+          {%- endif -%}
+          <div class="cart-drawer__subtotal"><span>{{ 'cart.general.subtotal' | t }}</span><strong>{{ cart.total_price | money }}</strong></div>
+          <button class="pack-button" type="submit" name="checkout" form="CartDrawerForm">{{ 'cart.general.checkout' | t }}</button>
+          <a class="cart-drawer__view-cart" href="{{ routes.cart_url }}">View cart</a>
+        </footer>
+      {%- endif -%}
+    </div>
+  </aside>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

@@ -37,7 +37,7 @@
       {%- endif -%}
       <div class="product-details__description rte">{{ product.description }}</div>
 
-      {%- form 'product', product, class: 'product-form' -%}
+      {%- form 'product', product, class: 'product-form', data-product-form: '' -%}
         {%- unless product.has_only_default_variant -%}
           <div class="product-form__option">
             <label for="Variant-{{ section.id }}">Options</label>

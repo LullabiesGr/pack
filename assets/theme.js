@@ -13,11 +13,151 @@ class PackMenu {
   }
 }
 
+class PackCartDrawer {
+  constructor() {
+    this.enabled = document.body?.dataset.cartBehavior === 'drawer';
+    this.drawer = document.querySelector('[data-cart-drawer]');
+    this.lastTrigger = null;
+    if (!this.enabled || !this.drawer) return;
+    document.addEventListener('click', (event) => this.handleClick(event));
+    document.addEventListener('change', (event) => this.handleChange(event));
+    document.addEventListener('keydown', (event) => this.handleKeydown(event));
+  }
+  handleClick(event) {
+    const openButton = event.target.closest('[data-cart-drawer-open]');
+    if (openButton) {
+      event.preventDefault();
+      this.lastTrigger = openButton;
+      this.open();
+      return;
+    }
+
+    if (event.target.closest('[data-cart-drawer-close]')) {
+      event.preventDefault();
+      this.close();
+      return;
+    }
+
+    const quantityButton = event.target.closest('[data-cart-line-change]');
+    if (quantityButton) {
+      event.preventDefault();
+      this.changeLine(Number(quantityButton.dataset.line), Math.max(0, Number(quantityButton.dataset.quantity)));
+    }
+  }
+  handleChange(event) {
+    const quantityInput = event.target.closest('[data-cart-quantity]');
+    if (quantityInput) {
+      this.changeLine(Number(quantityInput.dataset.line), Math.max(0, Number(quantityInput.value)));
+      return;
+    }
+
+    const note = event.target.closest('[data-cart-note]');
+    if (note) this.saveNote(note.value);
+  }
+  handleKeydown(event) {
+    if (!this.drawer?.classList.contains('is-open')) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.close();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const panel = this.drawer.querySelector('[data-cart-drawer-panel]');
+    const focusable = [...panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+      .filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+  open(moveFocus = true) {
+    if (!this.drawer) return;
+    this.drawer.classList.add('is-open');
+    this.drawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('cart-drawer-open');
+    if (moveFocus) window.requestAnimationFrame(() => this.drawer.querySelector('[data-cart-drawer-panel]')?.focus());
+  }
+  close() {
+    if (!this.drawer) return;
+    this.drawer.classList.remove('is-open');
+    this.drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('cart-drawer-open');
+    this.lastTrigger?.focus();
+  }
+  setBusy(busy) {
+    if (!this.drawer) return;
+    this.drawer.classList.toggle('is-loading', busy);
+    this.drawer.setAttribute('aria-busy', String(busy));
+  }
+  showError(message) {
+    const error = this.drawer?.querySelector('[data-cart-drawer-error]');
+    if (!error) return;
+    error.textContent = message;
+    error.hidden = !message;
+  }
+  async changeLine(line, quantity) {
+    if (!line || Number.isNaN(quantity)) return;
+    this.setBusy(true);
+    this.showError('');
+    try {
+      const response = await fetch(`${window.Shopify.routes.root}cart/change.js`, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ line, quantity })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.description || 'Could not update the cart.');
+      await this.refresh(true);
+    } catch (error) {
+      this.showError(error.message || 'Could not update the cart.');
+    } finally {
+      this.setBusy(false);
+    }
+  }
+  async saveNote(note) {
+    try {
+      const response = await fetch(`${window.Shopify.routes.root}cart/update.js`, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note })
+      });
+      if (!response.ok) throw new Error('Could not save the order note.');
+    } catch (error) {
+      this.showError(error.message || 'Could not save the order note.');
+    }
+  }
+  async refresh(shouldOpen = false) {
+    if (!this.enabled) return;
+    const wasOpen = this.drawer?.classList.contains('is-open');
+    const root = window.Shopify.routes.root;
+    const [sectionResponse, cartResponse] = await Promise.all([
+      fetch(`${root}?section_id=cart-drawer`),
+      fetch(`${root}cart.js`, { headers: { Accept: 'application/json' } })
+    ]);
+    if (!sectionResponse.ok || !cartResponse.ok) throw new Error('Could not refresh the cart.');
+    const [sectionText, cart] = await Promise.all([sectionResponse.text(), cartResponse.json()]);
+    const parsed = new DOMParser().parseFromString(sectionText, 'text/html');
+    const nextDrawer = parsed.querySelector('[data-cart-drawer]');
+    if (!nextDrawer) throw new Error('Cart drawer markup is unavailable.');
+    this.drawer.replaceWith(nextDrawer);
+    this.drawer = nextDrawer;
+    document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+    if (shouldOpen || wasOpen) this.open(false);
+  }
+}
+
 class PackQuickAdd {
   constructor() {
     document.addEventListener('submit', (event) => {
-      const form = event.target.closest('[data-quick-add]');
+      const form = event.target.closest('[data-quick-add], [data-product-form]');
       if (!form || !window.fetch) return;
+      if (form.matches('[data-product-form]') && document.body.dataset.cartBehavior !== 'drawer') return;
       event.preventDefault();
       this.add(form);
     });
@@ -32,10 +172,15 @@ class PackQuickAdd {
         headers: { Accept: 'application/json' },
         body: new FormData(form)
       });
-      if (!response.ok) throw new Error('Could not add this item.');
-      const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((result) => result.json());
-      document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
-      this.toast('Added to your good stuff.');
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.description || 'Could not add this item.');
+      if (window.packCartDrawer?.enabled) {
+        await window.packCartDrawer.refresh(true);
+      } else {
+        const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((cartResponse) => cartResponse.json());
+        document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+        this.toast('Added to your good stuff.');
+      }
     } catch (error) {
       this.toast(error.message || 'Something went wrong.');
     } finally {
@@ -220,6 +365,7 @@ if (!customElements.get('product-recommendations')) {
 customElements.define('pack-menu', class extends HTMLElement {});
 document.addEventListener('DOMContentLoaded', () => {
   new PackMenu();
+  window.packCartDrawer = new PackCartDrawer();
   new PackQuickAdd();
   window.packReveal = new PackReveal();
   window.packTilt = new PackTilt();

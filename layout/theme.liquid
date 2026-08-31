@@ -39,6 +39,9 @@
         --pack-cream: {{ settings.color_background }};
         --pack-ink: {{ settings.color_text }};
         --pack-radius: {{ settings.card_radius }}px;
+        --pack-border-color: {{ settings.border_color }};
+        --pack-card-border-style: {{ settings.card_border_style }};
+        --pack-section-border-style: {{ settings.section_border_style }};
         --pack-page: {{ settings.page_width }}px;
         --pack-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --pack-display: {{ settings.type_display_font.family }}, {{ settings.type_display_font.fallback_families }};
@@ -60,7 +63,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}">
+  <body class="template-{{ template.name | handle }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}" data-cart-behavior="{{ settings.cart_behavior }}">
     <a class="skip-to-content-link" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
     {% sections 'header-group' %}
     {% render 'pack-decorations' %}
@@ -68,6 +71,7 @@
       {{ content_for_layout }}
     </main>
     {% sections 'footer-group' %}
+    {%- if settings.cart_behavior == 'drawer' -%}{% section 'cart-drawer' %}{%- endif -%}
     <div class="pack-toast" data-cart-toast role="status" aria-live="polite" hidden></div>
   </body>
 </html>

@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "PACK",
-    "theme_version": "1.0.0",
+    "theme_version": "1.1.0",
     "theme_author": "LullabiesGr",
     "theme_documentation_url": "https://github.com/LullabiesGr/pack",
     "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
@@ -31,7 +31,22 @@
     "name": "Layout",
     "settings": [
       { "type": "range", "id": "page_width", "min": 1080, "max": 1600, "step": 40, "unit": "px", "label": "Page width", "default": 1360 },
-      { "type": "range", "id": "card_radius", "min": 0, "max": 36, "step": 2, "unit": "px", "label": "Card corner radius", "default": 18 }
+      { "type": "range", "id": "card_radius", "min": 0, "max": 36, "step": 2, "unit": "px", "label": "Card corner radius", "default": 18 },
+      { "type": "header", "content": "Borders" },
+      { "type": "color", "id": "border_color", "label": "Border color", "default": "#111111" },
+      { "type": "select", "id": "card_border_style", "label": "Card border style", "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" },
+        { "value": "double", "label": "Double" },
+        { "value": "none", "label": "None" }
+      ], "default": "solid" },
+      { "type": "select", "id": "section_border_style", "label": "Section boundary style", "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" },
+        { "value": "none", "label": "None" }
+      ], "default": "solid" }
     ]
   },
   {
@@ -76,28 +91,36 @@
         "default": "mixed"
       },
       { "type": "color", "id": "corner_doodle_color", "label": "Doodle color", "default": "#F49AC2" },
-      { "type": "header", "content": "Cart styling" },
-      {
-        "type": "select",
-        "id": "cart_icon_style",
-        "label": "Header cart icon",
-        "options": [
-          { "value": "standard", "label": "Standard cart" },
-          { "value": "doghouse", "label": "Doghouse" }
-        ],
-        "default": "standard"
-      },
-      {
-        "type": "select",
-        "id": "cart_page_style",
-        "label": "Cart summary shape",
-        "options": [
-          { "value": "standard", "label": "Standard card" },
-          { "value": "doghouse", "label": "Doghouse" }
-        ],
-        "default": "standard"
-      },
       { "type": "checkbox", "id": "show_button_paws", "label": "Show paw detail on buttons", "default": false }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "select", "id": "cart_behavior", "label": "Cart opens as", "options": [
+        { "value": "drawer", "label": "Cart drawer" },
+        { "value": "page", "label": "Cart page" }
+      ], "default": "drawer" },
+      { "type": "select", "id": "cart_icon_style", "label": "Header cart icon", "options": [
+        { "value": "standard", "label": "Standard cart" },
+        { "value": "doghouse", "label": "Doghouse" }
+      ], "default": "doghouse" },
+      { "type": "select", "id": "cart_page_style", "label": "Cart page summary shape", "options": [
+        { "value": "standard", "label": "Standard card" },
+        { "value": "doghouse", "label": "Doghouse" }
+      ], "default": "standard" },
+      { "type": "select", "id": "cart_drawer_style", "label": "Cart drawer style", "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "doghouse", "label": "Doghouse" }
+      ], "default": "doghouse" },
+      { "type": "text", "id": "cart_drawer_heading", "label": "Drawer heading", "default": "Your good stuff" },
+      { "type": "text", "id": "cart_drawer_empty_text", "label": "Empty cart text", "default": "Nothing in the doghouse yet." },
+      { "type": "text", "id": "cart_continue_label", "label": "Continue shopping label", "default": "Keep sniffing" },
+      { "type": "checkbox", "id": "cart_show_note", "label": "Show order note", "default": true },
+      { "type": "checkbox", "id": "cart_show_shipping_progress", "label": "Show free-shipping progress", "default": true },
+      { "type": "number", "id": "free_shipping_threshold", "label": "Free-shipping threshold in store currency", "default": 49 },
+      { "type": "color", "id": "cart_drawer_background", "label": "Drawer background", "default": "#FFF8E9" },
+      { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" }
     ]
   },
   {
