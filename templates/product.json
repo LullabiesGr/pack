@@ -1,6 +1,18 @@
 {
   "sections": {
-    "main": { "type": "main-product", "settings": { "product_show_vendor": true, "product_show_trust": true } },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "details": { "type": "collapsible_tab", "settings": { "heading": "Product details", "content": "<p>Add ingredients, materials, sizing or care instructions.</p>", "icon": "paw", "open_by_default": true } },
+        "shipping": { "type": "collapsible_tab", "settings": { "heading": "Shipping & returns", "content": "<p>Add delivery estimates and your returns policy.</p>", "icon": "bone", "open_by_default": false } }
+      },
+      "block_order": ["details", "shipping"],
+      "settings": { "product_show_vendor": true, "product_show_sku": false, "product_show_inventory": true, "product_low_inventory_threshold": 5, "product_show_trust": true }
+    },
+    "recommendations": {
+      "type": "pack-product-recommendations",
+      "settings": { "recommendations_intent": "related", "recommendations_limit": 4, "recommendations_animation": "fade-up", "recommendations_interaction": "tilt" }
+    },
     "reviews": {
       "type": "pack-testimonials",
       "blocks": {
@@ -10,7 +22,11 @@
       },
       "block_order": ["one", "two", "three"],
       "settings": { "testimonial_heading": "Pet-approved" }
+    },
+    "recently_viewed": {
+      "type": "pack-recently-viewed",
+      "settings": { "recent_limit": 4, "recent_animation": "fade-up", "recent_interaction": "lift" }
     }
   },
-  "order": ["main", "reviews"]
+  "order": ["main", "recommendations", "reviews", "recently_viewed"]
 }

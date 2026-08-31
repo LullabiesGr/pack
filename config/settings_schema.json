@@ -35,6 +35,15 @@
     ]
   },
   {
+    "name": "Product cards",
+    "settings": [
+      { "type": "checkbox", "id": "card_show_secondary_image", "label": "Show second image on hover", "default": true },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "Show vendor", "default": false },
+      { "type": "checkbox", "id": "card_enable_quick_add", "label": "Enable quick add", "default": true },
+      { "type": "checkbox", "id": "card_show_sale_badge", "label": "Show sale badge", "default": true }
+    ]
+  },
+  {
     "name": "Playful details",
     "settings": [
       { "type": "header", "content": "Paw trail" },

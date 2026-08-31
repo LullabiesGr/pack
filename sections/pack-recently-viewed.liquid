@@ -1,0 +1,42 @@
+<section
+  class="pack-recently-viewed section-pad"
+  data-pack-recently-viewed
+  data-limit="{{ section.settings.recent_limit }}"
+  data-show-price="{{ section.settings.recent_show_price }}"
+  data-current-product-id="{{ product.id | default: 0 }}"
+  data-interaction="{{ section.settings.recent_interaction }}"
+  data-animation="{{ section.settings.recent_animation }}"
+  style="--recent-bg: {{ section.settings.recent_background }};"
+  {% unless request.design_mode %}hidden{% endunless %}
+>
+  <div class="page-width">
+    <div class="section-heading-row">
+      <div>
+        {%- if section.settings.recent_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.recent_eyebrow }}</p>{%- endif -%}
+        <h2 class="pack-subheading">{{ section.settings.recent_heading }}</h2>
+      </div>
+    </div>
+    <div class="product-grid" data-recently-viewed-grid></div>
+    {%- if request.design_mode -%}<p class="pack-editor-note" data-recently-viewed-empty>Products appear here after a visitor views product pages.</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "settings": [
+    { "type": "text", "id": "recent_eyebrow", "label": "Eyebrow", "default": "Still sniffing?" },
+    { "type": "text", "id": "recent_heading", "label": "Heading", "default": "Recently viewed" },
+    { "type": "range", "id": "recent_limit", "min": 2, "max": 8, "step": 1, "label": "Maximum products", "default": 4 },
+    { "type": "checkbox", "id": "recent_show_price", "label": "Show prices", "default": true },
+    { "type": "color", "id": "recent_background", "label": "Background", "default": "#FFF8E9" },
+    { "type": "select", "id": "recent_animation", "label": "Card entrance", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "fade-up" },
+    { "type": "select", "id": "recent_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
+  ],
+  "presets": [{ "name": "Recently viewed products" }]
+}
+{% endschema %}

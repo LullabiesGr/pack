@@ -8,16 +8,42 @@
     </div>
     <div class="personality-grid">
       {%- for block in section.blocks -%}
-        <a class="personality-card" href="{{ block.settings.link | default: routes.all_products_collection_url }}" style="--card-bg: {{ block.settings.card_background }}{% if section.settings.personality_animation != 'none' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms{% endif %}"{% if section.settings.personality_animation != 'none' %} data-pack-reveal="{{ section.settings.personality_animation }}"{% endif %} {{ block.shopify_attributes }}>
+        {%- liquid
+          assign card_product = block.settings.product
+          assign card_collection = block.settings.collection
+          assign card_media = block.settings.image
+          assign card_url = block.settings.link
+          assign card_title = block.settings.title
+          if card_media == blank and card_product != blank
+            assign card_media = card_product.featured_media
+          elsif card_media == blank and card_collection != blank
+            assign card_media = card_collection.image
+            if card_media == blank
+              assign card_media = card_collection.products.first.featured_media
+            endif
+          endif
+          if card_url == blank and card_product != blank
+            assign card_url = card_product.url
+          elsif card_url == blank and card_collection != blank
+            assign card_url = card_collection.url
+          endif
+          if block.settings.use_catalog_title and card_product != blank
+            assign card_title = card_product.title
+          elsif block.settings.use_catalog_title and card_collection != blank
+            assign card_title = card_collection.title
+          endif
+          assign card_url = card_url | default: routes.all_products_collection_url
+        -%}
+        <a class="personality-card pack-interaction--{{ section.settings.personality_interaction }}" href="{{ card_url }}" style="--card-bg: {{ block.settings.card_background }}{% if section.settings.personality_animation != 'none' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms{% endif %}"{% if section.settings.personality_animation != 'none' %} data-pack-reveal="{{ section.settings.personality_animation }}"{% endif %}{% if section.settings.personality_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
           <div class="personality-card__media">
-            {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: block.settings.image.alt | default: block.settings.title }}
+            {%- if card_media != blank -%}
+              {{ card_media | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: card_media.alt | default: card_title }}
             {%- else -%}
               {%- capture personality_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone' %}{%- endcapture -%}
               <span class="pack-personality-placeholder">{% render 'icon', icon: personality_icon %}</span>
             {%- endif -%}
           </div>
-          <div class="personality-card__label"><span>{{ block.settings.title }}</span><span class="circle-arrow">→</span></div>
+          <div class="personality-card__label"><span>{{ card_title }}</span><span class="circle-arrow">→</span></div>
         </a>
       {%- endfor -%}
     </div>
@@ -34,17 +60,23 @@
     { "type": "url", "id": "personality_link", "label": "Link" },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "personality_animation", "label": "Card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }
-    ], "default": "none" }
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "none" },
+    { "type": "select", "id": "personality_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
   ],
   "blocks": [
     {
       "type": "personality",
       "name": "Personality",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Pet image" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom image override" },
         { "type": "text", "id": "title", "label": "Title", "default": "The Couch Potato" },
-        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "use_catalog_title", "label": "Use product or collection title", "default": false },
+        { "type": "url", "id": "link", "label": "Custom link override" },
         { "type": "color", "id": "card_background", "label": "Background", "default": "#FFD23F" }
       ]
     }

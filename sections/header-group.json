@@ -4,7 +4,17 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "show_announcement": true,
+        "announcement_style": "ticker",
+        "header_style": "bubble",
+        "show_header_mascot": true,
+        "header_mascot": "paw",
+        "nav_hover": "paw",
+        "header_animation": "drop",
+        "header_divider_style": "paws",
+        "header_divider_animation": "scroll"
+      }
     }
   },
   "order": ["header"]

@@ -1,0 +1,42 @@
+<section class="pack-faq section-pad" style="--faq-bg: {{ section.settings.faq_background }}; --faq-accent: {{ section.settings.faq_accent }};">
+  <div class="pack-faq__layout page-width">
+    <div class="pack-faq__intro"{% if section.settings.faq_animation != 'none' %} data-pack-reveal="{{ section.settings.faq_animation }}"{% endif %}>
+      {%- if section.settings.faq_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.faq_eyebrow }}</p>{%- endif -%}
+      <h2 class="pack-subheading">{{ section.settings.faq_heading }}</h2>
+      {%- if section.settings.faq_text != blank -%}<p>{{ section.settings.faq_text }}</p>{%- endif -%}
+    </div>
+    <div class="pack-faq__items">
+      {%- for block in section.blocks -%}
+        <details class="pack-faq__item"{% if block.settings.open_by_default %} open{% endif %}{% if section.settings.faq_animation != 'none' %} data-pack-reveal="{{ section.settings.faq_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index }}ms"{% endif %} {{ block.shopify_attributes }}>
+          <summary><span>{{ block.settings.question }}</span><span class="pack-faq__plus">+</span></summary>
+          <div class="rte">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Playful FAQ",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Questions, answered" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "default": "The useful stuff" },
+    { "type": "textarea", "id": "faq_text", "label": "Text", "default": "Give customers clear answers before they need to ask." },
+    { "type": "color", "id": "faq_background", "label": "Background", "default": "#FFD23F" },
+    { "type": "color", "id": "faq_accent", "label": "Accent", "default": "#F49AC2" },
+    { "type": "select", "id": "faq_animation", "label": "Animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }
+    ], "default": "fade-up" }
+  ],
+  "blocks": [
+    { "type": "question", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "What should customers know?" },
+      { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Add a clear, useful answer here.</p>" },
+      { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false }
+    ] }
+  ],
+  "presets": [{ "name": "Playful FAQ", "blocks": [{ "type": "question" }, { "type": "question" }, { "type": "question" }] }]
+}
+{% endschema %}

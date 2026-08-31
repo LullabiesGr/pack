@@ -1,0 +1,37 @@
+{%- liquid
+  assign divider_style = style | default: 'solid'
+  assign divider_color = color | default: settings.color_text
+  assign divider_background = background | default: settings.color_background
+  assign divider_height = height | default: 40
+  assign divider_thickness = thickness | default: 3
+  assign divider_icon_size = icon_size | default: 24
+  assign divider_animation = animation | default: 'none'
+-%}
+<div
+  class="pack-divider pack-divider--{{ divider_style }} pack-divider--motion-{{ divider_animation }}{% if compact %} pack-divider--compact{% endif %}{% if full_width == false %} page-width{% endif %}"
+  style="--divider-color: {{ divider_color }}; --divider-bg: {{ divider_background }}; --divider-height: {{ divider_height }}px; --divider-thickness: {{ divider_thickness }}px; --divider-icon-size: {{ divider_icon_size }}px;"
+  aria-hidden="true"
+>
+  {%- if divider_style == 'wave' -%}
+    <svg class="pack-divider__wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0 42C120 3 240 3 360 42s240 39 360 0 240-39 360 0 240 39 360 0" fill="none" stroke="currentColor" stroke-width="var(--divider-thickness)" vector-effect="non-scaling-stroke"/></svg>
+  {%- elsif divider_style == 'paws' or divider_style == 'bones' or divider_style == 'animal-mix' -%}
+    <div class="pack-divider__track">
+      {%- for repeat in (1..2) -%}
+        <span class="pack-divider__group">
+          {%- for item in (1..12) -%}
+            {%- if divider_style == 'paws' -%}
+              {% render 'icon', icon: 'paw' %}
+            {%- elsif divider_style == 'bones' -%}
+              {% render 'icon', icon: 'bone' %}
+            {%- else -%}
+              {%- capture divider_icon -%}{% cycle 'paw', 'bone', 'fish', 'tennis-ball' %}{%- endcapture -%}
+              {% render 'icon', icon: divider_icon %}
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <span class="pack-divider__line"></span>
+  {%- endif -%}
+</div>

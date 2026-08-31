@@ -1,20 +1,43 @@
+{%- liquid
+  assign bundle_cta_url = section.settings.bundle_button_link
+  if bundle_cta_url == blank and section.settings.bundle_collection != blank
+    assign bundle_cta_url = section.settings.bundle_collection.url
+  endif
+  assign bundle_cta_url = bundle_cta_url | default: routes.all_products_collection_url
+-%}
 <section class="pack-bundle section-pad">
   <div class="bundle-grid page-width">
     <div class="bundle-copy"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.bundle_eyebrow }}</p>
       <h2 class="pack-subheading">{{ section.settings.bundle_heading }}</h2>
       <div class="rte">{{ section.settings.bundle_text }}</div>
-      <a class="pack-button pack-button--blue" href="{{ section.settings.bundle_button_link | default: routes.all_products_collection_url }}">{{ section.settings.bundle_button_label }}</a>
+      <a class="pack-button pack-button--blue" href="{{ bundle_cta_url }}">{{ section.settings.bundle_button_label }}</a>
     </div>
     <div class="bundle-products"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       {%- for block in section.blocks -%}
-        <div class="bundle-product" style="--bundle-rotate: {% cycle '-5deg', '3deg', '-2deg' %}" {{ block.shopify_attributes }}>
-          {%- if block.settings.product_image != blank -%}
-            {{ block.settings.product_image | image_url: width: 500 | image_tag: widths: '220, 360, 500', sizes: '20vw', loading: 'lazy', alt: block.settings.product_image.alt | default: block.settings.product_label }}
+        {%- liquid
+          assign bundle_product = block.settings.product
+          assign bundle_media = block.settings.product_image
+          if bundle_media == blank and bundle_product != blank
+            assign bundle_media = bundle_product.featured_media
+          endif
+          assign bundle_url = bundle_product.url | default: routes.all_products_collection_url
+          assign bundle_label = block.settings.product_label
+          if bundle_product != blank
+            assign bundle_label = bundle_product.title
+          endif
+          assign bundle_motion_class = 'pack-idle pack-idle--' | append: section.settings.bundle_idle_motion
+        -%}
+        <a class="bundle-product pack-interaction--{{ section.settings.bundle_interaction }}" href="{{ bundle_url }}" style="--bundle-rotate: {% cycle '-5deg', '3deg', '-2deg' %}"{% if section.settings.bundle_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
+          {%- if bundle_media != blank -%}
+            {{ bundle_media | image_url: width: 500 | image_tag: widths: '220, 360, 500', sizes: '20vw', loading: 'lazy', class: bundle_motion_class, alt: bundle_media.alt | default: bundle_label }}
           {%- else -%}
             {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
           {%- endif -%}
-        </div>
+          {%- if section.settings.show_bundle_product_info and bundle_product != blank -%}
+            <span class="bundle-product__meta"><strong>{{ bundle_product.title }}</strong><small>{{ bundle_product.price | money }}</small></span>
+          {%- endif -%}
+        </a>
       {%- endfor -%}
     </div>
     <div class="bundle-box"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: 2 }}ms"{% endif %}>
@@ -33,20 +56,29 @@
     { "type": "text", "id": "bundle_heading", "label": "Heading", "default": "Build a happy box" },
     { "type": "richtext", "id": "bundle_text", "label": "Text", "default": "<p>Pick their favorites. Skip what they don't need. Happiness, delivered your way.</p>" },
     { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Build your box" },
-    { "type": "url", "id": "bundle_button_link", "label": "Button link" },
+    { "type": "collection", "id": "bundle_collection", "label": "Bundle collection" },
+    { "type": "url", "id": "bundle_button_link", "label": "Custom button link override" },
     { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },
     { "type": "text", "id": "bundle_save_label", "label": "Save badge", "default": "SAVE UP TO 15%" },
+    { "type": "checkbox", "id": "show_bundle_product_info", "label": "Show product title and price", "default": true },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "bundle_animation", "label": "Bundle animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "pop", "label": "Playful pop" }
-    ], "default": "none" }
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "none" },
+    { "type": "select", "id": "bundle_idle_motion", "label": "Product idle motion", "options": [
+      { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "sway", "label": "Sway" }, { "value": "bounce", "label": "Soft bounce" }, { "value": "orbit", "label": "Mini orbit" }
+    ], "default": "none" },
+    { "type": "select", "id": "bundle_interaction", "label": "Product hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
   ],
   "blocks": [
     {
       "type": "bundle_product",
       "name": "Bundle product",
       "settings": [
-        { "type": "image_picker", "id": "product_image", "label": "Transparent product image" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "product_image", "label": "Custom transparent image override" },
         { "type": "text", "id": "product_label", "label": "Alt text", "default": "Bundle product" }
       ]
     }

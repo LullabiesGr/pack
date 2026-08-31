@@ -10,12 +10,12 @@
       {%- if section.settings.featured_collection != blank and section.settings.featured_collection.products_count > 0 -%}
         {%- for product in section.settings.featured_collection.products limit: section.settings.featured_limit -%}
           {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
-          {% render 'product-card', product: product, card_color: card_color, index: forloop.index, reveal_style: section.settings.featured_cards_animation %}
+          {% render 'product-card', product: product, card_color: card_color, index: forloop.index, reveal_style: section.settings.featured_cards_animation, interaction_style: section.settings.featured_interaction %}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..6) -%}
           {%- capture placeholder_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone', 'heart', 'fish' %}{%- endcapture -%}
-          <article class="product-card"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}>
+          <article class="product-card pack-interaction--{{ section.settings.featured_interaction }}"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}{% if section.settings.featured_interaction == 'tilt' %} data-pack-tilt{% endif %}>
             <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}"><span class="pack-product-placeholder">{% render 'icon', icon: placeholder_icon %}</span></div>
             <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | money }}</span></div>
           </article>
@@ -40,8 +40,11 @@
       { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "fade-in", "label": "Fade in" }
     ], "default": "none" },
     { "type": "select", "id": "featured_cards_animation", "label": "Product card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }
-    ], "default": "none" }
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "none" },
+    { "type": "select", "id": "featured_interaction", "label": "Product hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
   ],
   "presets": [{ "name": "PACK featured products" }]
 }

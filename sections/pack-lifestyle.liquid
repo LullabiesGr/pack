@@ -1,17 +1,44 @@
 <section class="lifestyle-grid">
   {%- for block in section.blocks -%}
-    <article class="lifestyle-card"{% if section.settings.lifestyle_animation != 'none' %} data-pack-reveal="{{ section.settings.lifestyle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %} {{ block.shopify_attributes }}>
-      {%- if block.settings.lifestyle_image != blank -%}
-        {{ block.settings.lifestyle_image | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', alt: block.settings.lifestyle_image.alt | default: block.settings.lifestyle_heading }}
+    {%- liquid
+      assign lifestyle_product = block.settings.product
+      assign lifestyle_collection = block.settings.collection
+      assign lifestyle_media = block.settings.lifestyle_image
+      assign lifestyle_url = block.settings.lifestyle_link
+      assign lifestyle_title = block.settings.lifestyle_heading
+      if lifestyle_media == blank and lifestyle_product != blank
+        assign lifestyle_media = lifestyle_product.featured_media
+      elsif lifestyle_media == blank and lifestyle_collection != blank
+        assign lifestyle_media = lifestyle_collection.image
+        if lifestyle_media == blank
+          assign lifestyle_media = lifestyle_collection.products.first.featured_media
+        endif
+      endif
+      if lifestyle_url == blank and lifestyle_product != blank
+        assign lifestyle_url = lifestyle_product.url
+      elsif lifestyle_url == blank and lifestyle_collection != blank
+        assign lifestyle_url = lifestyle_collection.url
+      endif
+      if block.settings.use_catalog_title and lifestyle_product != blank
+        assign lifestyle_title = lifestyle_product.title
+      elsif block.settings.use_catalog_title and lifestyle_collection != blank
+        assign lifestyle_title = lifestyle_collection.title
+      endif
+      assign lifestyle_url = lifestyle_url | default: routes.all_products_collection_url
+    -%}
+    <a class="lifestyle-card pack-interaction--{{ section.settings.lifestyle_interaction }}" href="{{ lifestyle_url }}"{% if section.settings.lifestyle_animation != 'none' %} data-pack-reveal="{{ section.settings.lifestyle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}{% if section.settings.lifestyle_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
+      {%- if lifestyle_media != blank -%}
+        {{ lifestyle_media | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', alt: lifestyle_media.alt | default: lifestyle_title }}
       {%- else -%}
         {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
       <div class="lifestyle-card__copy">
-        <h3>{{ block.settings.lifestyle_heading }}</h3>
+        <h3>{{ lifestyle_title }}</h3>
         <p>{{ block.settings.lifestyle_text }}</p>
-        {%- if block.settings.lifestyle_link_label != blank -%}<a class="pack-link" href="{{ block.settings.lifestyle_link | default: routes.all_products_collection_url }}">{{ block.settings.lifestyle_link_label }} →</a>{%- endif -%}
+        {%- if section.settings.show_lifestyle_price and lifestyle_product != blank -%}<strong class="lifestyle-card__price">{{ lifestyle_product.price | money }}</strong>{%- endif -%}
+        {%- if block.settings.lifestyle_link_label != blank -%}<span class="pack-link">{{ block.settings.lifestyle_link_label }} →</span>{%- endif -%}
       </div>
-    </article>
+    </a>
   {%- endfor -%}
 </section>
 
@@ -20,21 +47,28 @@
   "name": "Pet lifestyle pair",
   "max_blocks": 2,
   "settings": [
+    { "type": "checkbox", "id": "show_lifestyle_price", "label": "Show product price", "default": true },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "lifestyle_animation", "label": "Card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "zoom-in", "label": "Zoom in" }
-    ], "default": "none" }
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "zoom-in", "label": "Zoom in" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "none" },
+    { "type": "select", "id": "lifestyle_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
   ],
   "blocks": [
     {
       "type": "lifestyle",
       "name": "Lifestyle card",
       "settings": [
-        { "type": "image_picker", "id": "lifestyle_image", "label": "Image" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "lifestyle_image", "label": "Custom image override" },
         { "type": "text", "id": "lifestyle_heading", "label": "Heading", "default": "Good days, better together." },
+        { "type": "checkbox", "id": "use_catalog_title", "label": "Use product or collection title", "default": false },
         { "type": "textarea", "id": "lifestyle_text", "label": "Text", "default": "Products that fit your life—and your pet's kind of joy." },
         { "type": "text", "id": "lifestyle_link_label", "label": "Link label", "default": "Shop now" },
-        { "type": "url", "id": "lifestyle_link", "label": "Link" }
+        { "type": "url", "id": "lifestyle_link", "label": "Custom link override" }
       ]
     }
   ],

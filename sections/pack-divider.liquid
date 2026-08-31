@@ -1,0 +1,49 @@
+{%- if section.settings.show_divider -%}
+  {% render 'pack-divider',
+    style: section.settings.divider_style,
+    color: section.settings.divider_color,
+    background: section.settings.divider_background,
+    height: section.settings.divider_height,
+    thickness: section.settings.divider_thickness,
+    icon_size: section.settings.divider_icon_size,
+    animation: section.settings.divider_animation,
+    full_width: section.settings.divider_full_width
+  %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Playful divider",
+  "settings": [
+    { "type": "checkbox", "id": "show_divider", "label": "Show divider", "default": true },
+    { "type": "select", "id": "divider_style", "label": "Divider style", "options": [
+      { "value": "solid", "label": "Solid line" },
+      { "value": "dashed", "label": "Dashed line" },
+      { "value": "diagonal", "label": "Diagonal stripes" },
+      { "value": "zigzag", "label": "Zigzag" },
+      { "value": "wave", "label": "Wave" },
+      { "value": "paws", "label": "Paw trail" },
+      { "value": "bones", "label": "Bones" },
+      { "value": "animal-mix", "label": "Animal mix" }
+    ], "default": "paws" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#111111" },
+    { "type": "color", "id": "divider_background", "label": "Background", "default": "#FFF8E9" },
+    { "type": "range", "id": "divider_height", "min": 12, "max": 96, "step": 4, "unit": "px", "label": "Height", "default": 40 },
+    { "type": "range", "id": "divider_thickness", "min": 1, "max": 10, "step": 1, "unit": "px", "label": "Line thickness", "default": 3 },
+    { "type": "range", "id": "divider_icon_size", "min": 12, "max": 48, "step": 2, "unit": "px", "label": "Animal icon size", "default": 24 },
+    { "type": "select", "id": "divider_animation", "label": "Animation", "options": [
+      { "value": "none", "label": "None" },
+      { "value": "scroll", "label": "Scroll left" },
+      { "value": "reverse", "label": "Scroll right" },
+      { "value": "bounce", "label": "Bounce" },
+      { "value": "draw", "label": "Draw line" }
+    ], "default": "none" },
+    { "type": "checkbox", "id": "divider_full_width", "label": "Full width", "default": true }
+  ],
+  "presets": [
+    { "name": "Playful divider", "settings": { "divider_style": "paws" } },
+    { "name": "Wavy divider", "settings": { "divider_style": "wave" } },
+    { "name": "Diagonal divider", "settings": { "divider_style": "diagonal" } }
+  ]
+}
+{% endschema %}

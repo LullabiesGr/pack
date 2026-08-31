@@ -1,1 +1,20 @@
-{ "sections": { "main": { "type": "main-cart", "settings": {} } }, "order": ["main"] }
+{
+  "sections": {
+    "main": { "type": "main-cart", "settings": {} },
+    "upsells": {
+      "type": "pack-upsells",
+      "blocks": {
+        "one": { "type": "product", "settings": {} },
+        "two": { "type": "product", "settings": {} },
+        "three": { "type": "product", "settings": {} }
+      },
+      "block_order": ["one", "two", "three"],
+      "settings": { "upsell_limit": 4, "upsell_animation": "pop", "upsell_interaction": "tilt" }
+    },
+    "recently_viewed": {
+      "type": "pack-recently-viewed",
+      "settings": { "recent_limit": 4, "recent_animation": "fade-up", "recent_interaction": "lift" }
+    }
+  },
+  "order": ["main", "upsells", "recently_viewed"]
+}

@@ -1,0 +1,85 @@
+{%- liquid
+  assign has_collections = false
+  for block in section.blocks
+    if block.settings.collection != blank
+      assign has_collections = true
+      break
+    endif
+  endfor
+-%}
+{%- if has_collections or request.design_mode -%}
+  <section class="pack-collections section-pad" style="--collections-bg: {{ section.settings.collections_background }};">
+    <div class="page-width">
+      <div class="section-heading-row">
+        <div>
+          {%- if section.settings.collections_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.collections_eyebrow }}</p>{%- endif -%}
+          <h2 class="pack-subheading">{{ section.settings.collections_heading }}</h2>
+        </div>
+      </div>
+      <div class="pack-collection-grid pack-collection-grid--{{ section.settings.collections_columns }}">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_collection = block.settings.collection
+            assign collection_media = block.settings.image
+            if collection_media == blank and card_collection != blank
+              assign collection_media = card_collection.image
+              if collection_media == blank
+                assign collection_media = card_collection.products.first.featured_media
+              endif
+            endif
+            assign collection_title = block.settings.title
+            if collection_title == blank and card_collection != blank
+              assign collection_title = card_collection.title
+            endif
+            assign collection_url = card_collection.url | default: routes.collections_url
+          -%}
+          {%- if card_collection != blank or request.design_mode -%}
+            <a class="pack-collection-card pack-interaction--{{ section.settings.collections_interaction }}" href="{{ collection_url }}" style="--collection-card-bg:{% cycle '#FFD23F', '#F49AC2', '#B9E769', '#9ED8FF', '#F04B32', '#FFF8E9' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% if section.settings.collections_animation != 'none' %} data-pack-reveal="{{ section.settings.collections_animation }}"{% endif %}{% if section.settings.collections_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
+              <div class="pack-collection-card__media">
+                {%- if collection_media != blank -%}
+                  {{ collection_media | image_url: width: 1000 | image_tag: widths: '360, 520, 760, 1000', sizes: '(min-width: 990px) 33vw, 82vw', loading: 'lazy', alt: collection_media.alt | default: collection_title }}
+                {%- else -%}
+                  <span class="pack-product-placeholder">{% render 'icon', icon: 'paw' %}</span>
+                {%- endif -%}
+              </div>
+              <div class="pack-collection-card__content">
+                <div><h3>{{ collection_title | default: 'Choose a collection' }}</h3>{%- if section.settings.show_collection_count and card_collection != blank -%}<p>{{ card_collection.products_count }} products</p>{%- endif -%}</div>
+                <span class="circle-arrow">→</span>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection cards",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "collections_eyebrow", "label": "Eyebrow", "default": "Shop their world" },
+    { "type": "text", "id": "collections_heading", "label": "Heading", "default": "Pick a favorite" },
+    { "type": "select", "id": "collections_columns", "label": "Desktop columns", "options": [
+      { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }
+    ], "default": "3" },
+    { "type": "checkbox", "id": "show_collection_count", "label": "Show product count", "default": true },
+    { "type": "color", "id": "collections_background", "label": "Background", "default": "#FFF8E9" },
+    { "type": "select", "id": "collections_animation", "label": "Card entrance", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "pop" },
+    { "type": "select", "id": "collections_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "tilt" }
+  ],
+  "blocks": [
+    { "type": "collection", "name": "Collection", "settings": [
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "image_picker", "id": "image", "label": "Custom image override" },
+      { "type": "text", "id": "title", "label": "Custom title override" }
+    ] }
+  ],
+  "presets": [{ "name": "Collection cards", "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }] }]
+}
+{% endschema %}

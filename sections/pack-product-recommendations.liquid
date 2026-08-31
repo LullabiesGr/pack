@@ -1,0 +1,46 @@
+<product-recommendations
+  class="pack-recommendations section-pad"
+  data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.recommendations_limit }}&intent={{ section.settings.recommendations_intent }}&product_id={{ product.id }}&section_id={{ section.id }}"
+  style="--recommendations-bg: {{ section.settings.recommendations_background }};"
+  {% unless recommendations.performed and recommendations.products_count > 0 %}hidden{% endunless %}
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="page-width">
+      <div class="section-heading-row">
+        <div>
+          {%- if section.settings.recommendations_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.recommendations_eyebrow }}</p>{%- endif -%}
+          <h2 class="pack-subheading">{{ section.settings.recommendations_heading }}</h2>
+        </div>
+      </div>
+      <div class="product-grid">
+        {%- for recommended_product in recommendations.products -%}
+          {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
+          {% render 'product-card', product: recommended_product, card_color: card_color, index: forloop.index, reveal_style: section.settings.recommendations_animation, interaction_style: section.settings.recommendations_interaction %}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</product-recommendations>
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "recommendations_eyebrow", "label": "Eyebrow", "default": "Pairs well with" },
+    { "type": "text", "id": "recommendations_heading", "label": "Heading", "default": "More tail-waggers" },
+    { "type": "select", "id": "recommendations_intent", "label": "Recommendation type", "options": [
+      { "value": "related", "label": "Related products" }, { "value": "complementary", "label": "Complementary products" }
+    ], "default": "related" },
+    { "type": "range", "id": "recommendations_limit", "min": 2, "max": 8, "step": 1, "label": "Products", "default": 4 },
+    { "type": "color", "id": "recommendations_background", "label": "Background", "default": "#B9E769" },
+    { "type": "select", "id": "recommendations_animation", "label": "Card entrance", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "fade-up" },
+    { "type": "select", "id": "recommendations_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
+  ],
+  "presets": [{ "name": "Product recommendations" }]
+}
+{% endschema %}

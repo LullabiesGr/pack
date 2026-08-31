@@ -8,7 +8,10 @@
         "hero_button_label": "Shop the good stuff",
         "hero_badge": "Real ingredients. Wag-worthy results.",
         "hero_background": "#0755D9",
-        "hero_text_color": "#FFF8E9"
+        "hero_text_color": "#FFF8E9",
+        "hero_copy_animation": "pop",
+        "hero_media_animation": "blur-in",
+        "hero_idle_motion": "float"
       }
     },
     "ticker": {
@@ -41,7 +44,11 @@
         "explorer": { "type": "personality", "settings": { "title": "The Explorer", "card_background": "#B9E769" } }
       },
       "block_order": ["couch", "chaos", "critic", "explorer"],
-      "settings": { "personality_heading": "Shop by personality", "personality_link_label": "View all" }
+      "settings": { "personality_heading": "Shop by personality", "personality_link_label": "View all", "personality_animation": "pop", "personality_interaction": "tilt" }
+    },
+    "divider_personality": {
+      "type": "pack-divider",
+      "settings": { "show_divider": true, "divider_style": "wave", "divider_color": "#0755D9", "divider_background": "#FFF8E9", "divider_height": 40, "divider_thickness": 4, "divider_icon_size": 24, "divider_animation": "draw", "divider_full_width": true }
     },
     "products": {
       "type": "pack-featured-products",
@@ -50,7 +57,10 @@
         "featured_heading": "Best sniffers",
         "featured_text": "<p>Treats, chews and good stuff—hand-picked for happy tails.</p>",
         "featured_limit": 6,
-        "featured_link_label": "Shop all products"
+        "featured_link_label": "Shop all products",
+        "featured_intro_animation": "slide-left",
+        "featured_cards_animation": "fade-up",
+        "featured_interaction": "tilt"
       }
     },
     "quiz": {
@@ -66,7 +76,10 @@
         "quiz_heading": "Find their perfect treat",
         "quiz_text": "Answer a few quick questions and we'll recommend what they'll love.",
         "quiz_button_label": "Take the quiz",
-        "quiz_background": "#F49AC2"
+        "quiz_background": "#F49AC2",
+        "quiz_image_animation": "slide-left",
+        "quiz_content_animation": "fade-up",
+        "quiz_idle_motion": "sway"
       }
     },
     "bundle": {
@@ -83,8 +96,16 @@
         "bundle_text": "<p>Pick their favorites. Skip what they don't need. Happiness, delivered your way.</p>",
         "bundle_button_label": "Build your box",
         "bundle_box_label": "PALS!",
-        "bundle_save_label": "SAVE UP TO 15%"
+        "bundle_save_label": "SAVE UP TO 15%",
+        "show_bundle_product_info": true,
+        "bundle_animation": "pop",
+        "bundle_idle_motion": "float",
+        "bundle_interaction": "tilt"
       }
+    },
+    "divider_bundle": {
+      "type": "pack-divider",
+      "settings": { "show_divider": true, "divider_style": "animal-mix", "divider_color": "#F04B32", "divider_background": "#FFF8E9", "divider_height": 48, "divider_thickness": 3, "divider_icon_size": 24, "divider_animation": "scroll", "divider_full_width": true }
     },
     "lifestyle": {
       "type": "pack-lifestyle",
@@ -93,7 +114,7 @@
         "rest": { "type": "lifestyle", "settings": { "lifestyle_heading": "Rest well. Play harder.", "lifestyle_text": "Beds, toys and everyday essentials made for their best life.", "lifestyle_link_label": "Explore essentials" } }
       },
       "block_order": ["together", "rest"],
-      "settings": {}
+      "settings": { "show_lifestyle_price": true, "lifestyle_animation": "flip-up", "lifestyle_interaction": "tilt" }
     },
     "reviews": {
       "type": "pack-testimonials",
@@ -103,7 +124,17 @@
         "review3": { "type": "review", "settings": { "quote": "Finally, a brand that gets it. Great products and even better customer service.", "author": "Alex", "pet_name": "Cooper" } }
       },
       "block_order": ["review1", "review2", "review3"],
-      "settings": { "testimonial_heading": "What pet parents say", "testimonial_note": "Loved by pets. Trusted by humans." }
+      "settings": { "testimonial_heading": "What pet parents say", "testimonial_note": "Loved by pets. Trusted by humans.", "testimonial_animation": "pop" }
+    },
+    "faq": {
+      "type": "pack-faq",
+      "blocks": {
+        "shipping": { "type": "question", "settings": { "question": "How fast do orders ship?", "answer": "<p>Add the store's dispatch and delivery information here.</p>", "open_by_default": true } },
+        "returns": { "type": "question", "settings": { "question": "What is the returns policy?", "answer": "<p>Add the store's returns and exchanges policy here.</p>", "open_by_default": false } },
+        "help": { "type": "question", "settings": { "question": "Need help choosing?", "answer": "<p>Explain how customers can find the right product or contact the store.</p>", "open_by_default": false } }
+      },
+      "block_order": ["shipping", "returns", "help"],
+      "settings": { "faq_animation": "fade-up" }
     },
     "subscribe": {
       "type": "pack-subscribe",
@@ -111,9 +142,10 @@
         "subscribe_eyebrow": "Never run out of the good stuff",
         "subscribe_heading": "Subscribe, save, repeat.",
         "subscribe_text": "Save up to 15%, choose your schedule, and skip or pause anytime.",
-        "subscribe_button_label": "Get started"
+        "subscribe_button_label": "Get started",
+        "subscribe_animation": "slide-left"
       }
     }
   },
-  "order": ["hero", "ticker", "playful", "personalities", "products", "quiz", "bundle", "lifestyle", "reviews", "subscribe"]
+  "order": ["hero", "ticker", "playful", "personalities", "divider_personality", "products", "quiz", "bundle", "divider_bundle", "lifestyle", "reviews", "faq", "subscribe"]
 }

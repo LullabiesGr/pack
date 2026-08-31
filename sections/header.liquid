@@ -1,16 +1,25 @@
-<div class="announcement" role="region" aria-label="Announcement">
-  <div class="announcement__inner page-width">
-    <span>{{ section.settings.announcement_primary }}</span>
-    <span aria-hidden="true">•</span>
-    <span>{{ section.settings.announcement_secondary }}</span>
-    <span aria-hidden="true">•</span>
-    <span>{{ section.settings.announcement_tertiary }}</span>
+{%- if section.settings.show_announcement -%}
+<div class="announcement announcement--{{ section.settings.announcement_style }}" style="--announcement-bg: {{ section.settings.announcement_background }}; --announcement-text: {{ section.settings.announcement_text_color }};" role="region" aria-label="Announcement">
+  <div class="announcement__track">
+    {%- for repeat in (1..2) -%}
+      <div class="announcement__inner{% if section.settings.announcement_style == 'static' %} page-width{% endif %}"{% if repeat == 2 %} aria-hidden="true"{% endif %}>
+        <span>{{ section.settings.announcement_primary }}</span>
+        <span aria-hidden="true">•</span>
+        <span>{{ section.settings.announcement_secondary }}</span>
+        <span aria-hidden="true">•</span>
+        <span>{{ section.settings.announcement_tertiary }}</span>
+        <span aria-hidden="true">•</span>
+      </div>
+      {%- if section.settings.announcement_style == 'static' -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
   </div>
 </div>
+{%- endif -%}
 
-<header class="site-header">
+<header class="site-header site-header--{{ section.settings.header_style }} site-header--motion-{{ section.settings.header_animation }} site-nav-hover--{{ section.settings.nav_hover }}{% if section.settings.sticky_header %} site-header--sticky{% endif %}" style="--header-bg: {{ section.settings.header_background }}; --header-text: {{ section.settings.header_text_color }}; --header-accent: {{ section.settings.header_accent }};">
   <div class="site-header__inner page-width">
     <a class="site-header__logo" href="{{ routes.root_url }}">
+      {%- if section.settings.show_header_mascot -%}<span class="site-header__mascot" aria-hidden="true">{% render 'icon', icon: section.settings.header_mascot %}</span>{%- endif -%}
       {%- if section.settings.logo != blank -%}
         {{ section.settings.logo | image_url: width: 360 | image_tag: widths: '180, 240, 360', alt: shop.name }}
       {%- else -%}
@@ -48,6 +57,20 @@
   </div>
 </header>
 
+{%- unless section.settings.header_divider_style == 'none' -%}
+  {% render 'pack-divider',
+    style: section.settings.header_divider_style,
+    color: section.settings.header_divider_color,
+    background: section.settings.header_background,
+    height: 24,
+    thickness: 3,
+    icon_size: 18,
+    animation: section.settings.header_divider_animation,
+    full_width: true,
+    compact: true
+  %}
+{%- endunless -%}
+
 <nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
   {%- for link in section.settings.menu.links -%}
     <a href="{{ link.url }}">{{ link.title }}</a>
@@ -64,12 +87,45 @@
 {
   "name": "Header",
   "settings": [
+    { "type": "header", "content": "Announcement" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement", "default": true },
     { "type": "text", "id": "announcement_primary", "label": "Primary announcement", "default": "Free shipping on orders $49+" },
     { "type": "text", "id": "announcement_secondary", "label": "Secondary announcement", "default": "Real, recognizable ingredients" },
     { "type": "text", "id": "announcement_tertiary", "label": "Tertiary announcement", "default": "Love it or it's on us" },
+    { "type": "select", "id": "announcement_style", "label": "Announcement style", "options": [
+      { "value": "static", "label": "Static" }, { "value": "ticker", "label": "Scrolling ticker" }
+    ], "default": "static" },
+    { "type": "color", "id": "announcement_background", "label": "Announcement background", "default": "#FFD23F" },
+    { "type": "color", "id": "announcement_text_color", "label": "Announcement text", "default": "#111111" },
+    { "type": "header", "content": "Header design" },
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "text", "id": "wordmark", "label": "Text logo", "default": "PALS!" },
-    { "type": "link_list", "id": "menu", "label": "Menu" }
+    { "type": "link_list", "id": "menu", "label": "Menu" },
+    { "type": "select", "id": "header_style", "label": "Header style", "options": [
+      { "value": "classic", "label": "Classic" }, { "value": "bubble", "label": "Bubble menu" }, { "value": "ticket", "label": "Ticket edge" }, { "value": "kennel", "label": "Kennel sign" }
+    ], "default": "classic" },
+    { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": false },
+    { "type": "color", "id": "header_background", "label": "Header background", "default": "#0755D9" },
+    { "type": "color", "id": "header_text_color", "label": "Header text", "default": "#FFFFFF" },
+    { "type": "color", "id": "header_accent", "label": "Header accent", "default": "#FFD23F" },
+    { "type": "checkbox", "id": "show_header_mascot", "label": "Show logo mascot", "default": false },
+    { "type": "select", "id": "header_mascot", "label": "Logo mascot", "options": [
+      { "value": "paw", "label": "Paw" }, { "value": "bone", "label": "Bone" }, { "value": "tennis-ball", "label": "Tennis ball" }, { "value": "fish", "label": "Fish" }, { "value": "sparkle", "label": "Sparkle" }
+    ], "default": "paw" },
+    { "type": "select", "id": "nav_hover", "label": "Menu hover", "options": [
+      { "value": "underline", "label": "Underline" }, { "value": "bubble", "label": "Bubble" }, { "value": "wiggle", "label": "Wiggle" }, { "value": "paw", "label": "Paw marker" }
+    ], "default": "underline" },
+    { "type": "select", "id": "header_animation", "label": "Header entrance", "options": [
+      { "value": "none", "label": "None" }, { "value": "drop", "label": "Drop in" }, { "value": "bounce", "label": "Playful bounce" }, { "value": "slide", "label": "Editorial slide" }
+    ], "default": "none" },
+    { "type": "header", "content": "Bottom divider" },
+    { "type": "select", "id": "header_divider_style", "label": "Divider style", "options": [
+      { "value": "none", "label": "None" }, { "value": "solid", "label": "Solid" }, { "value": "dashed", "label": "Dashed" }, { "value": "diagonal", "label": "Diagonal" }, { "value": "zigzag", "label": "Zigzag" }, { "value": "wave", "label": "Wave" }, { "value": "paws", "label": "Paws" }, { "value": "bones", "label": "Bones" }, { "value": "animal-mix", "label": "Animal mix" }
+    ], "default": "solid" },
+    { "type": "color", "id": "header_divider_color", "label": "Divider color", "default": "#FFD23F" },
+    { "type": "select", "id": "header_divider_animation", "label": "Divider animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "scroll", "label": "Scroll left" }, { "value": "reverse", "label": "Scroll right" }, { "value": "bounce", "label": "Bounce" }, { "value": "draw", "label": "Draw" }
+    ], "default": "none" }
   ]
 }
 {% endschema %}

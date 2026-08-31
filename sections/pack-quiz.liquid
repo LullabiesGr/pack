@@ -1,8 +1,29 @@
+{%- liquid
+  assign quiz_product = section.settings.quiz_product
+  assign quiz_collection = section.settings.quiz_collection
+  assign quiz_media = section.settings.quiz_image
+  assign quiz_url = section.settings.quiz_button_link
+  if quiz_media == blank and quiz_product != blank
+    assign quiz_media = quiz_product.featured_media
+  elsif quiz_media == blank and quiz_collection != blank
+    assign quiz_media = quiz_collection.image
+    if quiz_media == blank
+      assign quiz_media = quiz_collection.products.first.featured_media
+    endif
+  endif
+  if quiz_url == blank and quiz_product != blank
+    assign quiz_url = quiz_product.url
+  elsif quiz_url == blank and quiz_collection != blank
+    assign quiz_url = quiz_collection.url
+  endif
+  assign quiz_url = quiz_url | default: routes.all_products_collection_url
+  assign quiz_motion_class = 'pack-idle pack-idle--' | append: section.settings.quiz_idle_motion
+-%}
 <section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}">
   <div class="pack-quiz__inner page-width">
     <div class="pack-quiz__peek"{% if section.settings.quiz_image_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_image_animation }}"{% endif %}>
-      {%- if section.settings.quiz_image != blank -%}
-        {{ section.settings.quiz_image | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', alt: section.settings.quiz_image.alt | default: section.settings.quiz_heading }}
+      {%- if quiz_media != blank -%}
+        <a class="pack-quiz__media-link" href="{{ quiz_url }}">{{ quiz_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', class: quiz_motion_class, alt: quiz_media.alt | default: section.settings.quiz_heading }}</a>
       {%- else -%}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
@@ -17,7 +38,7 @@
           {%- unless forloop.last -%}<span class="quiz-arrow">→</span>{%- endunless -%}
         {%- endfor -%}
       </div>
-      <a class="pack-button" href="{{ section.settings.quiz_button_link | default: routes.all_products_collection_url }}">{{ section.settings.quiz_button_label }}</a>
+      <a class="pack-button" href="{{ quiz_url }}">{{ section.settings.quiz_button_label }}</a>
     </div>
   </div>
 </section>
@@ -30,9 +51,11 @@
     { "type": "text", "id": "quiz_eyebrow", "label": "Eyebrow", "default": "A match made in snack heaven" },
     { "type": "text", "id": "quiz_heading", "label": "Heading", "default": "Find their perfect treat" },
     { "type": "textarea", "id": "quiz_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend what they'll love." },
-    { "type": "image_picker", "id": "quiz_image", "label": "Peeking pet image" },
+    { "type": "product", "id": "quiz_product", "label": "Result product" },
+    { "type": "collection", "id": "quiz_collection", "label": "Result collection" },
+    { "type": "image_picker", "id": "quiz_image", "label": "Custom peeking image override" },
     { "type": "text", "id": "quiz_button_label", "label": "Button label", "default": "Take the quiz" },
-    { "type": "url", "id": "quiz_button_link", "label": "Button link" },
+    { "type": "url", "id": "quiz_button_link", "label": "Custom button link override" },
     { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" },
     { "type": "header", "content": "Animation" },
     {
@@ -45,7 +68,10 @@
         { "value": "slide-right", "label": "Slide right to left" },
         { "value": "fade-up", "label": "Fade up" },
         { "value": "zoom-in", "label": "Zoom in" },
-        { "value": "pop", "label": "Playful pop" }
+        { "value": "pop", "label": "Playful pop" },
+        { "value": "blur-in", "label": "Candy blur" },
+        { "value": "flip-up", "label": "Editorial flip" },
+        { "value": "squish", "label": "Playful squish" }
       ],
       "default": "none"
     },
@@ -61,7 +87,10 @@
         { "value": "slide-right", "label": "Slide right to left" }
       ],
       "default": "none"
-    }
+    },
+    { "type": "select", "id": "quiz_idle_motion", "label": "Continuous image motion", "options": [
+      { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "sway", "label": "Sway" }, { "value": "bounce", "label": "Soft bounce" }, { "value": "orbit", "label": "Mini orbit" }
+    ], "default": "none" }
   ],
   "blocks": [
     {

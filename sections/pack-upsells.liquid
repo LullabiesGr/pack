@@ -1,0 +1,72 @@
+{%- liquid
+  assign upsell_collection = section.settings.upsell_collection
+  assign has_upsells = false
+  if upsell_collection != blank and upsell_collection.products_count > 0
+    assign has_upsells = true
+  else
+    for block in section.blocks
+      if block.settings.product != blank
+        assign has_upsells = true
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if has_upsells or request.design_mode -%}
+  <section class="pack-upsells section-pad" style="--upsell-bg: {{ section.settings.upsell_background }};">
+    <div class="page-width">
+      <div class="section-heading-row">
+        <div>
+          {%- if section.settings.upsell_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.upsell_eyebrow }}</p>{%- endif -%}
+          <h2 class="pack-subheading">{{ section.settings.upsell_heading }}</h2>
+          {%- if section.settings.upsell_text != blank -%}<p>{{ section.settings.upsell_text }}</p>{%- endif -%}
+        </div>
+        {%- if upsell_collection != blank -%}<a class="pack-link" href="{{ upsell_collection.url }}">{{ section.settings.upsell_link_label }} {% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+      </div>
+      <div class="product-grid">
+        {%- if upsell_collection != blank and upsell_collection.products_count > 0 -%}
+          {%- for upsell_product in upsell_collection.products limit: section.settings.upsell_limit -%}
+            {%- capture card_color -%}{% cycle '#FFD23F', '#F49AC2', '#B9E769', '#9ED8FF', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
+            {% render 'product-card', product: upsell_product, card_color: card_color, index: forloop.index, reveal_style: section.settings.upsell_animation, interaction_style: section.settings.upsell_interaction %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.product != blank -%}
+              {%- capture card_color -%}{% cycle '#FFD23F', '#F49AC2', '#B9E769', '#9ED8FF', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
+              <div {{ block.shopify_attributes }}>{% render 'product-card', product: block.settings.product, card_color: card_color, index: forloop.index, reveal_style: section.settings.upsell_animation, interaction_style: section.settings.upsell_interaction %}</div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if request.design_mode and has_upsells == false -%}<p class="pack-editor-note">Select an upsell collection or add product blocks.</p>{%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product upsells",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "upsell_eyebrow", "label": "Eyebrow", "default": "Complete their routine" },
+    { "type": "text", "id": "upsell_heading", "label": "Heading", "default": "Add a little extra happy" },
+    { "type": "textarea", "id": "upsell_text", "label": "Text", "default": "Choose a collection for automatic cards or select individual products below." },
+    { "type": "collection", "id": "upsell_collection", "label": "Upsell collection" },
+    { "type": "range", "id": "upsell_limit", "min": 2, "max": 8, "step": 1, "label": "Products from collection", "default": 4 },
+    { "type": "text", "id": "upsell_link_label", "label": "Collection link label", "default": "View all" },
+    { "type": "color", "id": "upsell_background", "label": "Background", "default": "#FFF8E9" },
+    { "type": "select", "id": "upsell_animation", "label": "Card entrance", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "pop" },
+    { "type": "select", "id": "upsell_interaction", "label": "Card hover effect", "options": [
+      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
+    ], "default": "lift" }
+  ],
+  "blocks": [
+    { "type": "product", "name": "Upsell product", "settings": [
+      { "type": "product", "id": "product", "label": "Product" }
+    ] }
+  ],
+  "presets": [{ "name": "Product upsells", "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }] }]
+}
+{% endschema %}
