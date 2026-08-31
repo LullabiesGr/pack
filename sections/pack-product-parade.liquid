@@ -1,0 +1,159 @@
+{%- liquid
+  assign parade_collection = collections['all']
+  if section.settings.parade_source == 'collection'
+    assign parade_collection = section.settings.parade_collection
+  endif
+
+  assign has_products = false
+  if section.settings.parade_source == 'blocks'
+    for block in section.blocks
+      if block.settings.product != blank
+        assign has_products = true
+        break
+      endif
+    endfor
+  elsif parade_collection != blank and parade_collection.products_count > 0
+    assign has_products = true
+  endif
+
+  assign parade_link = routes.all_products_collection_url
+  if parade_collection != blank
+    assign parade_link = parade_collection.url
+  endif
+-%}
+
+{%- if has_products or request.design_mode -%}
+  {%- capture parade_cards -%}
+    {%- if section.settings.parade_source == 'blocks' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.product != blank -%}
+          {%- assign parade_index = forloop.index | plus: 10 -%}
+          {%- capture card_color -%}{% cycle '#FFD23F', '#F49AC2', '#9ED8FF', '#F04B32', '#FFF8E9', '#0755D9' %}{%- endcapture -%}
+          <div class="pack-product-parade__card">
+            {% render 'product-card', product: block.settings.product, card_color: card_color, index: parade_index, interaction_style: section.settings.parade_interaction %}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif parade_collection != blank -%}
+      {%- for parade_product in parade_collection.products limit: section.settings.parade_limit -%}
+        {%- assign parade_index = forloop.index | plus: 10 -%}
+        {%- capture card_color -%}{% cycle '#FFD23F', '#F49AC2', '#9ED8FF', '#F04B32', '#FFF8E9', '#0755D9' %}{%- endcapture -%}
+        <div class="pack-product-parade__card">
+          {% render 'product-card', product: parade_product, card_color: card_color, index: parade_index, interaction_style: section.settings.parade_interaction %}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if has_products == false and request.design_mode -%}
+      {%- for placeholder_index in (1..5) -%}
+        <article class="pack-product-parade__card product-card">
+          <div class="product-card__media" style="--card-bg: {% cycle '#FFD23F', '#F49AC2', '#9ED8FF', '#F04B32', '#FFF8E9' %};">
+            {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'pack-placeholder' }}
+          </div>
+          <div class="product-card__info"><strong>Choose a product</strong></div>
+        </article>
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <section
+    class="pack-product-parade{% if section.settings.parade_motion %} pack-product-parade--motion pack-product-parade--{{ section.settings.parade_direction }}{% else %} pack-product-parade--static{% endif %}{% if section.settings.parade_pause %} pack-product-parade--pause{% endif %}"
+    style="--parade-bg: {{ section.settings.parade_background }}; --parade-accent: {{ section.settings.parade_accent }}; --parade-speed: {{ section.settings.parade_speed }}s;"
+  >
+    {%- if section.settings.parade_show_toy -%}
+      <span class="pack-product-parade__toy pack-product-parade__toy--one" aria-hidden="true"></span>
+      <span class="pack-product-parade__toy pack-product-parade__toy--two" aria-hidden="true"></span>
+    {%- endif -%}
+
+    <div class="pack-product-parade__header page-width"{% if section.settings.parade_intro_animation != 'none' %} data-pack-reveal="{{ section.settings.parade_intro_animation }}"{% endif %}>
+      <div>
+        {%- if section.settings.parade_eyebrow != blank -%}<p class="pack-eyebrow">{{ section.settings.parade_eyebrow }}</p>{%- endif -%}
+        <h2 class="pack-subheading">{{ section.settings.parade_heading }}</h2>
+      </div>
+      <div class="pack-product-parade__copy">
+        {%- if section.settings.parade_text != blank -%}<div class="rte">{{ section.settings.parade_text }}</div>{%- endif -%}
+        {%- if section.settings.parade_link_label != blank -%}<a class="pack-link" href="{{ parade_link }}">{{ section.settings.parade_link_label }} {% render 'icon', icon: 'arrow' %}</a>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="pack-product-parade__viewport" aria-label="Featured products">
+      <div class="pack-product-parade__track">
+        <div class="pack-product-parade__group">
+          {{ parade_cards }}
+        </div>
+        {%- if section.settings.parade_motion -%}
+          <div class="pack-product-parade__group" aria-hidden="true" inert>
+            {{ parade_cards }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Animated product parade",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "parade_eyebrow", "label": "Eyebrow", "default": "Currently causing tail wags" },
+    { "type": "text", "id": "parade_heading", "label": "Heading", "default": "The good stuff parade" },
+    { "type": "richtext", "id": "parade_text", "label": "Text", "default": "<p>A moving shelf of real products from the merchant's Shopify catalog.</p>" },
+    { "type": "text", "id": "parade_link_label", "label": "Link label", "default": "Shop the full lineup" },
+    { "type": "header", "content": "Product source" },
+    { "type": "select", "id": "parade_source", "label": "Source", "options": [
+      { "value": "all", "label": "All products automatically" },
+      { "value": "collection", "label": "Selected collection" },
+      { "value": "blocks", "label": "Individual product blocks" }
+    ], "default": "all" },
+    { "type": "collection", "id": "parade_collection", "label": "Collection" },
+    { "type": "range", "id": "parade_limit", "min": 4, "max": 10, "step": 1, "label": "Products", "default": 6 },
+    { "type": "header", "content": "Animation" },
+    { "type": "checkbox", "id": "parade_motion", "label": "Animate product parade", "default": true },
+    { "type": "range", "id": "parade_speed", "min": 12, "max": 60, "step": 4, "unit": "s", "label": "Loop duration", "default": 28 },
+    { "type": "select", "id": "parade_direction", "label": "Direction", "options": [
+      { "value": "left", "label": "Move left" },
+      { "value": "right", "label": "Move right" }
+    ], "default": "left" },
+    { "type": "checkbox", "id": "parade_pause", "label": "Pause on hover or keyboard focus", "default": true },
+    { "type": "checkbox", "id": "parade_show_toy", "label": "Show floating tennis balls", "default": true },
+    { "type": "select", "id": "parade_intro_animation", "label": "Heading entrance", "options": [
+      { "value": "none", "label": "None" },
+      { "value": "fade-up", "label": "Fade up" },
+      { "value": "slide-left", "label": "Slide from left" },
+      { "value": "pop", "label": "Playful pop" },
+      { "value": "blur-in", "label": "Candy blur" }
+    ], "default": "pop" },
+    { "type": "select", "id": "parade_interaction", "label": "Product hover effect", "options": [
+      { "value": "lift", "label": "Lift" },
+      { "value": "tilt", "label": "3D tilt" },
+      { "value": "jelly", "label": "Jelly" },
+      { "value": "bounce", "label": "Bounce" },
+      { "value": "none", "label": "None" }
+    ], "default": "tilt" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "parade_background", "label": "Background", "default": "#F49AC2" },
+    { "type": "color", "id": "parade_accent", "label": "Accent", "default": "#FFD23F" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Animated product parade",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

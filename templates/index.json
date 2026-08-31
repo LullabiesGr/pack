@@ -63,6 +63,26 @@
         "featured_interaction": "tilt"
       }
     },
+    "product_parade": {
+      "type": "pack-product-parade",
+      "settings": {
+        "parade_eyebrow": "Currently causing tail wags",
+        "parade_heading": "The good stuff parade",
+        "parade_text": "<p>A moving shelf of real products from your Shopify catalog.</p>",
+        "parade_link_label": "Shop the full lineup",
+        "parade_source": "all",
+        "parade_limit": 6,
+        "parade_motion": true,
+        "parade_speed": 28,
+        "parade_direction": "left",
+        "parade_pause": true,
+        "parade_show_toy": true,
+        "parade_intro_animation": "pop",
+        "parade_interaction": "tilt",
+        "parade_background": "#F49AC2",
+        "parade_accent": "#FFD23F"
+      }
+    },
     "quiz": {
       "type": "pack-quiz",
       "blocks": {
@@ -147,5 +167,5 @@
       }
     }
   },
-  "order": ["hero", "ticker", "playful", "personalities", "divider_personality", "products", "quiz", "bundle", "divider_bundle", "lifestyle", "reviews", "faq", "subscribe"]
+  "order": ["hero", "ticker", "playful", "personalities", "divider_personality", "products", "product_parade", "quiz", "bundle", "divider_bundle", "lifestyle", "reviews", "faq", "subscribe"]
 }
