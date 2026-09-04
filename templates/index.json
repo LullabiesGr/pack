@@ -252,14 +252,11 @@
           "settings": {
             "step_text": "How old are they?",
             "answer_a_label": "Puppy or kitten",
-            "answer_a_product": "",
-            "answer_a_collection": "",
+            "answer_a_outcome": "active",
             "answer_b_label": "Adult",
-            "answer_b_product": "",
-            "answer_b_collection": "",
+            "answer_b_outcome": "wellness",
             "answer_c_label": "Senior",
-            "answer_c_product": "",
-            "answer_c_collection": ""
+            "answer_c_outcome": "comfort"
           }
         },
         "food": {
@@ -267,47 +264,97 @@
           "settings": {
             "step_text": "What do they need most?",
             "answer_a_label": "Training rewards",
-            "answer_a_product": "",
-            "answer_a_collection": "",
+            "answer_a_outcome": "active",
             "answer_b_label": "Daily wellness",
-            "answer_b_product": "",
-            "answer_b_collection": "",
+            "answer_b_outcome": "wellness",
             "answer_c_label": "Joint support",
-            "answer_c_product": "",
-            "answer_c_collection": ""
+            "answer_c_outcome": "comfort"
           }
         },
         "vibe": {
           "type": "step",
           "settings": {
             "step_text": "What's their personality?",
-            "answer_a_label": "Couch cuddler",
-            "answer_a_product": "",
-            "answer_a_collection": "",
+            "answer_a_label": "Wild explorer",
+            "answer_a_outcome": "active",
             "answer_b_label": "Food critic",
-            "answer_b_product": "",
-            "answer_b_collection": "",
-            "answer_c_label": "Wild explorer",
-            "answer_c_product": "",
-            "answer_c_collection": ""
+            "answer_b_outcome": "wellness",
+            "answer_c_label": "Couch cuddler",
+            "answer_c_outcome": "comfort"
+          }
+        },
+        "result_active": {
+          "type": "result",
+          "settings": {
+            "outcome_key": "active",
+            "result_eyebrow": "Their best matches",
+            "result_heading": "For the active explorer",
+            "result_text": "<p>Products selected for energetic pets and training time.</p>",
+            "result_source": "collection",
+            "result_collection": "",
+            "result_product_1": "",
+            "result_product_2": "",
+            "result_product_3": "",
+            "result_limit": 3,
+            "result_link": "",
+            "result_link_label": "Shop these matches",
+            "result_background": "#b9e769"
+          }
+        },
+        "result_wellness": {
+          "type": "result",
+          "settings": {
+            "outcome_key": "wellness",
+            "result_eyebrow": "Their best matches",
+            "result_heading": "Everyday wellness picks",
+            "result_text": "<p>Balanced everyday products chosen around their routine.</p>",
+            "result_source": "collection",
+            "result_collection": "",
+            "result_product_1": "",
+            "result_product_2": "",
+            "result_product_3": "",
+            "result_limit": 3,
+            "result_link": "",
+            "result_link_label": "Shop these matches",
+            "result_background": "#ffd23f"
+          }
+        },
+        "result_comfort": {
+          "type": "result",
+          "settings": {
+            "outcome_key": "comfort",
+            "result_eyebrow": "Their best matches",
+            "result_heading": "Comfort-first favorites",
+            "result_text": "<p>Gentle favorites selected for comfort-focused pets.</p>",
+            "result_source": "collection",
+            "result_collection": "",
+            "result_product_1": "",
+            "result_product_2": "",
+            "result_product_3": "",
+            "result_limit": 3,
+            "result_link": "",
+            "result_link_label": "Shop these matches",
+            "result_background": "#f49ac2"
           }
         }
       },
       "block_order": [
         "age",
         "food",
-        "vibe"
+        "vibe",
+        "result_active",
+        "result_wellness",
+        "result_comfort"
       ],
       "settings": {
         "quiz_eyebrow": "A match made in snack heaven",
         "quiz_heading": "Find their perfect treat",
         "quiz_text": "Answer a few quick questions and we'll recommend what they'll love.",
-        "quiz_featured_product": "dental-sticks",
+        "quiz_featured_product": "",
         "quiz_button_label": "Take the quiz",
         "quiz_back_label": "Back",
         "quiz_restart_label": "Retake the quiz",
-        "quiz_result_eyebrow": "Their best match",
-        "quiz_add_label": "Add match to cart",
+        "quiz_result_eyebrow": "Their best matches",
         "quiz_view_label": "View their matches",
         "quiz_background": "#f49ac2",
         "quiz_accent": "#ffd23f",
@@ -351,15 +398,21 @@
         "bundle_step_two": "Choose each option",
         "bundle_step_three": "Add the box to cart",
         "bundle_source": "all",
-        "bundle_collection": "best-sniffers",
+        "bundle_collection": "",
         "bundle_product_limit": 6,
         "bundle_minimum": 2,
         "bundle_maximum": 4,
+        "bundle_discount_mode": "none",
+        "bundle_discount_percent": 15,
+        "bundle_discount_code": "",
+        "bundle_discount_badge": "Box offer",
         "bundle_picker_eyebrow": "Create their box",
         "bundle_picker_heading": "Choose the good stuff",
-        "bundle_total_label": "Box total",
+        "bundle_subtotal_label": "Box subtotal",
+        "bundle_savings_label": "Estimated savings",
+        "bundle_total_label": "Estimated box total",
         "bundle_button_label": "Add box to cart",
-        "bundle_discount_note": "Eligible automatic discounts appear in the cart.",
+        "bundle_discount_note": "The final discount is validated by Shopify in the cart and checkout.",
         "show_bundle_box_art": true,
         "bundle_box_label": "PALS!",
         "bundle_save_label": "BUILD YOUR BOX",

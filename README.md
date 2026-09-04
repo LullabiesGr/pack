@@ -20,10 +20,25 @@ shopify theme dev --store your-store.myshopify.com
 shopify theme check
 ```
 
-## Homepage setup
+## Build a Box
 
-Select a transparent pet-and-product composition for the hero, four pet lifestyle images for the personality cards, a product collection for Best sniffers, a transparent pet image for the quiz, and three transparent product images for the bundle builder.
+The section reads real Shopify products from All products, a merchant-selected collection, or product blocks. Customers choose variants and add the complete box in one request.
+
+For a real box discount:
+
+1. Create a percentage discount code or automatic discount in Shopify Admin → Discounts.
+2. Set its eligible products and minimum quantity to match the box rules.
+3. In the section, choose the matching discount method and preview percentage.
+4. For the code method, enter the exact Shopify discount code.
+
+The code method applies the discount through Shopify's Cart API. Shopify remains the source of truth for eligibility and the final checkout total.
+
+## Pet Finder Quiz
+
+Question blocks define the answer labels and an outcome key for each answer. Result blocks use the same key and can show either a merchant-selected collection or up to three selected products. The quiz totals the answers and renders the matching result with real product links and quick add.
+
+Example outcome keys: `active`, `wellness`, and `comfort`.
 
 ## Status
 
-Version 1.0.0 establishes the complete visual system, homepage, product, collection, cart, page, search and 404 templates.
+Version 1.4.0 adds merchant-configured, real-cart box discounts and outcome-based product recommendations to the complete storefront system.

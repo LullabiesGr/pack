@@ -240,6 +240,10 @@ class PackBundleBuilder {
     const selected = this.selected(builder);
     const min = Number(builder.dataset.min || 1);
     const max = Number(builder.dataset.max || 4);
+    const discountMode = builder.dataset.discountMode || 'none';
+    const discountPercent = Math.max(0, Math.min(100, Number(builder.dataset.discountPercent || 0)));
+    const discountCode = (builder.dataset.discountCode || '').trim();
+    const discountConfigured = discountMode === 'automatic' || (discountMode === 'code' && discountCode.length > 0);
     const atMax = selected.length >= max;
     builder.querySelectorAll('[data-bundle-product]:not(:checked)').forEach((input) => {
       input.disabled = atMax || input.closest('.is-unavailable') !== null;
@@ -251,11 +255,20 @@ class PackBundleBuilder {
       const option = variant?.selectedOptions?.[0] || variant;
       return sum + Number(option?.dataset.price || 0);
     }, 0);
+    const discountEligible = selected.length >= min && discountConfigured && discountPercent > 0;
+    const savings = discountEligible ? Math.round(total * discountPercent / 100) : 0;
+    const subtotalNode = builder.querySelector('[data-bundle-subtotal]');
+    const savingsNode = builder.querySelector('[data-bundle-savings]');
+    const savingsRow = builder.querySelector('[data-bundle-savings-row]');
     const totalNode = builder.querySelector('[data-bundle-total]');
-    if (totalNode) totalNode.textContent = this.money(total, builder.dataset.currency);
+    if (subtotalNode) subtotalNode.textContent = this.money(total, builder.dataset.currency);
+    if (savingsNode) savingsNode.textContent = `−${this.money(savings, builder.dataset.currency)}`;
+    if (savingsRow) savingsRow.hidden = !discountEligible;
+    if (totalNode) totalNode.textContent = this.money(total - savings, builder.dataset.currency);
     const status = builder.querySelector('[data-bundle-status]');
     if (status) {
       if (selected.length < min) status.textContent = `Choose ${min - selected.length} more to complete the box.`;
+      else if (discountMode === 'code' && !discountCode) status.textContent = 'Your box is ready. The merchant has not configured its discount code.';
       else if (atMax) status.textContent = 'Your box is full.';
       else status.textContent = `${max - selected.length} more can be added.`;
     }
@@ -278,10 +291,15 @@ class PackBundleBuilder {
     button.disabled = true;
     builder.setAttribute('aria-busy', 'true');
     if (status) status.textContent = 'Adding your box…';
+    let completionMessage = '';
+    let boxAdded = false;
     const items = selected.map((checkbox) => ({
       id: Number(checkbox.value),
       quantity: 1,
-      properties: { '_PACK box': builder.dataset.sectionId || 'bundle' }
+      properties: {
+        '_PACK box': builder.dataset.sectionId || 'bundle',
+        '_PACK discount': builder.dataset.discountMode === 'none' ? 'none' : `${builder.dataset.discountPercent || 0}%`
+      }
     }));
     try {
       const response = await fetch(`${window.Shopify.routes.root}cart/add.js`, {
@@ -291,7 +309,21 @@ class PackBundleBuilder {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.description || 'Could not add this box.');
-      if (status) status.textContent = 'Your box was added to the cart.';
+      boxAdded = true;
+      const discountMode = builder.dataset.discountMode || 'none';
+      const discountCode = (builder.dataset.discountCode || '').trim();
+      if (discountMode === 'code' && discountCode) {
+        const discountResponse = await fetch(`${window.Shopify.routes.root}cart/update.js`, {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ discount: discountCode })
+        });
+        const discountResult = await discountResponse.json();
+        if (!discountResponse.ok) throw new Error(discountResult.description || 'Your box was added, but the discount could not be applied.');
+      }
+      if (discountMode === 'code' && discountCode) completionMessage = `Your box was added with discount code ${discountCode}.`;
+      else if (discountMode === 'automatic') completionMessage = 'Your box was added. Shopify will apply the eligible automatic discount.';
+      else completionMessage = 'Your box was added to the cart.';
       if (window.packCartDrawer?.enabled) await window.packCartDrawer.refresh(true);
       else {
         const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((cartResponse) => cartResponse.json());
@@ -299,10 +331,12 @@ class PackBundleBuilder {
         this.toast('Your box was added to the cart.');
       }
     } catch (error) {
-      if (status) status.textContent = error.message || 'Could not add this box.';
+      completionMessage = error.message || 'Could not add this box.';
     } finally {
       builder.removeAttribute('aria-busy');
+      if (boxAdded) selected.forEach((checkbox) => { checkbox.checked = false; });
       this.render(builder);
+      if (status && completionMessage) status.textContent = completionMessage;
     }
   }
   toast(message) {
@@ -371,11 +405,16 @@ class PackQuiz {
   finish(quiz) {
     const scores = quiz.packQuizState.answers.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map());
     const winner = [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || 'all-products';
-    const source = [...quiz.querySelectorAll('template[data-quiz-result-source]')].find((template) => template.dataset.quizResultSource === winner);
+    const sources = [...quiz.querySelectorAll('template[data-quiz-result-source]')];
+    const source = sources.find((template) => template.dataset.quizResultSource === winner)
+      || sources.find((template) => template.dataset.quizResultSource === 'default')
+      || sources[0];
     const target = quiz.querySelector('[data-quiz-result-content]');
     target.replaceChildren(source ? source.content.cloneNode(true) : document.createTextNode('No recommendation is configured.'));
     quiz.querySelector('[data-quiz-flow]').hidden = true;
     quiz.querySelector('[data-quiz-result]').hidden = false;
+    window.packReveal?.observe(target);
+    window.packTilt?.bind(target);
     quiz.querySelector('[data-quiz-restart]')?.focus();
   }
 }

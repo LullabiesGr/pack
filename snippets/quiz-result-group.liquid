@@ -1,0 +1,51 @@
+{%- liquid
+  assign result_key = result_block.settings.outcome_key | default: 'default' | handleize
+  assign result_source = result_block.settings.result_source | default: 'collection'
+  assign result_collection = result_block.settings.result_collection
+  if result_source == 'collection' and result_collection == blank
+    assign result_collection = collections['all']
+  endif
+  assign result_heading = result_block.settings.result_heading | default: 'Their best matches'
+  assign result_eyebrow = result_block.settings.result_eyebrow | default: section.settings.quiz_result_eyebrow
+  assign result_limit = result_block.settings.result_limit | default: 3
+  assign result_link = result_block.settings.result_link
+  if result_link == blank and result_collection != blank
+    assign result_link = result_collection.url
+  endif
+  if result_link == blank
+    assign result_link = routes.all_products_collection_url
+  endif
+-%}
+<template data-quiz-result-source="{{ result_key }}">
+  <div class="quiz-result-group" style="--quiz-result-bg: {{ result_block.settings.result_background | default: '#FFF8E9' }}" {{ result_block.shopify_attributes }}>
+    <div class="quiz-result-group__header">
+      <div>
+        {%- if result_eyebrow != blank -%}<p class="pack-eyebrow">{{ result_eyebrow }}</p>{%- endif -%}
+        <h3>{{ result_heading }}</h3>
+        {%- if result_block.settings.result_text != blank -%}<div class="rte">{{ result_block.settings.result_text }}</div>{%- endif -%}
+      </div>
+      {%- if result_block.settings.result_link_label != blank -%}<a class="pack-link" href="{{ result_link }}">{{ result_block.settings.result_link_label }} <span aria-hidden="true">→</span></a>{%- endif -%}
+    </div>
+    <div class="quiz-result-products product-grid">
+      {%- assign rendered_results = 0 -%}
+      {%- if result_source == 'products' -%}
+        {%- for result_index in (1..3) limit: result_limit -%}
+          {%- assign product_setting_key = 'result_product_' | append: result_index -%}
+          {%- assign result_product = result_block.settings[product_setting_key] -%}
+          {%- if result_product != blank -%}
+            {%- assign rendered_results = rendered_results | plus: 1 -%}
+            {% render 'product-card', product: result_product, card_color: result_block.settings.result_background, index: forloop.index, interaction_style: 'lift' %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif result_collection != blank -%}
+        {%- for result_product in result_collection.products limit: result_limit -%}
+          {%- assign rendered_results = rendered_results | plus: 1 -%}
+          {% render 'product-card', product: result_product, card_color: result_block.settings.result_background, index: forloop.index, interaction_style: 'lift' %}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if rendered_results == 0 -%}
+        <div class="pack-editor-note quiz-result-group__empty">Select products or a collection for this quiz outcome.</div>
+      {%- endif -%}
+    </div>
+  </div>
+</template>

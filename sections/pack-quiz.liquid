@@ -4,6 +4,15 @@
     assign quiz_media = section.settings.quiz_featured_product.featured_media
   endif
   assign quiz_motion_class = 'pack-idle pack-idle--' | append: section.settings.quiz_idle_motion
+  assign question_count = 0
+  assign result_count = 0
+  for block in section.blocks
+    if block.type == 'step'
+      assign question_count = question_count | plus: 1
+    elsif block.type == 'result'
+      assign result_count = result_count | plus: 1
+    endif
+  endfor
 -%}
 <section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}; --quiz-accent: {{ section.settings.quiz_accent }}" data-pack-quiz>
   <div class="pack-quiz__inner page-width">
@@ -19,35 +28,52 @@
         <p class="pack-eyebrow">{{ section.settings.quiz_eyebrow }}</p>
         <h2 class="pack-subheading">{{ section.settings.quiz_heading }}</h2>
         <p>{{ section.settings.quiz_text }}</p>
-        <button class="pack-button" type="button" data-quiz-start {% if section.blocks.size == 0 %}disabled{% endif %}>{{ section.settings.quiz_button_label }}</button>
+        <button class="pack-button" type="button" data-quiz-start {% if question_count == 0 %}disabled{% endif %}>{{ section.settings.quiz_button_label }}</button>
       </div>
       <div class="quiz-flow" data-quiz-flow hidden>
         <div class="quiz-progress" aria-hidden="true"><span data-quiz-progress-bar></span></div>
         <p class="quiz-progress__label" data-quiz-progress-label aria-live="polite"></p>
+        {%- assign question_index = 0 -%}
         {%- for block in section.blocks -%}
-          <fieldset class="quiz-question" data-quiz-question {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
-            <legend>{{ block.settings.step_text }}</legend>
-            <div class="quiz-question__answers">
-              {% render 'quiz-answer', answer_label: block.settings.answer_a_label, result_product: block.settings.answer_a_product, result_collection: block.settings.answer_a_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
-              {% render 'quiz-answer', answer_label: block.settings.answer_b_label, result_product: block.settings.answer_b_product, result_collection: block.settings.answer_b_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
-              {% render 'quiz-answer', answer_label: block.settings.answer_c_label, result_product: block.settings.answer_c_product, result_collection: block.settings.answer_c_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
-            </div>
-          </fieldset>
+          {%- if block.type == 'step' -%}
+            <fieldset class="quiz-question" data-quiz-question {% unless question_index == 0 %}hidden{% endunless %} {{ block.shopify_attributes }}>
+              <legend>{{ block.settings.step_text }}</legend>
+              <div class="quiz-question__answers">
+                {% render 'quiz-answer', answer_label: block.settings.answer_a_label, result_key: block.settings.answer_a_outcome %}
+                {% render 'quiz-answer', answer_label: block.settings.answer_b_label, result_key: block.settings.answer_b_outcome %}
+                {% render 'quiz-answer', answer_label: block.settings.answer_c_label, result_key: block.settings.answer_c_outcome %}
+              </div>
+            </fieldset>
+            {%- assign question_index = question_index | plus: 1 -%}
+          {%- endif -%}
         {%- endfor -%}
         <button class="quiz-back" type="button" data-quiz-back hidden>← {{ section.settings.quiz_back_label }}</button>
       </div>
       <div class="quiz-result" data-quiz-result hidden>
-        <div data-quiz-result-content></div>
+        <div data-quiz-result-content aria-live="polite"></div>
         <button class="quiz-restart" type="button" data-quiz-restart>{{ section.settings.quiz_restart_label }}</button>
       </div>
-      {%- if section.blocks.size == 0 -%}<p class="pack-editor-note">Add question blocks to activate the quiz.</p>{%- endif -%}
+      {%- if question_count == 0 -%}<p class="pack-editor-note">Add question blocks to activate the quiz.</p>{%- endif -%}
     </div>
   </div>
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'result' -%}{% render 'quiz-result-group', result_block: block, section: section %}{%- endif -%}
+  {%- endfor -%}
+  {%- if result_count == 0 -%}
+    <template data-quiz-result-source="default">
+      <div class="quiz-result-group">
+        <div class="quiz-result-group__header"><div><p class="pack-eyebrow">{{ section.settings.quiz_result_eyebrow }}</p><h3>Shop their matches</h3></div><a class="pack-link" href="{{ routes.all_products_collection_url }}">{{ section.settings.quiz_view_label }} <span aria-hidden="true">→</span></a></div>
+        <div class="quiz-result-products product-grid">
+          {%- for result_product in collections['all'].products limit: 3 -%}{% render 'product-card', product: result_product, card_color: section.settings.quiz_accent, index: forloop.index, interaction_style: 'lift' %}{%- else -%}<div class="pack-editor-note quiz-result-group__empty">Add result blocks and select products or collections.</div>{%- endfor -%}
+        </div>
+      </div>
+    </template>
+  {%- endif -%}
 </section>
 {% schema %}
 {
   "name": "Pet finder quiz",
-  "max_blocks": 4,
+  "max_blocks": 12,
   "settings": [
     { "type": "text", "id": "quiz_eyebrow", "label": "Eyebrow", "default": "A match made in snack heaven" },
     { "type": "text", "id": "quiz_heading", "label": "Heading", "default": "Find their perfect treat" },
@@ -57,12 +83,11 @@
     { "type": "text", "id": "quiz_button_label", "label": "Start button", "default": "Take the quiz" },
     { "type": "text", "id": "quiz_back_label", "label": "Back label", "default": "Back" },
     { "type": "text", "id": "quiz_restart_label", "label": "Restart label", "default": "Retake the quiz" },
-    { "type": "text", "id": "quiz_result_eyebrow", "label": "Result eyebrow", "default": "Their best match" },
-    { "type": "text", "id": "quiz_add_label", "label": "Result add-to-cart label", "default": "Add match to cart" },
-    { "type": "text", "id": "quiz_view_label", "label": "Result collection label", "default": "View their matches" },
+    { "type": "text", "id": "quiz_result_eyebrow", "label": "Default result eyebrow", "default": "Their best matches" },
+    { "type": "text", "id": "quiz_view_label", "label": "Default result link label", "default": "View their matches" },
     { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" },
     { "type": "color", "id": "quiz_accent", "label": "Quiz accent", "default": "#FFD23F" },
-    { "type": "paragraph", "content": "Assign a product or collection to every answer. Repeating the same result across relevant answers lets the quiz score and return the strongest match." },
+    { "type": "paragraph", "content": "How it works: each answer awards one point to an outcome key. The highest-scoring key opens the matching Result block. Keep keys short and identical, for example active, wellness, or comfort." },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "quiz_image_animation", "label": "Pet image animation", "options": [
       { "value": "none", "label": "None" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "fade-up", "label": "Fade up" }, { "value": "zoom-in", "label": "Zoom in" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
@@ -82,25 +107,46 @@
         { "type": "text", "id": "step_text", "label": "Question", "default": "What matters most?" },
         { "type": "header", "content": "Answer A" },
         { "type": "text", "id": "answer_a_label", "label": "Answer", "default": "Everyday wellness" },
-        { "type": "product", "id": "answer_a_product", "label": "Recommended product" },
-        { "type": "collection", "id": "answer_a_collection", "label": "Recommended collection fallback" },
+        { "type": "text", "id": "answer_a_outcome", "label": "Outcome key", "default": "wellness" },
         { "type": "header", "content": "Answer B" },
         { "type": "text", "id": "answer_b_label", "label": "Answer", "default": "More energy" },
-        { "type": "product", "id": "answer_b_product", "label": "Recommended product" },
-        { "type": "collection", "id": "answer_b_collection", "label": "Recommended collection fallback" },
+        { "type": "text", "id": "answer_b_outcome", "label": "Outcome key", "default": "active" },
         { "type": "header", "content": "Answer C" },
         { "type": "text", "id": "answer_c_label", "label": "Answer", "default": "Extra comfort" },
-        { "type": "product", "id": "answer_c_product", "label": "Recommended product" },
-        { "type": "collection", "id": "answer_c_collection", "label": "Recommended collection fallback" }
+        { "type": "text", "id": "answer_c_outcome", "label": "Outcome key", "default": "comfort" }
+      ]
+    },
+    {
+      "type": "result",
+      "name": "Quiz result",
+      "settings": [
+        { "type": "text", "id": "outcome_key", "label": "Outcome key", "info": "Must match an outcome key used by the answers.", "default": "wellness" },
+        { "type": "text", "id": "result_eyebrow", "label": "Eyebrow", "default": "Their best matches" },
+        { "type": "text", "id": "result_heading", "label": "Heading", "default": "Everyday wellness picks" },
+        { "type": "richtext", "id": "result_text", "label": "Text", "default": "<p>Products selected for their needs and personality.</p>" },
+        { "type": "select", "id": "result_source", "label": "Products from", "options": [
+          { "value": "collection", "label": "Collection" }, { "value": "products", "label": "Selected products" }
+        ], "default": "collection" },
+        { "type": "collection", "id": "result_collection", "label": "Result collection", "info": "When empty, the All products collection is used." },
+        { "type": "product", "id": "result_product_1", "label": "Product 1" },
+        { "type": "product", "id": "result_product_2", "label": "Product 2" },
+        { "type": "product", "id": "result_product_3", "label": "Product 3" },
+        { "type": "range", "id": "result_limit", "min": 1, "max": 3, "step": 1, "label": "Products shown", "default": 3 },
+        { "type": "url", "id": "result_link", "label": "Result link", "info": "Optional. Collection or All products is used as fallback." },
+        { "type": "text", "id": "result_link_label", "label": "Link label", "default": "Shop these matches" },
+        { "type": "color", "id": "result_background", "label": "Product card color", "default": "#FFF8E9" }
       ]
     }
   ],
   "presets": [{
     "name": "Pet finder quiz",
     "blocks": [
-      { "type": "step", "settings": { "step_text": "How old are they?", "answer_a_label": "Puppy or kitten", "answer_b_label": "Adult", "answer_c_label": "Senior" } },
-      { "type": "step", "settings": { "step_text": "What do they need most?", "answer_a_label": "Training rewards", "answer_b_label": "Daily wellness", "answer_c_label": "Joint support" } },
-      { "type": "step", "settings": { "step_text": "What's their personality?", "answer_a_label": "Couch cuddler", "answer_b_label": "Food critic", "answer_c_label": "Wild explorer" } }
+      { "type": "step", "settings": { "step_text": "How old are they?", "answer_a_label": "Puppy or kitten", "answer_a_outcome": "active", "answer_b_label": "Adult", "answer_b_outcome": "wellness", "answer_c_label": "Senior", "answer_c_outcome": "comfort" } },
+      { "type": "step", "settings": { "step_text": "What do they need most?", "answer_a_label": "Training rewards", "answer_a_outcome": "active", "answer_b_label": "Daily wellness", "answer_b_outcome": "wellness", "answer_c_label": "Joint support", "answer_c_outcome": "comfort" } },
+      { "type": "step", "settings": { "step_text": "What's their personality?", "answer_a_label": "Wild explorer", "answer_a_outcome": "active", "answer_b_label": "Food critic", "answer_b_outcome": "wellness", "answer_c_label": "Couch cuddler", "answer_c_outcome": "comfort" } },
+      { "type": "result", "settings": { "outcome_key": "active", "result_heading": "For the active explorer", "result_source": "collection", "result_background": "#B9E769" } },
+      { "type": "result", "settings": { "outcome_key": "wellness", "result_heading": "Everyday wellness picks", "result_source": "collection", "result_background": "#FFD23F" } },
+      { "type": "result", "settings": { "outcome_key": "comfort", "result_heading": "Comfort-first favorites", "result_source": "collection", "result_background": "#F49AC2" } }
     ]
   }]
 }

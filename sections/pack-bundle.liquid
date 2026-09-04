@@ -16,7 +16,7 @@
         <li><span aria-hidden="true">3</span>{{ section.settings.bundle_step_three }}</li>
       </ul>
     </div>
-    <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
+    <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}" data-discount-mode="{{ section.settings.bundle_discount_mode }}" data-discount-percent="{{ section.settings.bundle_discount_percent }}" data-discount-code="{{ section.settings.bundle_discount_code | escape }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       <div class="bundle-builder__header">
         <div><p class="pack-eyebrow">{{ section.settings.bundle_picker_eyebrow }}</p><h3>{{ section.settings.bundle_picker_heading }}</h3></div>
         <span class="bundle-builder__count" data-bundle-count>0 / {{ section.settings.bundle_maximum }}</span>
@@ -39,7 +39,12 @@
         {%- if rendered_products == 0 -%}<div class="pack-editor-note bundle-builder__empty">Select a collection or add product blocks to activate this box builder.</div>{%- endif -%}
       </div>
       <div class="bundle-builder__footer">
-        <div class="bundle-builder__total"><span>{{ section.settings.bundle_total_label }}</span><strong data-bundle-total>{{ 0 | money }}</strong></div>
+        {%- if section.settings.bundle_discount_mode != 'none' -%}
+          <div class="bundle-builder__discount-badge">{{ section.settings.bundle_discount_badge | default: 'Box offer' }} · {{ section.settings.bundle_discount_percent }}%</div>
+        {%- endif -%}
+        <div class="bundle-builder__price-row"><span>{{ section.settings.bundle_subtotal_label }}</span><strong data-bundle-subtotal>{{ 0 | money }}</strong></div>
+        <div class="bundle-builder__price-row bundle-builder__savings" data-bundle-savings-row hidden><span>{{ section.settings.bundle_savings_label }}</span><strong data-bundle-savings>−{{ 0 | money }}</strong></div>
+        <div class="bundle-builder__price-row bundle-builder__total"><span>{{ section.settings.bundle_total_label }}</span><strong data-bundle-total>{{ 0 | money }}</strong></div>
         <p class="bundle-builder__status" data-bundle-status role="status" aria-live="polite">Choose at least {{ section.settings.bundle_minimum }} products.</p>
         <button class="pack-button pack-button--blue" type="submit" data-bundle-submit disabled>{{ section.settings.bundle_button_label }}</button>
         {%- if section.settings.bundle_discount_note != blank -%}<p class="bundle-builder__note">{{ section.settings.bundle_discount_note }}</p>{%- endif -%}
@@ -72,12 +77,22 @@
     { "type": "range", "id": "bundle_product_limit", "min": 4, "max": 8, "step": 1, "label": "Products shown", "default": 6 },
     { "type": "range", "id": "bundle_minimum", "min": 1, "max": 4, "step": 1, "label": "Minimum products required", "default": 2 },
     { "type": "range", "id": "bundle_maximum", "min": 4, "max": 8, "step": 1, "label": "Maximum products allowed", "default": 4 },
+    { "type": "header", "content": "Real Shopify discount" },
+    { "type": "paragraph", "content": "Create the matching discount in Shopify Admin → Discounts first. This theme applies the code to the real cart; it cannot create or enforce discount rules from storefront code." },
+    { "type": "select", "id": "bundle_discount_mode", "label": "Discount method", "options": [
+      { "value": "none", "label": "No box discount" }, { "value": "code", "label": "Apply Shopify discount code" }, { "value": "automatic", "label": "Use Shopify automatic discount" }
+    ], "default": "none" },
+    { "type": "range", "id": "bundle_discount_percent", "min": 1, "max": 50, "step": 1, "unit": "%", "label": "Discount preview", "info": "Set this to the same percentage as the discount configured in Shopify Admin.", "default": 15 },
+    { "type": "text", "id": "bundle_discount_code", "label": "Shopify discount code", "info": "Required only for the discount-code method. The code is applied through Shopify's Cart API." },
+    { "type": "text", "id": "bundle_discount_badge", "label": "Discount badge", "default": "Box offer" },
     { "type": "header", "content": "Builder text" },
     { "type": "text", "id": "bundle_picker_eyebrow", "label": "Picker eyebrow", "default": "Create their box" },
     { "type": "text", "id": "bundle_picker_heading", "label": "Picker heading", "default": "Choose the good stuff" },
-    { "type": "text", "id": "bundle_total_label", "label": "Total label", "default": "Box total" },
+    { "type": "text", "id": "bundle_subtotal_label", "label": "Subtotal label", "default": "Box subtotal" },
+    { "type": "text", "id": "bundle_savings_label", "label": "Savings label", "default": "Estimated savings" },
+    { "type": "text", "id": "bundle_total_label", "label": "Total label", "default": "Estimated box total" },
     { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Add box to cart" },
-    { "type": "text", "id": "bundle_discount_note", "label": "Discount note", "info": "Informational only. Configure the real discount in Shopify Discounts.", "default": "Eligible automatic discounts appear in the cart." },
+    { "type": "text", "id": "bundle_discount_note", "label": "Discount note", "default": "The final discount is validated by Shopify in the cart and checkout." },
     { "type": "header", "content": "Box artwork" },
     { "type": "checkbox", "id": "show_bundle_box_art", "label": "Show box artwork", "default": true },
     { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },
