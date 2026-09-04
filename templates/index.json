@@ -86,9 +86,9 @@
     "quiz": {
       "type": "pack-quiz",
       "blocks": {
-        "age": { "type": "step", "settings": { "step_text": "How old are they?", "step_color": "#FFF8E9", "step_rotation": -3 } },
-        "food": { "type": "step", "settings": { "step_text": "Any sensitivities?", "step_color": "#B9E769", "step_rotation": 2 } },
-        "vibe": { "type": "step", "settings": { "step_text": "What's their vibe?", "step_color": "#FFD23F", "step_rotation": -2 } }
+        "age": { "type": "step", "settings": { "step_text": "How old are they?", "answer_a_label": "Puppy or kitten", "answer_b_label": "Adult", "answer_c_label": "Senior" } },
+        "food": { "type": "step", "settings": { "step_text": "What do they need most?", "answer_a_label": "Training rewards", "answer_b_label": "Daily wellness", "answer_c_label": "Joint support" } },
+        "vibe": { "type": "step", "settings": { "step_text": "What's their personality?", "answer_a_label": "Couch cuddler", "answer_b_label": "Food critic", "answer_c_label": "Wild explorer" } }
       },
       "block_order": ["age", "food", "vibe"],
       "settings": {
@@ -105,22 +105,25 @@
     "bundle": {
       "type": "pack-bundle",
       "blocks": {
-        "one": { "type": "bundle_product", "settings": { "product_label": "First bundle product" } },
-        "two": { "type": "bundle_product", "settings": { "product_label": "Second bundle product" } },
-        "three": { "type": "bundle_product", "settings": { "product_label": "Third bundle product" } }
+        "one": { "type": "bundle_product", "settings": {} },
+        "two": { "type": "bundle_product", "settings": {} },
+        "three": { "type": "bundle_product", "settings": {} }
       },
       "block_order": ["one", "two", "three"],
       "settings": {
         "bundle_eyebrow": "Their favorites, your schedule",
         "bundle_heading": "Build a happy box",
-        "bundle_text": "<p>Pick their favorites. Skip what they don't need. Happiness, delivered your way.</p>",
-        "bundle_button_label": "Build your box",
+        "bundle_text": "<p>Choose the products they love and add the complete box to your cart in one step.</p>",
+        "bundle_source": "all",
+        "bundle_product_limit": 6,
+        "bundle_minimum": 2,
+        "bundle_maximum": 4,
+        "bundle_button_label": "Add box to cart",
         "bundle_box_label": "PALS!",
-        "bundle_save_label": "SAVE UP TO 15%",
-        "show_bundle_product_info": true,
+        "bundle_save_label": "BUILD YOUR BOX",
+        "show_bundle_box_art": true,
         "bundle_animation": "pop",
-        "bundle_idle_motion": "float",
-        "bundle_interaction": "tilt"
+        "bundle_discount_note": "Eligible automatic discounts appear in the cart."
       }
     },
     "divider_bundle": {

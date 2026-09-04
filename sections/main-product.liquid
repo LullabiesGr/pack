@@ -1,17 +1,32 @@
 <section class="main-product">
   <div class="main-product__grid page-width">
-    <div class="product-gallery">
-      {%- for media in product.media -%}
-        <div class="product-gallery__item">
-          {%- if media.media_type == 'image' -%}
-            {{ media | image_url: width: 1400 | image_tag: widths: '480, 720, 960, 1200, 1400', sizes: '(min-width: 990px) 55vw, 90vw', loading: 'lazy', alt: media.alt | default: product.title }}
-          {%- else -%}
-            {{ media | media_tag: image_size: '1000x', controls: true }}
-          {%- endif -%}
+    <div class="product-gallery-shell" data-product-gallery>
+      <div class="product-gallery" data-product-gallery-track>
+        {%- for media in product.media -%}
+          {%- liquid
+            assign media_loading = 'lazy'
+            if forloop.first
+              assign media_loading = 'eager'
+            endif
+          -%}
+          <div class="product-gallery__item">
+            {%- if media.media_type == 'image' -%}
+              {{ media | image_url: width: 1400 | image_tag: widths: '360, 540, 720, 960, 1200, 1400', sizes: '(min-width: 990px) 55vw, calc(100vw - 28px)', loading: media_loading, alt: media.alt | default: product.title }}
+            {%- else -%}
+              {{ media | media_tag: image_size: '1000x', controls: true }}
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="product-gallery__item">{{ 'product-1' | placeholder_svg_tag: 'pack-placeholder' }}</div>
+        {%- endfor -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="product-gallery__controls">
+          <button type="button" aria-label="Previous product image" data-gallery-prev>←</button>
+          <span data-gallery-counter>1 / {{ product.media.size }}</span>
+          <button type="button" aria-label="Next product image" data-gallery-next>→</button>
         </div>
-      {%- else -%}
-        <div class="product-gallery__item">{{ 'product-1' | placeholder_svg_tag: 'pack-placeholder' }}</div>
-      {%- endfor -%}
+      {%- endif -%}
     </div>
 
     <div class="product-details">

@@ -1,0 +1,51 @@
+{%- liquid
+  assign result_type = 'collection'
+  assign result_item = result_collection
+  if result_product != blank
+    assign result_type = 'product'
+    assign result_item = result_product
+  endif
+  if result_item == blank
+    assign result_key = 'all-products'
+    assign result_title = 'Shop all products'
+    assign result_url = routes.all_products_collection_url
+  elsif result_type == 'product'
+    assign result_key = 'product-' | append: result_item.id
+    assign result_title = result_item.title
+    assign result_url = result_item.url
+    assign result_media = result_item.featured_media
+  else
+    assign result_key = 'collection-' | append: result_item.id
+    assign result_title = result_item.title
+    assign result_url = result_item.url
+    assign result_media = result_item.image | default: result_item.products.first.featured_media
+  endif
+-%}
+<button class="quiz-answer" type="button" data-quiz-answer data-result-key="{{ result_key }}"><span>{{ answer_label }}</span><span aria-hidden="true">→</span></button>
+<template data-quiz-result-source="{{ result_key }}">
+  <article class="quiz-result-card">
+    <a class="quiz-result-card__media" href="{{ result_url }}">
+      {%- if result_media != blank -%}
+        {{ result_media | image_url: width: 720 | image_tag: widths: '320, 480, 720', sizes: '(min-width: 700px) 320px, 84vw', loading: 'lazy', alt: result_media.alt | default: result_title }}
+      {%- else -%}
+        <span class="quiz-result-card__placeholder" aria-hidden="true">{% render 'icon', icon: 'paw' %}</span>
+      {%- endif -%}
+    </a>
+    <div class="quiz-result-card__content">
+      <p class="pack-eyebrow">{{ result_eyebrow }}</p>
+      <h3><a href="{{ result_url }}">{{ result_title }}</a></h3>
+      {%- if result_type == 'product' and result_item != blank -%}
+        <strong>{{ result_item.price | money }}</strong>
+        {%- if result_item.available -%}
+          <form action="{{ routes.cart_add_url }}" method="post" data-quick-add>
+            <input type="hidden" name="id" value="{{ result_item.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button class="pack-button pack-button--blue" type="submit">{{ add_label }}</button>
+          </form>
+        {%- endif -%}
+      {%- else -%}
+        <a class="pack-button pack-button--blue" href="{{ result_url }}">{{ view_label }}</a>
+      {%- endif -%}
+    </div>
+  </article>
+</template>

@@ -1,117 +1,107 @@
 {%- liquid
-  assign quiz_product = section.settings.quiz_product
-  assign quiz_collection = section.settings.quiz_collection
   assign quiz_media = section.settings.quiz_image
-  assign quiz_url = section.settings.quiz_button_link
-  if quiz_media == blank and quiz_product != blank
-    assign quiz_media = quiz_product.featured_media
-  elsif quiz_media == blank and quiz_collection != blank
-    assign quiz_media = quiz_collection.image
-    if quiz_media == blank
-      assign quiz_media = quiz_collection.products.first.featured_media
-    endif
+  if quiz_media == blank and section.settings.quiz_featured_product != blank
+    assign quiz_media = section.settings.quiz_featured_product.featured_media
   endif
-  if quiz_url == blank and quiz_product != blank
-    assign quiz_url = quiz_product.url
-  elsif quiz_url == blank and quiz_collection != blank
-    assign quiz_url = quiz_collection.url
-  endif
-  assign quiz_url = quiz_url | default: routes.all_products_collection_url
   assign quiz_motion_class = 'pack-idle pack-idle--' | append: section.settings.quiz_idle_motion
 -%}
-<section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}">
+<section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}; --quiz-accent: {{ section.settings.quiz_accent }}" data-pack-quiz>
   <div class="pack-quiz__inner page-width">
     <div class="pack-quiz__peek"{% if section.settings.quiz_image_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_image_animation }}"{% endif %}>
       {%- if quiz_media != blank -%}
-        <a class="pack-quiz__media-link" href="{{ quiz_url }}">{{ quiz_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', class: quiz_motion_class, alt: quiz_media.alt | default: section.settings.quiz_heading }}</a>
+        {{ quiz_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', class: quiz_motion_class, alt: quiz_media.alt | default: section.settings.quiz_heading }}
       {%- else -%}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
     </div>
     <div class="pack-quiz__content"{% if section.settings.quiz_content_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_content_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
-      <p class="pack-eyebrow">{{ section.settings.quiz_eyebrow }}</p>
-      <h2 class="pack-subheading">{{ section.settings.quiz_heading }}</h2>
-      <p>{{ section.settings.quiz_text }}</p>
-      <div class="quiz-steps" aria-hidden="true">
-        {%- for block in section.blocks -%}
-          <span class="quiz-step" style="--step-bg: {{ block.settings.step_color }}; --step-rotate: {{ block.settings.step_rotation }}deg" {{ block.shopify_attributes }}>{{ block.settings.step_text }}</span>
-          {%- unless forloop.last -%}<span class="quiz-arrow">→</span>{%- endunless -%}
-        {%- endfor -%}
+      <div data-quiz-intro>
+        <p class="pack-eyebrow">{{ section.settings.quiz_eyebrow }}</p>
+        <h2 class="pack-subheading">{{ section.settings.quiz_heading }}</h2>
+        <p>{{ section.settings.quiz_text }}</p>
+        <button class="pack-button" type="button" data-quiz-start {% if section.blocks.size == 0 %}disabled{% endif %}>{{ section.settings.quiz_button_label }}</button>
       </div>
-      <a class="pack-button" href="{{ quiz_url }}">{{ section.settings.quiz_button_label }}</a>
+      <div class="quiz-flow" data-quiz-flow hidden>
+        <div class="quiz-progress" aria-hidden="true"><span data-quiz-progress-bar></span></div>
+        <p class="quiz-progress__label" data-quiz-progress-label aria-live="polite"></p>
+        {%- for block in section.blocks -%}
+          <fieldset class="quiz-question" data-quiz-question {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+            <legend>{{ block.settings.step_text }}</legend>
+            <div class="quiz-question__answers">
+              {% render 'quiz-answer', answer_label: block.settings.answer_a_label, result_product: block.settings.answer_a_product, result_collection: block.settings.answer_a_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
+              {% render 'quiz-answer', answer_label: block.settings.answer_b_label, result_product: block.settings.answer_b_product, result_collection: block.settings.answer_b_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
+              {% render 'quiz-answer', answer_label: block.settings.answer_c_label, result_product: block.settings.answer_c_product, result_collection: block.settings.answer_c_collection, result_eyebrow: section.settings.quiz_result_eyebrow, add_label: section.settings.quiz_add_label, view_label: section.settings.quiz_view_label %}
+            </div>
+          </fieldset>
+        {%- endfor -%}
+        <button class="quiz-back" type="button" data-quiz-back hidden>← {{ section.settings.quiz_back_label }}</button>
+      </div>
+      <div class="quiz-result" data-quiz-result hidden>
+        <div data-quiz-result-content></div>
+        <button class="quiz-restart" type="button" data-quiz-restart>{{ section.settings.quiz_restart_label }}</button>
+      </div>
+      {%- if section.blocks.size == 0 -%}<p class="pack-editor-note">Add question blocks to activate the quiz.</p>{%- endif -%}
     </div>
   </div>
 </section>
-
 {% schema %}
 {
   "name": "Pet finder quiz",
-  "max_blocks": 3,
+  "max_blocks": 4,
   "settings": [
     { "type": "text", "id": "quiz_eyebrow", "label": "Eyebrow", "default": "A match made in snack heaven" },
     { "type": "text", "id": "quiz_heading", "label": "Heading", "default": "Find their perfect treat" },
     { "type": "textarea", "id": "quiz_text", "label": "Text", "default": "Answer a few quick questions and we'll recommend what they'll love." },
-    { "type": "product", "id": "quiz_product", "label": "Result product" },
-    { "type": "collection", "id": "quiz_collection", "label": "Result collection" },
-    { "type": "image_picker", "id": "quiz_image", "label": "Custom peeking image override" },
-    { "type": "text", "id": "quiz_button_label", "label": "Button label", "default": "Take the quiz" },
-    { "type": "url", "id": "quiz_button_link", "label": "Custom button link override" },
+    { "type": "image_picker", "id": "quiz_image", "label": "Quiz image" },
+    { "type": "product", "id": "quiz_featured_product", "label": "Use product image when quiz image is empty" },
+    { "type": "text", "id": "quiz_button_label", "label": "Start button", "default": "Take the quiz" },
+    { "type": "text", "id": "quiz_back_label", "label": "Back label", "default": "Back" },
+    { "type": "text", "id": "quiz_restart_label", "label": "Restart label", "default": "Retake the quiz" },
+    { "type": "text", "id": "quiz_result_eyebrow", "label": "Result eyebrow", "default": "Their best match" },
+    { "type": "text", "id": "quiz_add_label", "label": "Result add-to-cart label", "default": "Add match to cart" },
+    { "type": "text", "id": "quiz_view_label", "label": "Result collection label", "default": "View their matches" },
     { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" },
+    { "type": "color", "id": "quiz_accent", "label": "Quiz accent", "default": "#FFD23F" },
+    { "type": "paragraph", "content": "Assign a product or collection to every answer. Repeating the same result across relevant answers lets the quiz score and return the strongest match." },
     { "type": "header", "content": "Animation" },
-    {
-      "type": "select",
-      "id": "quiz_image_animation",
-      "label": "Pet image animation",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "slide-left", "label": "Slide left to right" },
-        { "value": "slide-right", "label": "Slide right to left" },
-        { "value": "fade-up", "label": "Fade up" },
-        { "value": "zoom-in", "label": "Zoom in" },
-        { "value": "pop", "label": "Playful pop" },
-        { "value": "blur-in", "label": "Candy blur" },
-        { "value": "flip-up", "label": "Editorial flip" },
-        { "value": "squish", "label": "Playful squish" }
-      ],
-      "default": "none"
-    },
-    {
-      "type": "select",
-      "id": "quiz_content_animation",
-      "label": "Quiz content animation",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "fade-in", "label": "Fade in" },
-        { "value": "fade-up", "label": "Fade up" },
-        { "value": "slide-left", "label": "Slide left to right" },
-        { "value": "slide-right", "label": "Slide right to left" }
-      ],
-      "default": "none"
-    },
+    { "type": "select", "id": "quiz_image_animation", "label": "Pet image animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "fade-up", "label": "Fade up" }, { "value": "zoom-in", "label": "Zoom in" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
+    ], "default": "slide-left" },
+    { "type": "select", "id": "quiz_content_animation", "label": "Quiz content animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "fade-in", "label": "Fade in" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }
+    ], "default": "fade-up" },
     { "type": "select", "id": "quiz_idle_motion", "label": "Continuous image motion", "options": [
       { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "sway", "label": "Sway" }, { "value": "bounce", "label": "Soft bounce" }, { "value": "orbit", "label": "Mini orbit" }
-    ], "default": "none" }
+    ], "default": "sway" }
   ],
   "blocks": [
     {
       "type": "step",
-      "name": "Quiz step",
+      "name": "Quiz question",
       "settings": [
-        { "type": "text", "id": "step_text", "label": "Question", "default": "How old are they?" },
-        { "type": "color", "id": "step_color", "label": "Color", "default": "#FFF8E9" },
-        { "type": "range", "id": "step_rotation", "min": -8, "max": 8, "step": 1, "unit": "deg", "label": "Rotation", "default": 0 }
+        { "type": "text", "id": "step_text", "label": "Question", "default": "What matters most?" },
+        { "type": "header", "content": "Answer A" },
+        { "type": "text", "id": "answer_a_label", "label": "Answer", "default": "Everyday wellness" },
+        { "type": "product", "id": "answer_a_product", "label": "Recommended product" },
+        { "type": "collection", "id": "answer_a_collection", "label": "Recommended collection fallback" },
+        { "type": "header", "content": "Answer B" },
+        { "type": "text", "id": "answer_b_label", "label": "Answer", "default": "More energy" },
+        { "type": "product", "id": "answer_b_product", "label": "Recommended product" },
+        { "type": "collection", "id": "answer_b_collection", "label": "Recommended collection fallback" },
+        { "type": "header", "content": "Answer C" },
+        { "type": "text", "id": "answer_c_label", "label": "Answer", "default": "Extra comfort" },
+        { "type": "product", "id": "answer_c_product", "label": "Recommended product" },
+        { "type": "collection", "id": "answer_c_collection", "label": "Recommended collection fallback" }
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "Pet finder quiz",
-      "blocks": [
-        { "type": "step", "settings": { "step_text": "How old are they?", "step_color": "#FFF8E9", "step_rotation": -3 } },
-        { "type": "step", "settings": { "step_text": "Any sensitivities?", "step_color": "#B9E769", "step_rotation": 2 } },
-        { "type": "step", "settings": { "step_text": "What's their vibe?", "step_color": "#FFD23F", "step_rotation": -2 } }
-      ]
-    }
-  ]
+  "presets": [{
+    "name": "Pet finder quiz",
+    "blocks": [
+      { "type": "step", "settings": { "step_text": "How old are they?", "answer_a_label": "Puppy or kitten", "answer_b_label": "Adult", "answer_c_label": "Senior" } },
+      { "type": "step", "settings": { "step_text": "What do they need most?", "answer_a_label": "Training rewards", "answer_b_label": "Daily wellness", "answer_c_label": "Joint support" } },
+      { "type": "step", "settings": { "step_text": "What's their personality?", "answer_a_label": "Couch cuddler", "answer_b_label": "Food critic", "answer_c_label": "Wild explorer" } }
+    ]
+  }]
 }
 {% endschema %}

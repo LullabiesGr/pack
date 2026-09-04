@@ -1,0 +1,36 @@
+{%- liquid
+  assign selected_variant = bundle_product.selected_or_first_available_variant
+  assign bundle_media = bundle_product.featured_media
+  assign input_id = 'BundleProduct-' | append: section_id | append: '-' | append: card_index
+-%}
+
+<article class="bundle-builder-card{% unless bundle_product.available %} is-unavailable{% endunless %}" data-bundle-card>
+  <label class="bundle-builder-card__select" for="{{ input_id }}">
+    <input id="{{ input_id }}" type="checkbox" value="{{ selected_variant.id }}" data-bundle-product {% unless bundle_product.available %}disabled{% endunless %}>
+    <span class="bundle-builder-card__check" aria-hidden="true">✓</span>
+    <span class="visually-hidden">Select {{ bundle_product.title }}</span>
+  </label>
+  <a class="bundle-builder-card__media" href="{{ bundle_product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if bundle_media != blank -%}
+      {{ bundle_media | image_url: width: 560 | image_tag: widths: '220, 360, 560', sizes: '(min-width: 990px) 22vw, 70vw', loading: 'lazy', alt: bundle_media.alt | default: bundle_product.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'pack-placeholder' }}
+    {%- endif -%}
+  </a>
+  <div class="bundle-builder-card__info">
+    <a href="{{ bundle_product.url }}"><strong>{{ bundle_product.title }}</strong></a>
+    <span data-bundle-card-price>{{ selected_variant.price | money }}</span>
+  </div>
+  {%- unless bundle_product.has_only_default_variant -%}
+    <label class="bundle-builder-card__variant">
+      <span class="visually-hidden">Choose an option for {{ bundle_product.title }}</span>
+      <select data-bundle-variant {% unless bundle_product.available %}disabled{% endunless %}>
+        {%- for variant in bundle_product.variants -%}
+          <option value="{{ variant.id }}" data-price="{{ variant.price }}" data-price-label="{{ variant.price | money | escape }}" {% if variant == selected_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}</option>
+        {%- endfor -%}
+      </select>
+    </label>
+  {%- else -%}
+    <input type="hidden" data-bundle-variant value="{{ selected_variant.id }}" data-price="{{ selected_variant.price }}" data-price-label="{{ selected_variant.price | money | escape }}">
+  {%- endunless -%}
+</article>

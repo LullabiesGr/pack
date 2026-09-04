@@ -1,97 +1,93 @@
 {%- liquid
-  assign bundle_cta_url = section.settings.bundle_button_link
-  if bundle_cta_url == blank and section.settings.bundle_collection != blank
-    assign bundle_cta_url = section.settings.bundle_collection.url
+  assign bundle_catalog = section.settings.bundle_collection
+  if section.settings.bundle_source == 'all'
+    assign bundle_catalog = collections['all']
   endif
-  assign bundle_cta_url = bundle_cta_url | default: routes.all_products_collection_url
 -%}
-<section class="pack-bundle section-pad">
+<section id="build-a-box" class="pack-bundle section-pad" data-bundle-builder-section>
   <div class="bundle-grid page-width">
     <div class="bundle-copy"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}"{% endif %}>
       <p class="pack-eyebrow">{{ section.settings.bundle_eyebrow }}</p>
       <h2 class="pack-subheading">{{ section.settings.bundle_heading }}</h2>
       <div class="rte">{{ section.settings.bundle_text }}</div>
-      <a class="pack-button pack-button--blue" href="{{ bundle_cta_url }}">{{ section.settings.bundle_button_label }}</a>
+      <ul class="bundle-benefits" role="list">
+        <li><span aria-hidden="true">1</span>{{ section.settings.bundle_step_one }}</li>
+        <li><span aria-hidden="true">2</span>{{ section.settings.bundle_step_two }}</li>
+        <li><span aria-hidden="true">3</span>{{ section.settings.bundle_step_three }}</li>
+      </ul>
     </div>
-    <div class="bundle-products"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign bundle_product = block.settings.product
-          assign bundle_media = block.settings.product_image
-          if bundle_media == blank and bundle_product != blank
-            assign bundle_media = bundle_product.featured_media
-          endif
-          assign bundle_url = bundle_product.url | default: routes.all_products_collection_url
-          assign bundle_label = block.settings.product_label
-          if bundle_product != blank
-            assign bundle_label = bundle_product.title
-          endif
-          assign bundle_motion_class = 'pack-idle pack-idle--' | append: section.settings.bundle_idle_motion
-        -%}
-        <a class="bundle-product pack-interaction--{{ section.settings.bundle_interaction }}" href="{{ bundle_url }}" style="--bundle-rotate: {% cycle '-5deg', '3deg', '-2deg' %}"{% if section.settings.bundle_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
-          {%- if bundle_media != blank -%}
-            {{ bundle_media | image_url: width: 500 | image_tag: widths: '220, 360, 500', sizes: '20vw', loading: 'lazy', class: bundle_motion_class, alt: bundle_media.alt | default: bundle_label }}
-          {%- else -%}
-            {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
-          {%- endif -%}
-          {%- if section.settings.show_bundle_product_info and bundle_product != blank -%}
-            <span class="bundle-product__meta"><strong>{{ bundle_product.title }}</strong><small>{{ bundle_product.price | money }}</small></span>
-          {%- endif -%}
-        </a>
-      {%- endfor -%}
-    </div>
-    <div class="bundle-box"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: 2 }}ms"{% endif %}>
-      <div class="bundle-box__shape"><span>{{ section.settings.bundle_box_label }}</span></div>
-      <div class="bundle-save">{{ section.settings.bundle_save_label }}</div>
-    </div>
+    <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
+      <div class="bundle-builder__header">
+        <div><p class="pack-eyebrow">{{ section.settings.bundle_picker_eyebrow }}</p><h3>{{ section.settings.bundle_picker_heading }}</h3></div>
+        <span class="bundle-builder__count" data-bundle-count>0 / {{ section.settings.bundle_maximum }}</span>
+      </div>
+      <div class="bundle-builder__products">
+        {%- assign rendered_products = 0 -%}
+        {%- if section.settings.bundle_source == 'blocks' -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.product != blank -%}
+              {%- assign rendered_products = rendered_products | plus: 1 -%}
+              <div {{ block.shopify_attributes }}>{% render 'bundle-builder-card', bundle_product: block.settings.product, section_id: section.id, card_index: forloop.index %}</div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- elsif bundle_catalog != blank -%}
+          {%- for bundle_product in bundle_catalog.products limit: section.settings.bundle_product_limit -%}
+            {%- assign rendered_products = rendered_products | plus: 1 -%}
+            {% render 'bundle-builder-card', bundle_product: bundle_product, section_id: section.id, card_index: forloop.index %}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if rendered_products == 0 -%}<div class="pack-editor-note bundle-builder__empty">Select a collection or add product blocks to activate this box builder.</div>{%- endif -%}
+      </div>
+      <div class="bundle-builder__footer">
+        <div class="bundle-builder__total"><span>{{ section.settings.bundle_total_label }}</span><strong data-bundle-total>{{ 0 | money }}</strong></div>
+        <p class="bundle-builder__status" data-bundle-status role="status" aria-live="polite">Choose at least {{ section.settings.bundle_minimum }} products.</p>
+        <button class="pack-button pack-button--blue" type="submit" data-bundle-submit disabled>{{ section.settings.bundle_button_label }}</button>
+        {%- if section.settings.bundle_discount_note != blank -%}<p class="bundle-builder__note">{{ section.settings.bundle_discount_note }}</p>{%- endif -%}
+      </div>
+    </form>
+    {%- if section.settings.show_bundle_box_art -%}
+      <div class="bundle-box"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: 2 }}ms"{% endif %}>
+        <div class="bundle-box__shape"><span>{{ section.settings.bundle_box_label }}</span></div>
+        {%- if section.settings.bundle_save_label != blank -%}<div class="bundle-save">{{ section.settings.bundle_save_label }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
   </div>
 </section>
-
 {% schema %}
 {
   "name": "Build a happy box",
-  "max_blocks": 3,
+  "max_blocks": 8,
   "settings": [
     { "type": "text", "id": "bundle_eyebrow", "label": "Eyebrow", "default": "Their favorites, your schedule" },
     { "type": "text", "id": "bundle_heading", "label": "Heading", "default": "Build a happy box" },
-    { "type": "richtext", "id": "bundle_text", "label": "Text", "default": "<p>Pick their favorites. Skip what they don't need. Happiness, delivered your way.</p>" },
-    { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Build your box" },
-    { "type": "collection", "id": "bundle_collection", "label": "Bundle collection" },
-    { "type": "url", "id": "bundle_button_link", "label": "Custom button link override" },
+    { "type": "richtext", "id": "bundle_text", "label": "Text", "default": "<p>Choose the products they love and add the complete box to your cart in one step.</p>" },
+    { "type": "text", "id": "bundle_step_one", "label": "Step one", "default": "Pick their favorites" },
+    { "type": "text", "id": "bundle_step_two", "label": "Step two", "default": "Choose each option" },
+    { "type": "text", "id": "bundle_step_three", "label": "Step three", "default": "Add the box to cart" },
+    { "type": "header", "content": "Product source" },
+    { "type": "select", "id": "bundle_source", "label": "Products", "options": [
+      { "value": "all", "label": "All products automatically" }, { "value": "collection", "label": "Selected collection" }, { "value": "blocks", "label": "Individual product blocks" }
+    ], "default": "all" },
+    { "type": "collection", "id": "bundle_collection", "label": "Collection" },
+    { "type": "range", "id": "bundle_product_limit", "min": 4, "max": 8, "step": 1, "label": "Products shown", "default": 6 },
+    { "type": "range", "id": "bundle_minimum", "min": 1, "max": 4, "step": 1, "label": "Minimum products required", "default": 2 },
+    { "type": "range", "id": "bundle_maximum", "min": 4, "max": 8, "step": 1, "label": "Maximum products allowed", "default": 4 },
+    { "type": "header", "content": "Builder text" },
+    { "type": "text", "id": "bundle_picker_eyebrow", "label": "Picker eyebrow", "default": "Create their box" },
+    { "type": "text", "id": "bundle_picker_heading", "label": "Picker heading", "default": "Choose the good stuff" },
+    { "type": "text", "id": "bundle_total_label", "label": "Total label", "default": "Box total" },
+    { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Add box to cart" },
+    { "type": "text", "id": "bundle_discount_note", "label": "Discount note", "info": "Informational only. Configure the real discount in Shopify Discounts.", "default": "Eligible automatic discounts appear in the cart." },
+    { "type": "header", "content": "Box artwork" },
+    { "type": "checkbox", "id": "show_bundle_box_art", "label": "Show box artwork", "default": true },
     { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },
-    { "type": "text", "id": "bundle_save_label", "label": "Save badge", "default": "SAVE UP TO 15%" },
-    { "type": "checkbox", "id": "show_bundle_product_info", "label": "Show product title and price", "default": true },
+    { "type": "text", "id": "bundle_save_label", "label": "Badge text", "default": "BUILD YOUR BOX" },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "bundle_animation", "label": "Bundle animation", "options": [
       { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "none" },
-    { "type": "select", "id": "bundle_idle_motion", "label": "Product idle motion", "options": [
-      { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "sway", "label": "Sway" }, { "value": "bounce", "label": "Soft bounce" }, { "value": "orbit", "label": "Mini orbit" }
-    ], "default": "none" },
-    { "type": "select", "id": "bundle_interaction", "label": "Product hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    ], "default": "pop" }
   ],
-  "blocks": [
-    {
-      "type": "bundle_product",
-      "name": "Bundle product",
-      "settings": [
-        { "type": "product", "id": "product", "label": "Product" },
-        { "type": "image_picker", "id": "product_image", "label": "Custom transparent image override" },
-        { "type": "text", "id": "product_label", "label": "Alt text", "default": "Bundle product" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Build a happy box",
-      "blocks": [
-        { "type": "bundle_product" },
-        { "type": "bundle_product" },
-        { "type": "bundle_product" }
-      ]
-    }
-  ]
+  "blocks": [{ "type": "bundle_product", "name": "Bundle product", "settings": [{ "type": "product", "id": "product", "label": "Product" }] }],
+  "presets": [{ "name": "Build a happy box", "settings": { "bundle_source": "all" } }]
 }
 {% endschema %}

@@ -4,12 +4,24 @@ class PackMenu {
     this.menu = document.querySelector('[data-mobile-nav]');
     if (!this.button || !this.menu) return;
     this.button.addEventListener('click', () => this.toggle());
+    this.menu.addEventListener('click', (event) => {
+      if (event.target.closest('a')) this.close();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') this.close();
+    });
   }
   toggle() {
     const open = this.button.getAttribute('aria-expanded') === 'true';
     this.button.setAttribute('aria-expanded', String(!open));
     this.menu.classList.toggle('is-open', !open);
     document.body.classList.toggle('menu-open', !open);
+  }
+  close() {
+    if (this.button.getAttribute('aria-expanded') !== 'true') return;
+    this.button.setAttribute('aria-expanded', 'false');
+    this.menu.classList.remove('is-open');
+    document.body.classList.remove('menu-open');
   }
 }
 
@@ -197,6 +209,202 @@ class PackQuickAdd {
   }
 }
 
+class PackBundleBuilder {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-bundle-builder]').forEach((builder) => {
+      if (builder.dataset.bundleBound === 'true') return;
+      builder.dataset.bundleBound = 'true';
+      builder.addEventListener('change', (event) => this.handleChange(builder, event));
+      builder.addEventListener('submit', (event) => this.submit(builder, event));
+      this.render(builder);
+    });
+  }
+  handleChange(builder, event) {
+    const card = event.target.closest('[data-bundle-card]');
+    if (event.target.matches('[data-bundle-variant]') && card) {
+      const option = event.target.selectedOptions?.[0] || event.target;
+      const checkbox = card.querySelector('[data-bundle-product]');
+      if (checkbox) checkbox.value = event.target.value;
+      const price = card.querySelector('[data-bundle-card-price]');
+      if (price && option.dataset.priceLabel) price.textContent = option.dataset.priceLabel;
+    }
+    if (event.target.matches('[data-bundle-product]')) {
+      const selected = builder.querySelectorAll('[data-bundle-product]:checked');
+      if (selected.length > Number(builder.dataset.max || 4)) event.target.checked = false;
+    }
+    this.render(builder);
+  }
+  selected(builder) { return [...builder.querySelectorAll('[data-bundle-product]:checked')]; }
+  render(builder) {
+    const selected = this.selected(builder);
+    const min = Number(builder.dataset.min || 1);
+    const max = Number(builder.dataset.max || 4);
+    const atMax = selected.length >= max;
+    builder.querySelectorAll('[data-bundle-product]:not(:checked)').forEach((input) => {
+      input.disabled = atMax || input.closest('.is-unavailable') !== null;
+    });
+    const count = builder.querySelector('[data-bundle-count]');
+    if (count) count.textContent = `${selected.length} / ${max}`;
+    const total = selected.reduce((sum, checkbox) => {
+      const variant = checkbox.closest('[data-bundle-card]')?.querySelector('[data-bundle-variant]');
+      const option = variant?.selectedOptions?.[0] || variant;
+      return sum + Number(option?.dataset.price || 0);
+    }, 0);
+    const totalNode = builder.querySelector('[data-bundle-total]');
+    if (totalNode) totalNode.textContent = this.money(total, builder.dataset.currency);
+    const status = builder.querySelector('[data-bundle-status]');
+    if (status) {
+      if (selected.length < min) status.textContent = `Choose ${min - selected.length} more to complete the box.`;
+      else if (atMax) status.textContent = 'Your box is full.';
+      else status.textContent = `${max - selected.length} more can be added.`;
+    }
+    const submit = builder.querySelector('[data-bundle-submit]');
+    if (submit) submit.disabled = selected.length < min || selected.length > max;
+  }
+  money(cents, currency) {
+    try {
+      return new Intl.NumberFormat(document.documentElement.lang || 'en', { style: 'currency', currency: currency || 'USD' }).format(cents / 100);
+    } catch (error) {
+      return (cents / 100).toFixed(2);
+    }
+  }
+  async submit(builder, event) {
+    event.preventDefault();
+    const selected = this.selected(builder);
+    if (selected.length < Number(builder.dataset.min || 1)) return;
+    const button = builder.querySelector('[data-bundle-submit]');
+    const status = builder.querySelector('[data-bundle-status]');
+    button.disabled = true;
+    builder.setAttribute('aria-busy', 'true');
+    if (status) status.textContent = 'Adding your box…';
+    const items = selected.map((checkbox) => ({
+      id: Number(checkbox.value),
+      quantity: 1,
+      properties: { '_PACK box': builder.dataset.sectionId || 'bundle' }
+    }));
+    try {
+      const response = await fetch(`${window.Shopify.routes.root}cart/add.js`, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.description || 'Could not add this box.');
+      if (status) status.textContent = 'Your box was added to the cart.';
+      if (window.packCartDrawer?.enabled) await window.packCartDrawer.refresh(true);
+      else {
+        const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((cartResponse) => cartResponse.json());
+        document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+        this.toast('Your box was added to the cart.');
+      }
+    } catch (error) {
+      if (status) status.textContent = error.message || 'Could not add this box.';
+    } finally {
+      builder.removeAttribute('aria-busy');
+      this.render(builder);
+    }
+  }
+  toast(message) {
+    const toast = document.querySelector('[data-cart-toast]');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.hidden = false;
+    window.setTimeout(() => { toast.hidden = true; }, 3000);
+  }
+}
+
+class PackQuiz {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-pack-quiz]').forEach((quiz) => {
+      if (quiz.dataset.quizBound === 'true') return;
+      quiz.dataset.quizBound = 'true';
+      quiz.packQuizState = { current: 0, answers: [] };
+      quiz.addEventListener('click', (event) => this.handle(quiz, event));
+    });
+  }
+  handle(quiz, event) {
+    if (event.target.closest('[data-quiz-start]')) return this.start(quiz);
+    const answer = event.target.closest('[data-quiz-answer]');
+    if (answer) return this.answer(quiz, answer);
+    if (event.target.closest('[data-quiz-back]')) return this.back(quiz);
+    if (event.target.closest('[data-quiz-restart]')) return this.restart(quiz);
+  }
+  start(quiz) {
+    if (!quiz.querySelectorAll('[data-quiz-question]').length) return;
+    quiz.querySelector('[data-quiz-intro]').hidden = true;
+    quiz.querySelector('[data-quiz-result]').hidden = true;
+    quiz.querySelector('[data-quiz-flow]').hidden = false;
+    quiz.packQuizState = { current: 0, answers: [] };
+    this.showQuestion(quiz);
+  }
+  answer(quiz, answer) {
+    const state = quiz.packQuizState;
+    state.answers[state.current] = answer.dataset.resultKey;
+    state.current += 1;
+    if (state.current >= quiz.querySelectorAll('[data-quiz-question]').length) this.finish(quiz);
+    else this.showQuestion(quiz);
+  }
+  back(quiz) {
+    const state = quiz.packQuizState;
+    if (state.current <= 0) return;
+    state.current -= 1;
+    state.answers = state.answers.slice(0, state.current);
+    this.showQuestion(quiz);
+  }
+  restart(quiz) {
+    quiz.querySelector('[data-quiz-result]').hidden = true;
+    quiz.querySelector('[data-quiz-intro]').hidden = false;
+    quiz.packQuizState = { current: 0, answers: [] };
+    quiz.querySelector('[data-quiz-start]')?.focus();
+  }
+  showQuestion(quiz) {
+    const state = quiz.packQuizState;
+    const questions = [...quiz.querySelectorAll('[data-quiz-question]')];
+    questions.forEach((question, index) => { question.hidden = index !== state.current; });
+    quiz.querySelector('[data-quiz-progress-bar]').style.width = `${((state.current + 1) / questions.length) * 100}%`;
+    quiz.querySelector('[data-quiz-progress-label]').textContent = `Question ${state.current + 1} of ${questions.length}`;
+    quiz.querySelector('[data-quiz-back]').hidden = state.current === 0;
+    questions[state.current]?.querySelector('[data-quiz-answer]')?.focus();
+  }
+  finish(quiz) {
+    const scores = quiz.packQuizState.answers.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map());
+    const winner = [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || 'all-products';
+    const source = [...quiz.querySelectorAll('template[data-quiz-result-source]')].find((template) => template.dataset.quizResultSource === winner);
+    const target = quiz.querySelector('[data-quiz-result-content]');
+    target.replaceChildren(source ? source.content.cloneNode(true) : document.createTextNode('No recommendation is configured.'));
+    quiz.querySelector('[data-quiz-flow]').hidden = true;
+    quiz.querySelector('[data-quiz-result]').hidden = false;
+    quiz.querySelector('[data-quiz-restart]')?.focus();
+  }
+}
+
+class PackProductGallery {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-product-gallery]').forEach((gallery) => {
+      if (gallery.dataset.galleryBound === 'true') return;
+      gallery.dataset.galleryBound = 'true';
+      const track = gallery.querySelector('[data-product-gallery-track]');
+      if (!track) return;
+      const items = [...track.querySelectorAll('.product-gallery__item')];
+      if (items.length < 2) return;
+      gallery.querySelector('[data-gallery-prev]')?.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
+      gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }));
+      const update = () => {
+        const index = Math.max(0, Math.min(items.length - 1, Math.round(track.scrollLeft / Math.max(track.clientWidth, 1))));
+        const counter = gallery.querySelector('[data-gallery-counter]');
+        if (counter) counter.textContent = `${index + 1} / ${items.length}`;
+        gallery.querySelector('[data-gallery-prev]')?.toggleAttribute('disabled', index === 0);
+        gallery.querySelector('[data-gallery-next]')?.toggleAttribute('disabled', index === items.length - 1);
+      };
+      track.addEventListener('scroll', update, { passive: true });
+      update();
+    });
+  }
+}
+
 class PackReveal {
   constructor(root = document) {
     this.repeat = document.body?.dataset.packMotionRepeat === 'true';
@@ -366,13 +574,19 @@ customElements.define('pack-menu', class extends HTMLElement {});
 document.addEventListener('DOMContentLoaded', () => {
   new PackMenu();
   window.packCartDrawer = new PackCartDrawer();
-  new PackQuickAdd();
+  window.packQuickAdd = new PackQuickAdd();
+  window.packBundleBuilder = new PackBundleBuilder();
+  window.packQuiz = new PackQuiz();
+  window.packProductGallery = new PackProductGallery();
   window.packReveal = new PackReveal();
   window.packTilt = new PackTilt();
   window.packRecentlyViewed = new PackRecentlyViewed();
 });
 
 document.addEventListener('shopify:section:load', (event) => {
+  window.packBundleBuilder?.bind(event.target);
+  window.packQuiz?.bind(event.target);
+  window.packProductGallery?.bind(event.target);
   if (!window.packReveal) window.packReveal = new PackReveal(event.target);
   else window.packReveal.observe(event.target);
   if (!window.packTilt) window.packTilt = new PackTilt(event.target);
