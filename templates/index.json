@@ -351,7 +351,7 @@
         "bundle_step_two": "Choose each option",
         "bundle_step_three": "Add the box to cart",
         "bundle_source": "all",
-        "bundle_collection": "",
+        "bundle_collection": "best-sniffers",
         "bundle_product_limit": 6,
         "bundle_minimum": 2,
         "bundle_maximum": 4,
