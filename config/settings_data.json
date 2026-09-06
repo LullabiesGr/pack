@@ -28,9 +28,9 @@
     "card_enable_quick_add": true,
     "card_show_sale_badge": true,
     "card_show_corner_paws": true,
-    "card_show_hanging_tag": false,
+    "card_show_hanging_tag": true,
     "card_hanging_tag_text": "Good stuff!",
-    "card_show_sticker": false,
+    "card_show_sticker": true,
     "card_sticker_text": "Fan favorite!",
     "card_visual_color": "#FFD23F",
     "card_visual_accent": "#F49AC2",
@@ -42,6 +42,7 @@
     "show_corner_doodles": false,
     "corner_doodle_style": "mixed",
     "corner_doodle_color": "#F49AC2",
+    "show_button_paws": false,
     "cart_behavior": "drawer",
     "cart_icon_style": "doghouse",
     "cart_page_style": "standard",
@@ -65,12 +66,18 @@
     "cart_mascot_y": 0,
     "cart_mascot_color": "#B86B3D",
     "cart_animate_mascot": true,
-    "show_button_paws": false,
     "motion_duration": 700,
     "motion_distance": 60,
     "motion_stagger": 100,
     "motion_easing": "smooth",
-    "motion_repeat": false
+    "motion_repeat": false,
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "PACK": {}
