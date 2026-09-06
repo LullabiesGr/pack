@@ -12,11 +12,20 @@
   if placeholder_index == 0
     assign placeholder_index = 6
   endif
+  assign card_pet_type = settings.card_pet_type
+  if card_pet_type == 'mixed'
+    assign pet_remainder = card_index | modulo: 2
+    if pet_remainder == 0
+      assign card_pet_type = 'dog'
+    else
+      assign card_pet_type = 'cat'
+    endif
+  endif
 -%}
 
-<article class="product-card pack-interaction--{{ interaction_style | default: 'lift' }}{% if settings.card_show_corner_paws %} product-card--corner-paws{% endif %}" style="--card-bg: {{ card_color }}; --card-visual: {{ settings.card_visual_color }}; --card-visual-accent: {{ settings.card_visual_accent }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}{% if interaction_style == 'tilt' %} data-pack-tilt{% endif %}>
-  {%- if settings.card_show_corner_paws -%}
-    <span class="product-card__corner-paws" aria-hidden="true"><i></i><i></i></span>
+<article class="product-card pack-interaction--{{ interaction_style | default: 'lift' }}" style="--card-bg: {{ card_color }}; --card-visual: {{ settings.card_visual_color }}; --card-visual-accent: {{ settings.card_visual_accent }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}{% if interaction_style == 'tilt' %} data-pack-tilt{% endif %}>
+  {%- if settings.card_pet_style != blank and settings.card_pet_style != 'none' -%}
+    {% render 'product-card-pet', pet_style: settings.card_pet_style, pet_type: card_pet_type, pet_position: settings.card_pet_position, pet_size: settings.card_pet_size, pet_color: settings.card_pet_color, pet_detail_color: settings.card_pet_detail_color, pet_motion: settings.card_pet_motion, show_on_mobile: settings.card_pet_show_mobile %}
   {%- endif -%}
   {%- if settings.card_show_hanging_tag and settings.card_hanging_tag_text != blank -%}
     <span class="product-card__hanging-tag" aria-hidden="true">{{ settings.card_hanging_tag_text | escape }}</span>

@@ -5,23 +5,40 @@
   if shipping_threshold > 0
     assign shipping_progress = cart.total_price | times: 100 | divided_by: shipping_threshold | at_most: 100
   endif
+  assign shipping_style = settings.cart_shipping_progress_style | default: 'classic'
+  assign shipping_progress_id = unique_id | default: 'cart' | append: '-' | append: shipping_style
 -%}
 {%- if settings.cart_show_shipping_progress and shipping_threshold > 0 and cart.item_count > 0 -%}
-  <div class="cart-shipping-progress">
+  <div class="cart-shipping-progress cart-shipping-progress--{{ shipping_style }}" style="--shipping-progress-color: {{ settings.cart_shipping_progress_color }};">
     {%- if shipping_remaining > 0 -%}
       <p>Add <strong>{{ shipping_remaining | money }}</strong> more for free shipping.</p>
     {%- else -%}
       <p><strong>Free shipping unlocked.</strong></p>
     {%- endif -%}
-    <div
-      class="cart-shipping-progress__track"
-      role="progressbar"
-      aria-label="Free shipping progress"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      aria-valuenow="{{ shipping_progress }}"
-    >
-      <span style="width: {{ shipping_progress }}%;"></span>
-    </div>
+    {%- case shipping_style -%}
+      {%- when 'bone' -%}
+        <svg class="cart-shipping-progress__shape" viewBox="0 0 360 54" role="progressbar" aria-label="Free shipping progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ shipping_progress }}">
+          <defs><clipPath id="BoneProgress-{{ shipping_progress_id }}"><path d="M33 13c-5-10-20-12-27-3-5 7-2 16 5 20-7 6-7 16 0 22 9 7 21 2 24-7h290c3 9 15 14 24 7 7-6 7-16 0-22 7-4 10-13 5-20-7-9-22-7-27 3-3-3-7-4-12-4H45c-5 0-9 1-12 4Z"/></clipPath></defs>
+          <path class="cart-shipping-progress__shape-bg" d="M33 13c-5-10-20-12-27-3-5 7-2 16 5 20-7 6-7 16 0 22 9 7 21 2 24-7h290c3 9 15 14 24 7 7-6 7-16 0-22 7-4 10-13 5-20-7-9-22-7-27 3-3-3-7-4-12-4H45c-5 0-9 1-12 4Z"/>
+          <g clip-path="url(#BoneProgress-{{ shipping_progress_id }})"><rect class="cart-shipping-progress__shape-fill" x="0" y="0" width="{{ shipping_progress }}%" height="54"/></g>
+          <path class="cart-shipping-progress__shape-outline" d="M33 13c-5-10-20-12-27-3-5 7-2 16 5 20-7 6-7 16 0 22 9 7 21 2 24-7h290c3 9 15 14 24 7 7-6 7-16 0-22 7-4 10-13 5-20-7-9-22-7-27 3-3-3-7-4-12-4H45c-5 0-9 1-12 4Z"/>
+        </svg>
+      {%- when 'fishbone' -%}
+        <svg class="cart-shipping-progress__shape cart-shipping-progress__fish" viewBox="0 0 360 58" role="progressbar" aria-label="Free shipping progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ shipping_progress }}">
+          <defs><clipPath id="FishProgress-{{ shipping_progress_id }}"><rect x="0" y="0" width="{{ shipping_progress }}%" height="58"/></clipPath></defs>
+          <g class="cart-shipping-progress__fish-outline">
+            <path class="cart-shipping-progress__fish-lines" d="M53 29h258M92 29 72 11m20 18L72 47m61-18-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-18m21 18-21 18"/><path d="m53 29-42-21v42Zm258 0c0-14 11-23 25-23 12 0 21 9 21 23s-9 23-21 23c-14 0-25-9-25-23Z"/>
+          </g>
+          <g class="cart-shipping-progress__fish-bg">
+            <path class="cart-shipping-progress__fish-lines" d="M53 29h258M92 29 72 11m20 18L72 47m61-18-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-18m21 18-21 18"/><path d="m53 29-42-21v42Zm258 0c0-14 11-23 25-23 12 0 21 9 21 23s-9 23-21 23c-14 0-25-9-25-23Z"/>
+          </g>
+          <g class="cart-shipping-progress__fish-fill" clip-path="url(#FishProgress-{{ shipping_progress_id }})">
+            <path class="cart-shipping-progress__fish-lines" d="M53 29h258M92 29 72 11m20 18L72 47m61-18-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-21m21 21-21 21m63-21-21-18m21 18-21 18"/><path d="m53 29-42-21v42Zm258 0c0-14 11-23 25-23 12 0 21 9 21 23s-9 23-21 23c-14 0-25-9-25-23Z"/>
+          </g>
+          <circle class="cart-shipping-progress__fish-eye" cx="339" cy="23" r="3.5"/>
+        </svg>
+      {%- else -%}
+        <div class="cart-shipping-progress__track" role="progressbar" aria-label="Free shipping progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ shipping_progress }}"><span style="width: {{ shipping_progress }}%;"></span></div>
+    {%- endcase -%}
   </div>
 {%- endif -%}

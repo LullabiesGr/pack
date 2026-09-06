@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "PACK",
-    "theme_version": "1.6.1",
+    "theme_version": "1.7.0",
     "theme_author": "LullabiesGr",
     "theme_documentation_url": "https://github.com/LullabiesGr/pack",
     "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
@@ -57,7 +57,22 @@
       { "type": "checkbox", "id": "card_enable_quick_add", "label": "Enable quick add", "default": true },
       { "type": "checkbox", "id": "card_show_sale_badge", "label": "Show sale badge", "default": true },
       { "type": "header", "content": "Optional playful visuals" },
-      { "type": "checkbox", "id": "card_show_corner_paws", "label": "Show paws gripping cards", "default": false },
+      { "type": "select", "id": "card_pet_style", "label": "Pet sitter style", "options": [
+        { "value": "none", "label": "None" }, { "value": "single-paw", "label": "Single corner paw" }, { "value": "corner-paws", "label": "Two corner paws" }, { "value": "paws-tail", "label": "Paws and tail" }, { "value": "face-paws", "label": "Face and paws" }, { "value": "face-paws-tail", "label": "Face, paws and tail" }
+      ], "default": "corner-paws" },
+      { "type": "select", "id": "card_pet_type", "label": "Card pet", "options": [
+        { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }, { "value": "mixed", "label": "Alternate cat and dog" }
+      ], "default": "mixed" },
+      { "type": "select", "id": "card_pet_position", "label": "Pet position", "options": [
+        { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }
+      ], "default": "center" },
+      { "type": "range", "id": "card_pet_size", "min": 72, "max": 144, "step": 4, "unit": "px", "label": "Pet size", "default": 112 },
+      { "type": "color", "id": "card_pet_color", "label": "Pet coat color", "default": "#111111" },
+      { "type": "color", "id": "card_pet_detail_color", "label": "Paw color", "default": "#FFFFFF" },
+      { "type": "select", "id": "card_pet_motion", "label": "Pet animation", "options": [
+        { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "wiggle", "label": "Playful wiggle" }
+      ], "default": "none" },
+      { "type": "checkbox", "id": "card_pet_show_mobile", "label": "Show card pets on mobile", "default": true },
       { "type": "checkbox", "id": "card_show_hanging_tag", "label": "Show hanging tag", "default": false },
       { "type": "text", "id": "card_hanging_tag_text", "label": "Hanging tag text", "default": "Good stuff!" },
       { "type": "checkbox", "id": "card_show_sticker", "label": "Show card sticker", "default": false },
@@ -127,6 +142,10 @@
       { "type": "checkbox", "id": "cart_show_note", "label": "Show order note", "default": true },
       { "type": "checkbox", "id": "cart_show_shipping_progress", "label": "Show free-shipping progress", "default": true },
       { "type": "number", "id": "free_shipping_threshold", "label": "Free-shipping threshold in store currency", "default": 49 },
+      { "type": "select", "id": "cart_shipping_progress_style", "label": "Shipping progress style", "options": [
+        { "value": "classic", "label": "Classic bar" }, { "value": "bone", "label": "Bone for dogs" }, { "value": "fishbone", "label": "Fishbone for cats" }
+      ], "default": "bone" },
+      { "type": "color", "id": "cart_shipping_progress_color", "label": "Shipping progress color", "default": "#B86B3D" },
       { "type": "color", "id": "cart_drawer_background", "label": "Drawer background", "default": "#FFF8E9" },
       { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" },
       { "type": "header", "content": "Optional playful cart visuals" },

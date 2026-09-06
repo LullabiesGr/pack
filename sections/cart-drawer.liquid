@@ -68,7 +68,7 @@
 
       {%- if cart.item_count > 0 -%}
         <footer class="cart-drawer__footer">
-          {% render 'cart-shipping-progress' %}
+          {% render 'cart-shipping-progress', unique_id: section.id %}
           {%- if settings.cart_show_note -%}
             <label class="cart-note-label" for="CartDrawerNote">Order note</label>
             <textarea class="cart-note" id="CartDrawerNote" rows="2" data-cart-note placeholder="Add delivery details or a note for the store">{{ cart.note }}</textarea>

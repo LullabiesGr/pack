@@ -41,4 +41,4 @@ Example outcome keys: `active`, `wellness`, and `comfort`.
 
 ## Status
 
-Version 1.6.1 replaces the cart counter starburst with a precise SVG paw and adds Circle, Paw, Minimal and Hidden counter styles, independent X/Y positioning, plus background and text colors. The AJAX cart count remains functional across header and drawer updates.
+Version 1.7.0 adds Classic, Bone and Fishbone free-shipping meters whose fill follows the real cart threshold. Product cards now include a modular cat, dog or alternating pet sitter with single paw, corner paws, paws and tail, face and paws, or the complete face-paws-tail composition. Position, size, coat, paw color, motion and mobile visibility remain merchant controlled.
