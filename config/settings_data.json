@@ -30,7 +30,7 @@
     "card_show_corner_paws": true,
     "card_show_hanging_tag": true,
     "card_hanging_tag_text": "Good stuff!",
-    "card_show_sticker": true,
+    "card_show_sticker": false,
     "card_sticker_text": "Fan favorite!",
     "card_visual_color": "#FFD23F",
     "card_visual_accent": "#F49AC2",
