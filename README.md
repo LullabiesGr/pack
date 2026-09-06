@@ -41,4 +41,4 @@ Example outcome keys: `active`, `wellness`, and `comfort`.
 
 ## Status
 
-Version 1.4.0 adds merchant-configured, real-cart box discounts and outcome-based product recommendations to the complete storefront system.
+Version 1.5.0 adds the optional cat-or-dog header character, positioned on the header edge with an animated tail extending into the hero, alongside merchant-configured real-cart box discounts and outcome-based product recommendations.

@@ -1,3 +1,9 @@
+{%- liquid
+  assign render_perched_pet = section.settings.show_perched_pet
+  if section.settings.perched_pet_pages == 'home' and request.page_type != 'index'
+    assign render_perched_pet = false
+  endif
+-%}
 {%- if section.settings.show_announcement -%}
 <div class="announcement announcement--{{ section.settings.announcement_style }}" style="--announcement-bg: {{ section.settings.announcement_background }}; --announcement-text: {{ section.settings.announcement_text_color }};" role="region" aria-label="Announcement">
   <div class="announcement__track">
@@ -55,6 +61,17 @@
       <button class="icon-button menu-toggle" type="button" aria-label="Menu" aria-expanded="false" data-menu-toggle>{% render 'icon', icon: 'menu' %}</button>
     </div>
   </div>
+  {%- if render_perched_pet -%}
+    {% render 'header-perched-pet',
+      pet_type: section.settings.perched_pet_type,
+      pet_size: section.settings.perched_pet_size,
+      pet_position: section.settings.perched_pet_position,
+      pet_mobile_position: section.settings.perched_pet_mobile_position,
+      pet_color: section.settings.perched_pet_color,
+      pet_motion: section.settings.perched_pet_motion,
+      show_on_mobile: section.settings.show_perched_pet_mobile
+    %}
+  {%- endif -%}
 </header>
 
 {%- unless section.settings.header_divider_style == 'none' -%}
@@ -119,6 +136,22 @@
     { "type": "select", "id": "header_animation", "label": "Header entrance", "options": [
       { "value": "none", "label": "None" }, { "value": "drop", "label": "Drop in" }, { "value": "bounce", "label": "Playful bounce" }, { "value": "slide", "label": "Editorial slide" }
     ], "default": "none" },
+    { "type": "header", "content": "Perched pet" },
+    { "type": "checkbox", "id": "show_perched_pet", "label": "Show pet sitting on header", "default": true },
+    { "type": "select", "id": "perched_pet_type", "label": "Pet", "options": [
+      { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }
+    ], "default": "cat" },
+    { "type": "select", "id": "perched_pet_pages", "label": "Show on", "options": [
+      { "value": "home", "label": "Homepage only" }, { "value": "all", "label": "All pages" }
+    ], "default": "home" },
+    { "type": "checkbox", "id": "show_perched_pet_mobile", "label": "Show on mobile", "default": true },
+    { "type": "range", "id": "perched_pet_position", "min": 8, "max": 92, "step": 2, "unit": "%", "label": "Desktop horizontal position", "default": 84 },
+    { "type": "range", "id": "perched_pet_mobile_position", "min": 12, "max": 88, "step": 2, "unit": "%", "label": "Mobile horizontal position", "default": 62 },
+    { "type": "range", "id": "perched_pet_size", "min": 80, "max": 160, "step": 4, "unit": "px", "label": "Pet size", "default": 120 },
+    { "type": "color", "id": "perched_pet_color", "label": "Pet color", "default": "#FFD23F" },
+    { "type": "select", "id": "perched_pet_motion", "label": "Animation", "options": [
+      { "value": "none", "label": "None" }, { "value": "tail", "label": "Tail sway" }, { "value": "bob", "label": "Gentle bob" }
+    ], "default": "tail" },
     { "type": "header", "content": "Bottom divider" },
     { "type": "select", "id": "header_divider_style", "label": "Divider style", "options": [
       { "value": "none", "label": "None" }, { "value": "solid", "label": "Solid" }, { "value": "dashed", "label": "Dashed" }, { "value": "diagonal", "label": "Diagonal" }, { "value": "zigzag", "label": "Zigzag" }, { "value": "wave", "label": "Wave" }, { "value": "paws", "label": "Paws" }, { "value": "bones", "label": "Bones" }, { "value": "animal-mix", "label": "Animal mix" }
