@@ -50,13 +50,21 @@
       {%- if shop.customer_accounts_enabled -%}
         <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
       {%- endif -%}
-      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}{% if settings.cart_show_paw_badge %} icon-button--paw-badge{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
+      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" style="--cart-counter-x: {{ settings.cart_counter_x }}px; --cart-counter-y: {{ settings.cart_counter_y }}px; --cart-counter-bg: {{ settings.cart_counter_background }}; --cart-counter-text: {{ settings.cart_counter_text }};" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
         {% if settings.cart_icon_style == 'doghouse' %}
           {% render 'icon', icon: 'doghouse-cart' %}
         {% else %}
           {% render 'icon', icon: 'cart' %}
         {% endif %}
-        <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+        {%- unless settings.cart_counter_style == 'hidden' -%}
+          <span class="cart-count cart-count--{{ settings.cart_counter_style | default: 'circle' }}" aria-hidden="true">
+            <svg class="cart-count__paw" viewBox="0 0 48 48" role="presentation" focusable="false">
+              <ellipse cx="8.5" cy="17" rx="6.2" ry="7.4"/><ellipse cx="19" cy="9.5" rx="6.2" ry="7.4"/><ellipse cx="31" cy="9.5" rx="6.2" ry="7.4"/><ellipse cx="41.5" cy="17" rx="6.2" ry="7.4"/>
+              <path d="M24 17c-10.2 0-17.8 8.1-17.8 17.3C6.2 42 12 46 18.5 43.2a13.8 13.8 0 0 1 11 0C36 46 41.8 42 41.8 34.3 41.8 25.1 34.2 17 24 17Z"/>
+            </svg>
+            <span class="cart-count__number" data-cart-count>{{ cart.item_count }}</span>
+          </span>
+        {%- endunless -%}
       </a>
       <button class="icon-button menu-toggle" type="button" aria-label="Menu" aria-expanded="false" data-menu-toggle>{% render 'icon', icon: 'menu' %}</button>
     </div>

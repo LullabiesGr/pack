@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "PACK",
-    "theme_version": "1.6.0",
+    "theme_version": "1.6.1",
     "theme_author": "LullabiesGr",
     "theme_documentation_url": "https://github.com/LullabiesGr/pack",
     "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
@@ -130,7 +130,14 @@
       { "type": "color", "id": "cart_drawer_background", "label": "Drawer background", "default": "#FFF8E9" },
       { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" },
       { "type": "header", "content": "Optional playful cart visuals" },
-      { "type": "checkbox", "id": "cart_show_paw_badge", "label": "Show paw-shaped cart count badge", "default": false },
+      { "type": "select", "id": "cart_counter_style", "label": "Cart counter badge", "options": [
+        { "value": "circle", "label": "Circle" }, { "value": "paw", "label": "Paw" }, { "value": "minimal", "label": "Minimal number" }, { "value": "hidden", "label": "Hidden" }
+      ], "default": "paw" },
+      { "type": "paragraph", "content": "Position the badge independently from the cart icon. Positive X moves right; positive Y moves down." },
+      { "type": "range", "id": "cart_counter_x", "min": -20, "max": 20, "step": 1, "unit": "px", "label": "Counter X position", "default": -4 },
+      { "type": "range", "id": "cart_counter_y", "min": -20, "max": 20, "step": 1, "unit": "px", "label": "Counter Y position", "default": 4 },
+      { "type": "color", "id": "cart_counter_background", "label": "Counter background", "default": "#FFD23F" },
+      { "type": "color", "id": "cart_counter_text", "label": "Counter text", "default": "#111111" },
       { "type": "checkbox", "id": "cart_show_drawer_mascot", "label": "Show pet peeking from drawer", "default": false },
       { "type": "select", "id": "cart_drawer_mascot", "label": "Drawer pet", "options": [
         { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }
