@@ -9,6 +9,11 @@
     <button class="cart-drawer__overlay" type="button" aria-label="Close cart" data-cart-drawer-close></button>
     <div class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerHeading" tabindex="-1" data-cart-drawer-panel>
       <header class="cart-drawer__header">
+        {%- if settings.cart_show_drawer_mascot -%}
+          <span class="cart-drawer__mascot{% if settings.cart_animate_mascot %} cart-drawer__mascot--animated{% endif %}" style="--cart-mascot-x: {{ settings.cart_mascot_x }}%; --cart-mascot-y: {{ settings.cart_mascot_y }}px; --perched-pet-color: {{ settings.cart_mascot_color }};" aria-hidden="true">
+            {% render 'playful-pet-face', pet_type: settings.cart_drawer_mascot, class: 'cart-drawer__mascot-face' %}
+          </span>
+        {%- endif -%}
         <div>
           <p class="pack-eyebrow">{{ cart.item_count }} item{% unless cart.item_count == 1 %}s{% endunless %}</p>
           <h2 id="CartDrawerHeading">{{ settings.cart_drawer_heading }}</h2>

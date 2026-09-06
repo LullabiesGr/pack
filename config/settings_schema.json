@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "PACK",
-    "theme_version": "1.5.0",
+    "theme_version": "1.6.0",
     "theme_author": "LullabiesGr",
     "theme_documentation_url": "https://github.com/LullabiesGr/pack",
     "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
@@ -55,7 +55,15 @@
       { "type": "checkbox", "id": "card_show_secondary_image", "label": "Show second image on hover", "default": true },
       { "type": "checkbox", "id": "card_show_vendor", "label": "Show vendor", "default": false },
       { "type": "checkbox", "id": "card_enable_quick_add", "label": "Enable quick add", "default": true },
-      { "type": "checkbox", "id": "card_show_sale_badge", "label": "Show sale badge", "default": true }
+      { "type": "checkbox", "id": "card_show_sale_badge", "label": "Show sale badge", "default": true },
+      { "type": "header", "content": "Optional playful visuals" },
+      { "type": "checkbox", "id": "card_show_corner_paws", "label": "Show paws gripping cards", "default": false },
+      { "type": "checkbox", "id": "card_show_hanging_tag", "label": "Show hanging tag", "default": false },
+      { "type": "text", "id": "card_hanging_tag_text", "label": "Hanging tag text", "default": "Good stuff!" },
+      { "type": "checkbox", "id": "card_show_sticker", "label": "Show card sticker", "default": false },
+      { "type": "text", "id": "card_sticker_text", "label": "Sticker text", "default": "Fan favorite!" },
+      { "type": "color", "id": "card_visual_color", "label": "Visual color", "default": "#FFD23F" },
+      { "type": "color", "id": "card_visual_accent", "label": "Visual accent", "default": "#F49AC2" }
     ]
   },
   {
@@ -120,7 +128,17 @@
       { "type": "checkbox", "id": "cart_show_shipping_progress", "label": "Show free-shipping progress", "default": true },
       { "type": "number", "id": "free_shipping_threshold", "label": "Free-shipping threshold in store currency", "default": 49 },
       { "type": "color", "id": "cart_drawer_background", "label": "Drawer background", "default": "#FFF8E9" },
-      { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" }
+      { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" },
+      { "type": "header", "content": "Optional playful cart visuals" },
+      { "type": "checkbox", "id": "cart_show_paw_badge", "label": "Show paw-shaped cart count badge", "default": false },
+      { "type": "checkbox", "id": "cart_show_drawer_mascot", "label": "Show pet peeking from drawer", "default": false },
+      { "type": "select", "id": "cart_drawer_mascot", "label": "Drawer pet", "options": [
+        { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }
+      ], "default": "dog" },
+      { "type": "range", "id": "cart_mascot_x", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Mascot X position", "default": 72 },
+      { "type": "range", "id": "cart_mascot_y", "min": -40, "max": 40, "step": 2, "unit": "px", "label": "Mascot Y position", "default": 0 },
+      { "type": "color", "id": "cart_mascot_color", "label": "Mascot coat color", "default": "#B86B3D" },
+      { "type": "checkbox", "id": "cart_animate_mascot", "label": "Animate drawer pet", "default": true }
     ]
   },
   {

@@ -17,6 +17,12 @@
       </ul>
     </div>
     <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}" data-discount-mode="{{ section.settings.bundle_discount_mode }}" data-discount-percent="{{ section.settings.bundle_discount_percent }}" data-discount-code="{{ section.settings.bundle_discount_code | escape }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
+      {%- if section.settings.bundle_show_sticky_note and section.settings.bundle_sticky_note_text != blank -%}
+        <span class="bundle-playful-note{% unless section.settings.bundle_visuals_mobile %} bundle-playful-visual--desktop-only{% endunless %}{% if section.settings.bundle_animate_visuals %} bundle-playful-visual--animated{% endif %}" style="--bundle-note-x: {{ section.settings.bundle_sticky_x }}%; --bundle-note-y: {{ section.settings.bundle_sticky_y }}%; --bundle-visual-color: {{ section.settings.bundle_visual_color }};" aria-hidden="true">{{ section.settings.bundle_sticky_note_text | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.bundle_show_floating_badge and section.settings.bundle_floating_badge_text != blank -%}
+        <span class="bundle-playful-badge{% unless section.settings.bundle_visuals_mobile %} bundle-playful-visual--desktop-only{% endunless %}{% if section.settings.bundle_animate_visuals %} bundle-playful-visual--animated{% endif %}" style="--bundle-badge-x: {{ section.settings.bundle_badge_x }}%; --bundle-badge-y: {{ section.settings.bundle_badge_y }}%; --bundle-visual-color: {{ section.settings.bundle_visual_color }};" aria-hidden="true">{{ section.settings.bundle_floating_badge_text | escape }}</span>
+      {%- endif -%}
       <div class="bundle-builder__header">
         <div><p class="pack-eyebrow">{{ section.settings.bundle_picker_eyebrow }}</p><h3>{{ section.settings.bundle_picker_heading }}</h3></div>
         <span class="bundle-builder__count" data-bundle-count>0 / {{ section.settings.bundle_maximum }}</span>
@@ -93,6 +99,18 @@
     { "type": "text", "id": "bundle_total_label", "label": "Total label", "default": "Estimated box total" },
     { "type": "text", "id": "bundle_button_label", "label": "Button label", "default": "Add box to cart" },
     { "type": "text", "id": "bundle_discount_note", "label": "Discount note", "default": "The final discount is validated by Shopify in the cart and checkout." },
+    { "type": "header", "content": "Optional playful visuals" },
+    { "type": "checkbox", "id": "bundle_show_sticky_note", "label": "Show sticky note", "default": false },
+    { "type": "text", "id": "bundle_sticky_note_text", "label": "Sticky note text", "default": "Pick me!" },
+    { "type": "range", "id": "bundle_sticky_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Sticky note X", "default": 8 },
+    { "type": "range", "id": "bundle_sticky_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Sticky note Y", "default": 22 },
+    { "type": "checkbox", "id": "bundle_show_floating_badge", "label": "Show floating badge", "default": false },
+    { "type": "text", "id": "bundle_floating_badge_text", "label": "Floating badge text", "default": "Mix, match, wag!" },
+    { "type": "range", "id": "bundle_badge_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Floating badge X", "default": 82 },
+    { "type": "range", "id": "bundle_badge_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Floating badge Y", "default": 84 },
+    { "type": "color", "id": "bundle_visual_color", "label": "Visual color", "default": "#F49AC2" },
+    { "type": "checkbox", "id": "bundle_animate_visuals", "label": "Animate playful visuals", "default": true },
+    { "type": "checkbox", "id": "bundle_visuals_mobile", "label": "Show visuals on mobile", "default": false },
     { "type": "header", "content": "Box artwork" },
     { "type": "checkbox", "id": "show_bundle_box_art", "label": "Show box artwork", "default": true },
     { "type": "text", "id": "bundle_box_label", "label": "Box label", "default": "PALS!" },

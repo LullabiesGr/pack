@@ -41,4 +41,4 @@ Example outcome keys: `active`, `wellness`, and `comfort`.
 
 ## Status
 
-Version 1.5.0 adds the optional cat-or-dog header character, positioned on the header edge with an animated tail extending into the hero, alongside merchant-configured real-cart box discounts and outcome-based product recommendations.
+Version 1.6.0 redraws the optional cat-or-dog header sitter and adds separate desktop/mobile X and Y positioning. It also adds independently controlled card paws, hanging tags, stickers, quiz trails and speech bubbles, bundle notes and badges, plus a drawer mascot and paw cart badge. Every new visual is decorative, merchant-configurable, mobile-aware and does not replace real Shopify product, collection, quiz, bundle or cart behavior.

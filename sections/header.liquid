@@ -50,7 +50,7 @@
       {%- if shop.customer_accounts_enabled -%}
         <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
       {%- endif -%}
-      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
+      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}{% if settings.cart_show_paw_badge %} icon-button--paw-badge{% endif %}" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
         {% if settings.cart_icon_style == 'doghouse' %}
           {% render 'icon', icon: 'doghouse-cart' %}
         {% else %}
@@ -66,9 +66,12 @@
       pet_type: section.settings.perched_pet_type,
       pet_size: section.settings.perched_pet_size,
       pet_position: section.settings.perched_pet_position,
+      pet_y: section.settings.perched_pet_y,
       pet_mobile_position: section.settings.perched_pet_mobile_position,
+      pet_mobile_y: section.settings.perched_pet_mobile_y,
       pet_color: section.settings.perched_pet_color,
       pet_motion: section.settings.perched_pet_motion,
+      pet_flip: section.settings.perched_pet_flip,
       show_on_mobile: section.settings.show_perched_pet_mobile
     %}
   {%- endif -%}
@@ -145,10 +148,14 @@
       { "value": "home", "label": "Homepage only" }, { "value": "all", "label": "All pages" }
     ], "default": "home" },
     { "type": "checkbox", "id": "show_perched_pet_mobile", "label": "Show on mobile", "default": true },
-    { "type": "range", "id": "perched_pet_position", "min": 8, "max": 92, "step": 2, "unit": "%", "label": "Desktop horizontal position", "default": 84 },
-    { "type": "range", "id": "perched_pet_mobile_position", "min": 12, "max": 88, "step": 2, "unit": "%", "label": "Mobile horizontal position", "default": 62 },
+    { "type": "paragraph", "content": "X moves the pet left/right. Positive Y moves it up; negative Y moves it down toward the hero." },
+    { "type": "range", "id": "perched_pet_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Desktop X position", "default": 84 },
+    { "type": "range", "id": "perched_pet_y", "min": -60, "max": 60, "step": 2, "unit": "px", "label": "Desktop Y position", "default": 0 },
+    { "type": "range", "id": "perched_pet_mobile_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Mobile X position", "default": 62 },
+    { "type": "range", "id": "perched_pet_mobile_y", "min": -40, "max": 40, "step": 2, "unit": "px", "label": "Mobile Y position", "default": 0 },
     { "type": "range", "id": "perched_pet_size", "min": 80, "max": 160, "step": 4, "unit": "px", "label": "Pet size", "default": 120 },
-    { "type": "color", "id": "perched_pet_color", "label": "Pet color", "default": "#FFD23F" },
+    { "type": "color", "id": "perched_pet_color", "label": "Pet coat color", "default": "#111111" },
+    { "type": "checkbox", "id": "perched_pet_flip", "label": "Face the other direction", "default": false },
     { "type": "select", "id": "perched_pet_motion", "label": "Animation", "options": [
       { "value": "none", "label": "None" }, { "value": "tail", "label": "Tail sway" }, { "value": "bob", "label": "Gentle bob" }
     ], "default": "tail" },

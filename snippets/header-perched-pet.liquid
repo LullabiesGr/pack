@@ -1,39 +1,11 @@
-{%- comment -%}
-  Decorative header pet with a tail that crosses the header boundary.
-  Usage: {% render 'header-perched-pet', pet_type: 'cat' %}
-{%- endcomment -%}
-{%- assign perched_pet_drop = pet_size | default: 118 | times: 0.43 -%}
-<div class="header-perched-pet header-perched-pet--{{ pet_type | default: 'cat' }} header-perched-pet--motion-{{ pet_motion | default: 'tail' }}{% unless show_on_mobile %} header-perched-pet--desktop-only{% endunless %}" style="--perched-pet-size: {{ pet_size | default: 118 }}px; --perched-pet-drop: {{ perched_pet_drop }}px; --perched-pet-position: {{ pet_position | default: 84 }}%; --perched-pet-mobile-position: {{ pet_mobile_position | default: 62 }}%; --perched-pet-color: {{ pet_color | default: '#FFD23F' }};" aria-hidden="true">
-  {%- if pet_type == 'dog' -%}
-    <svg viewBox="0 0 180 220" role="presentation" focusable="false">
-      <g class="header-perched-pet__tail">
-        <path class="header-perched-pet__outline" d="M132 108c31 3 38 25 24 43-10 13-29 17-27 34 1 12 13 17 23 10"/>
-        <path class="header-perched-pet__color-stroke" d="M132 108c31 3 38 25 24 43-10 13-29 17-27 34 1 12 13 17 23 10"/>
-      </g>
-      <path class="header-perched-pet__body" d="M54 76c8-17 23-26 40-26s34 9 42 27l9 47c2 10-5 19-15 19H57c-10 0-17-9-15-19z"/>
-      <path class="header-perched-pet__ear" d="M63 55C43 45 31 53 34 72c2 15 13 27 27 28z"/>
-      <path class="header-perched-pet__ear" d="M123 55c20-10 32-2 29 17-2 15-13 27-27 28z"/>
-      <path class="header-perched-pet__head" d="M57 55c8-15 21-23 37-23s30 8 38 23v34c0 24-16 39-38 39S56 113 56 89z"/>
-      <circle class="header-perched-pet__eye" cx="78" cy="76" r="4"/>
-      <circle class="header-perched-pet__eye" cx="110" cy="76" r="4"/>
-      <path class="header-perched-pet__face" d="M88 88h12l-6 7zM94 95c-1 8-10 9-14 4m14-4c1 8 10 9 14 4"/>
-      <path class="header-perched-pet__paw" d="M58 118v25h25v-25m22 0v25h25v-25"/>
-      <circle class="header-perched-pet__spot" cx="113" cy="59" r="11"/>
-    </svg>
-  {%- else -%}
-    <svg viewBox="0 0 180 220" role="presentation" focusable="false">
-      <g class="header-perched-pet__tail">
-        <path class="header-perched-pet__outline" d="M129 104c34 6 42 31 30 55-8 17-27 20-28 36-1 12 11 18 22 12"/>
-        <path class="header-perched-pet__color-stroke" d="M129 104c34 6 42 31 30 55-8 17-27 20-28 36-1 12 11 18 22 12"/>
-      </g>
-      <path class="header-perched-pet__body" d="M49 79c8-19 25-29 45-29s37 10 45 29l5 48c1 9-6 16-15 16H59c-9 0-16-7-15-16z"/>
-      <path class="header-perched-pet__head" d="M57 55l6-31 22 17c6-2 13-2 19 0l22-17 6 31v34c0 24-16 39-38 39S56 113 56 89z"/>
-      <path class="header-perched-pet__ear-line" d="M66 47l3-13 10 9m43 4-3-13-10 9"/>
-      <circle class="header-perched-pet__eye" cx="78" cy="76" r="4"/>
-      <circle class="header-perched-pet__eye" cx="110" cy="76" r="4"/>
-      <path class="header-perched-pet__face" d="M88 88h12l-6 7zM94 95c-1 8-10 9-14 4m14-4c1 8 10 9 14 4"/>
-      <path class="header-perched-pet__paw" d="M58 118v25h25v-25m22 0v25h25v-25"/>
-      <path class="header-perched-pet__whisker" d="M78 94 50 87m29 14-30 5m61-12 28-7m-29 14 30 5"/>
-    </svg>
-  {%- endif -%}
+{%- assign perched_pet_drop = pet_size | default: 128 | times: 0.28 -%}
+<div class="header-perched-pet header-perched-pet--{{ pet_type | default: 'cat' }} header-perched-pet--motion-{{ pet_motion | default: 'tail' }}{% if pet_flip %} header-perched-pet--flipped{% endif %}{% unless show_on_mobile %} header-perched-pet--desktop-only{% endunless %}" style="--perched-pet-size: {{ pet_size | default: 128 }}px; --perched-pet-drop: {{ perched_pet_drop }}px; --perched-pet-x: {{ pet_position | default: 84 }}%; --perched-pet-y: {{ pet_y | default: 0 }}px; --perched-pet-mobile-x: {{ pet_mobile_position | default: 62 }}%; --perched-pet-mobile-y: {{ pet_mobile_y | default: 0 }}px; --perched-pet-color: {{ pet_color | default: '#FFD23F' }};" aria-hidden="true">
+  <svg class="header-perched-pet__tail" viewBox="0 0 90 190" role="presentation" focusable="false">
+    {%- if pet_type == 'dog' -%}
+      <path class="playful-pet__tail-outline" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/><path class="playful-pet__tail-color" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/>
+    {%- else -%}
+      <path class="playful-pet__tail-outline" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/><path class="playful-pet__tail-color" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/>
+    {%- endif -%}
+  </svg>
+  {% render 'playful-pet-face', pet_type: pet_type, class: 'header-perched-pet__face' %}
 </div>

@@ -1,0 +1,28 @@
+{%- comment -%}Reusable peeking pet portrait. Decorative only; parent supplies aria-hidden.{%- endcomment -%}
+<svg class="{{ class | default: 'playful-pet-face' }}" viewBox="0 0 220 150" role="presentation" focusable="false">
+  {%- if pet_type == 'dog' -%}
+    <path class="playful-pet__ear playful-pet__ear--left" d="M65 42C34 16 10 31 20 74c5 23 20 35 42 31z"/>
+    <path class="playful-pet__ear playful-pet__ear--right" d="M155 42c31-26 55-11 45 32-5 23-20 35-42 31z"/>
+    <path class="playful-pet__head" d="M53 68c0-39 24-60 57-60s57 21 57 60v25c0 34-24 51-57 51S53 127 53 93z"/>
+    <path class="playful-pet__patch" d="M116 11c25 2 44 20 49 47-8 9-20 14-33 13-18-2-29-15-28-34 0-11 5-20 12-26z"/>
+    <ellipse class="playful-pet__muzzle" cx="110" cy="96" rx="35" ry="28"/>
+    <path class="playful-pet__eye-line" d="M70 72c8-7 17-7 25 0m30 0c8-7 17-7 25 0"/>
+    <path class="playful-pet__nose" d="M99 88c5-4 17-4 22 0-1 10-7 14-11 14s-10-4-11-14z"/>
+    <path class="playful-pet__smile" d="M110 102c-3 11-14 14-22 8m22-8c3 11 14 14 22 8"/>
+    <path class="playful-pet__tongue" d="M101 111h18v13c0 8-4 13-9 13s-9-5-9-13z"/>
+  {%- else -%}
+    <path class="playful-pet__head" d="M47 68 56 9l39 27c10-3 20-3 30 0l39-27 9 59v25c0 34-27 51-63 51S47 127 47 93z"/>
+    <path class="playful-pet__ear-inner" d="m61 24 5 28 20-12zm98 0-5 28-20-12z"/>
+    <path class="playful-pet__blaze" d="M93 35c10-5 24-5 34 0l-6 38-11 12-11-12z"/>
+    <path class="playful-pet__cheek" d="M52 91c10 3 22 4 34 2-5 18-17 29-32 28m114-30c-10 3-22 4-34 2 5 18 17 29 32 28"/>
+    <path class="playful-pet__eye-line" d="M68 74c8 7 17 7 25 0m34 0c8 7 17 7 25 0"/>
+    <path class="playful-pet__nose" d="M99 87c5-4 17-4 22 0-1 10-7 14-11 14s-10-4-11-14z"/>
+    <path class="playful-pet__smile" d="M110 101c-3 11-14 14-22 8m22-8c3 11 14 14 22 8"/>
+    <path class="playful-pet__whiskers" d="M84 94 42 84m43 21-44 5m95-16 42-10m-43 21 44 5"/>
+  {%- endif -%}
+  <g class="playful-pet__paws">
+    <path d="M45 116c0-15 12-25 27-25s27 10 27 25v18c0 8-6 13-14 13H59c-8 0-14-5-14-13z"/>
+    <path d="M121 116c0-15 12-25 27-25s27 10 27 25v18c0 8-6 13-14 13h-26c-8 0-14-5-14-13z"/>
+    <path class="playful-pet__toe" d="M60 119v12m12-14v14m64-12v12m12-14v14"/>
+  </g>
+</svg>

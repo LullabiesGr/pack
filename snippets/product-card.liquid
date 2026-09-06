@@ -14,7 +14,16 @@
   endif
 -%}
 
-<article class="product-card pack-interaction--{{ interaction_style | default: 'lift' }}" style="--card-bg: {{ card_color }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}{% if interaction_style == 'tilt' %} data-pack-tilt{% endif %}>
+<article class="product-card pack-interaction--{{ interaction_style | default: 'lift' }}{% if settings.card_show_corner_paws %} product-card--corner-paws{% endif %}" style="--card-bg: {{ card_color }}; --card-visual: {{ settings.card_visual_color }}; --card-visual-accent: {{ settings.card_visual_accent }}{% if reveal_style != blank and reveal_style != 'none' %}; --pack-reveal-delay: {{ reveal_delay }}ms{% endif %}"{% if reveal_style != blank and reveal_style != 'none' %} data-pack-reveal="{{ reveal_style }}"{% endif %}{% if interaction_style == 'tilt' %} data-pack-tilt{% endif %}>
+  {%- if settings.card_show_corner_paws -%}
+    <span class="product-card__corner-paws" aria-hidden="true"><i></i><i></i></span>
+  {%- endif -%}
+  {%- if settings.card_show_hanging_tag and settings.card_hanging_tag_text != blank -%}
+    <span class="product-card__hanging-tag" aria-hidden="true">{{ settings.card_hanging_tag_text | escape }}</span>
+  {%- endif -%}
+  {%- if settings.card_show_sticker and settings.card_sticker_text != blank -%}
+    <span class="product-card__playful-sticker" aria-hidden="true">{{ settings.card_sticker_text | escape }}</span>
+  {%- endif -%}
   <div class="product-card__media-wrap">
     <a class="product-card__media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
       {%- if card_product.featured_media -%}

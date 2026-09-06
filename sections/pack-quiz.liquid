@@ -15,6 +15,14 @@
   endfor
 -%}
 <section class="pack-quiz" style="--quiz-bg: {{ section.settings.quiz_background }}; --quiz-accent: {{ section.settings.quiz_accent }}" data-pack-quiz>
+  {%- if section.settings.quiz_show_paw_trail -%}
+    <div class="quiz-playful-trail{% unless section.settings.quiz_visuals_mobile %} quiz-playful-visual--desktop-only{% endunless %}{% if section.settings.quiz_animate_visuals %} quiz-playful-visual--animated{% endif %}" style="--quiz-visual-x: {{ section.settings.quiz_visual_x }}%; --quiz-visual-y: {{ section.settings.quiz_visual_y }}%; --quiz-visual-color: {{ section.settings.quiz_visual_color }};" aria-hidden="true">
+      <span>{% render 'icon', icon: 'paw' %}</span><span>{% render 'icon', icon: 'paw' %}</span><span>{% render 'icon', icon: 'paw' %}</span><span>{% render 'icon', icon: 'paw' %}</span>
+    </div>
+  {%- endif -%}
+  {%- if section.settings.quiz_show_speech_bubble and section.settings.quiz_speech_text != blank -%}
+    <span class="quiz-playful-speech{% unless section.settings.quiz_visuals_mobile %} quiz-playful-visual--desktop-only{% endunless %}{% if section.settings.quiz_animate_visuals %} quiz-playful-visual--animated{% endif %}" style="--quiz-speech-x: {{ section.settings.quiz_speech_x }}%; --quiz-speech-y: {{ section.settings.quiz_speech_y }}%; --quiz-visual-color: {{ section.settings.quiz_visual_color }};" aria-hidden="true">{{ section.settings.quiz_speech_text | escape }}</span>
+  {%- endif -%}
   <div class="pack-quiz__inner page-width">
     <div class="pack-quiz__peek"{% if section.settings.quiz_image_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_image_animation }}"{% endif %}>
       {%- if quiz_media != blank -%}
@@ -87,6 +95,18 @@
     { "type": "text", "id": "quiz_view_label", "label": "Default result link label", "default": "View their matches" },
     { "type": "color", "id": "quiz_background", "label": "Background", "default": "#F49AC2" },
     { "type": "color", "id": "quiz_accent", "label": "Quiz accent", "default": "#FFD23F" },
+    { "type": "header", "content": "Optional playful visuals" },
+    { "type": "checkbox", "id": "quiz_show_paw_trail", "label": "Show paw trail", "default": false },
+    { "type": "checkbox", "id": "quiz_show_speech_bubble", "label": "Show speech bubble", "default": false },
+    { "type": "text", "id": "quiz_speech_text", "label": "Speech bubble text", "default": "Good treats. Happier days." },
+    { "type": "paragraph", "content": "Coordinates are relative to this section. X moves left/right and Y moves top/bottom." },
+    { "type": "range", "id": "quiz_visual_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail X", "default": 48 },
+    { "type": "range", "id": "quiz_visual_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail Y", "default": 58 },
+    { "type": "range", "id": "quiz_speech_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble X", "default": 12 },
+    { "type": "range", "id": "quiz_speech_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble Y", "default": 12 },
+    { "type": "color", "id": "quiz_visual_color", "label": "Visual color", "default": "#FFD23F" },
+    { "type": "checkbox", "id": "quiz_animate_visuals", "label": "Animate playful visuals", "default": true },
+    { "type": "checkbox", "id": "quiz_visuals_mobile", "label": "Show visuals on mobile", "default": false },
     { "type": "paragraph", "content": "How it works: each answer awards one point to an outcome key. The highest-scoring key opens the matching Result block. Keep keys short and identical, for example active, wellness, or comfort." },
     { "type": "header", "content": "Animation" },
     { "type": "select", "id": "quiz_image_animation", "label": "Pet image animation", "options": [
