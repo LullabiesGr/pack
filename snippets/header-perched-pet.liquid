@@ -1,11 +1,32 @@
-{%- assign perched_pet_drop = pet_size | default: 128 | times: 0.28 -%}
-<div class="header-perched-pet header-perched-pet--{{ pet_type | default: 'cat' }} header-perched-pet--motion-{{ pet_motion | default: 'tail' }}{% if pet_flip %} header-perched-pet--flipped{% endif %}{% unless show_on_mobile %} header-perched-pet--desktop-only{% endunless %}" style="--perched-pet-size: {{ pet_size | default: 128 }}px; --perched-pet-drop: {{ perched_pet_drop }}px; --perched-pet-x: {{ pet_position | default: 84 }}%; --perched-pet-y: {{ pet_y | default: 0 }}px; --perched-pet-mobile-x: {{ pet_mobile_position | default: 62 }}%; --perched-pet-mobile-y: {{ pet_mobile_y | default: 0 }}px; --perched-pet-color: {{ pet_color | default: '#FFD23F' }};" aria-hidden="true">
-  <svg class="header-perched-pet__tail" viewBox="0 0 90 190" role="presentation" focusable="false">
-    {%- if pet_type == 'dog' -%}
+{%- liquid
+  assign perched_pet_drop = pet_size | default: 128 | times: 0.28
+  assign rendered_pet_source = pet_source | default: 'illustration'
+  if rendered_pet_source == 'custom' and custom_image == blank
+    assign rendered_pet_source = 'illustration'
+  endif
+  assign rendered_tail = pet_type | default: 'cat'
+  if rendered_pet_source == 'custom'
+    assign rendered_tail = custom_tail | default: 'none'
+  endif
+-%}
+<div class="header-perched-pet header-perched-pet--{{ pet_type | default: 'cat' }} header-perched-pet--source-{{ rendered_pet_source }} header-perched-pet--motion-{{ pet_motion | default: 'tail' }}{% if pet_flip %} header-perched-pet--flipped{% endif %}{% unless show_on_mobile %} header-perched-pet--desktop-only{% endunless %}" style="--perched-pet-size: {{ pet_size | default: 128 }}px; --perched-pet-drop: {{ perched_pet_drop }}px; --perched-pet-x: {{ pet_position | default: 84 }}%; --perched-pet-y: {{ pet_y | default: 0 }}px; --perched-pet-mobile-x: {{ pet_mobile_position | default: 62 }}%; --perched-pet-mobile-y: {{ pet_mobile_y | default: 0 }}px; --perched-pet-color: {{ pet_color | default: '#FFD23F' }};" aria-hidden="true">
+  {%- unless rendered_tail == 'none' -%}
+    <svg class="header-perched-pet__tail" viewBox="0 0 90 190" role="presentation" focusable="false">
+    {%- if rendered_tail == 'dog' -%}
       <path class="playful-pet__tail-outline" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/><path class="playful-pet__tail-color" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/>
     {%- else -%}
       <path class="playful-pet__tail-outline" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/><path class="playful-pet__tail-color" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/>
     {%- endif -%}
-  </svg>
-  {% render 'playful-pet-face', pet_type: pet_type, class: 'header-perched-pet__face' %}
+    </svg>
+  {%- endunless -%}
+  {%- if rendered_pet_source == 'custom' -%}
+    <picture class="header-perched-pet__picture">
+      {%- if custom_mobile_image != blank -%}
+        <source media="(max-width: 700px)" srcset="{{ custom_mobile_image | image_url: width: 320 }} 1x, {{ custom_mobile_image | image_url: width: 640 }} 2x">
+      {%- endif -%}
+      {{ custom_image | image_url: width: 640 | image_tag: class: 'header-perched-pet__custom-image', widths: '160, 240, 320, 480, 640', sizes: '(max-width: 700px) 96px, 160px', loading: 'eager', alt: '' }}
+    </picture>
+  {%- else -%}
+    {% render 'playful-pet-face', pet_type: pet_type, class: 'header-perched-pet__face' %}
+  {%- endif -%}
 </div>

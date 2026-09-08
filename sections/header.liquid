@@ -71,7 +71,11 @@
   </div>
   {%- if render_perched_pet -%}
     {% render 'header-perched-pet',
+      pet_source: section.settings.perched_pet_source,
       pet_type: section.settings.perched_pet_type,
+      custom_image: section.settings.perched_pet_custom_image,
+      custom_mobile_image: section.settings.perched_pet_custom_mobile_image,
+      custom_tail: section.settings.perched_pet_custom_tail,
       pet_size: section.settings.perched_pet_size,
       pet_position: section.settings.perched_pet_position,
       pet_y: section.settings.perched_pet_y,
@@ -149,9 +153,18 @@
     ], "default": "none" },
     { "type": "header", "content": "Perched pet" },
     { "type": "checkbox", "id": "show_perched_pet", "label": "Show pet sitting on header", "default": true },
+    { "type": "select", "id": "perched_pet_source", "label": "Pet artwork", "options": [
+      { "value": "illustration", "label": "Built-in illustration" }, { "value": "custom", "label": "Custom transparent image" }
+    ], "default": "illustration" },
     { "type": "select", "id": "perched_pet_type", "label": "Pet", "options": [
       { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }
     ], "default": "cat" },
+    { "type": "image_picker", "id": "perched_pet_custom_image", "label": "Custom pet image" },
+    { "type": "image_picker", "id": "perched_pet_custom_mobile_image", "label": "Custom pet image — mobile" },
+    { "type": "paragraph", "content": "For the most realistic result, upload a tightly cropped transparent PNG or WebP. The mobile image is optional and falls back to the main image." },
+    { "type": "select", "id": "perched_pet_custom_tail", "label": "Extra tail for custom image", "options": [
+      { "value": "none", "label": "None / tail is in image" }, { "value": "cat", "label": "Animated cat tail" }, { "value": "dog", "label": "Animated dog tail" }
+    ], "default": "none" },
     { "type": "select", "id": "perched_pet_pages", "label": "Show on", "options": [
       { "value": "home", "label": "Homepage only" }, { "value": "all", "label": "All pages" }
     ], "default": "home" },
