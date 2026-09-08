@@ -24,7 +24,31 @@
         "hero_text_color": "#fff8e9",
         "hero_copy_animation": "pop",
         "hero_media_animation": "blur-in",
-        "hero_idle_motion": "float"
+        "hero_idle_motion": "sway"
+      }
+    },
+    "pack_floating_pet_M69Kfx": {
+      "type": "pack-floating-pet",
+      "name": "Floating pet",
+      "settings": {
+        "floating_pet_source": "custom",
+        "floating_pet_type": "cat",
+        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
+        "floating_pet_tail": "none",
+        "floating_pet_flip": false,
+        "floating_pet_color": "#4A4D48",
+        "floating_pet_motion": "none",
+        "floating_pet_shadow": "soft",
+        "floating_pet_x": 46,
+        "floating_pet_y": -15,
+        "floating_pet_size": 320,
+        "floating_pet_height": 0,
+        "floating_pet_z": 8,
+        "floating_pet_show_mobile": true,
+        "floating_pet_mobile_x": 82,
+        "floating_pet_mobile_y": 0,
+        "floating_pet_mobile_size": 112,
+        "floating_pet_mobile_height": 28
       }
     },
     "ticker": {
@@ -635,6 +659,7 @@
   },
   "order": [
     "hero",
+    "pack_floating_pet_M69Kfx",
     "ticker",
     "playful",
     "personalities",
