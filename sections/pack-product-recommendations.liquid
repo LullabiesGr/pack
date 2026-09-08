@@ -25,22 +25,140 @@
 {% schema %}
 {
   "name": "Product recommendations",
-  "enabled_on": { "templates": ["product"] },
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "settings": [
-    { "type": "text", "id": "recommendations_eyebrow", "label": "Eyebrow", "default": "Pairs well with" },
-    { "type": "text", "id": "recommendations_heading", "label": "Heading", "default": "More tail-waggers" },
-    { "type": "select", "id": "recommendations_intent", "label": "Recommendation type", "options": [
-      { "value": "related", "label": "Related products" }, { "value": "complementary", "label": "Complementary products" }
-    ], "default": "related" },
-    { "type": "range", "id": "recommendations_limit", "min": 2, "max": 8, "step": 1, "label": "Products", "default": 4 },
-    { "type": "color", "id": "recommendations_background", "label": "Background", "default": "#B9E769" },
-    { "type": "select", "id": "recommendations_animation", "label": "Card entrance", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "fade-up" },
-    { "type": "select", "id": "recommendations_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "text",
+      "id": "recommendations_eyebrow",
+      "label": "Eyebrow",
+      "default": "Pairs well with"
+    },
+    {
+      "type": "text",
+      "id": "recommendations_heading",
+      "label": "Heading",
+      "default": "More tail-waggers"
+    },
+    {
+      "type": "select",
+      "id": "recommendations_intent",
+      "label": "Recommendation type",
+      "options": [
+        {
+          "value": "related",
+          "label": "Related products"
+        },
+        {
+          "value": "complementary",
+          "label": "Complementary products"
+        }
+      ],
+      "default": "related"
+    },
+    {
+      "type": "range",
+      "id": "recommendations_limit",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Products",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "recommendations_background",
+      "label": "Background",
+      "default": "#B9E769"
+    },
+    {
+      "type": "select",
+      "id": "recommendations_animation",
+      "label": "Card entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "fade-up"
+    },
+    {
+      "type": "select",
+      "id": "recommendations_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
-  "presets": [{ "name": "Product recommendations" }]
+  "presets": [
+    {
+      "name": "Product recommendations"
+    }
+  ]
 }
 {% endschema %}

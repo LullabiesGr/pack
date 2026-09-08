@@ -47,28 +47,154 @@
   "name": "Pet lifestyle pair",
   "max_blocks": 2,
   "settings": [
-    { "type": "checkbox", "id": "show_lifestyle_price", "label": "Show product price", "default": true },
-    { "type": "header", "content": "Animation" },
-    { "type": "select", "id": "lifestyle_animation", "label": "Card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "slide-right", "label": "Slide right to left" }, { "value": "zoom-in", "label": "Zoom in" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "none" },
-    { "type": "select", "id": "lifestyle_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "checkbox",
+      "id": "show_lifestyle_price",
+      "label": "Show product price",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "lifestyle_animation",
+      "label": "Card animation",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Staggered fade up"
+        },
+        {
+          "value": "slide-left",
+          "label": "Slide left to right"
+        },
+        {
+          "value": "slide-right",
+          "label": "Slide right to left"
+        },
+        {
+          "value": "zoom-in",
+          "label": "Zoom in"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "lifestyle_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
   "blocks": [
     {
       "type": "lifestyle",
       "name": "Lifestyle card",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product" },
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "image_picker", "id": "lifestyle_image", "label": "Custom image override" },
-        { "type": "text", "id": "lifestyle_heading", "label": "Heading", "default": "Good days, better together." },
-        { "type": "checkbox", "id": "use_catalog_title", "label": "Use product or collection title", "default": false },
-        { "type": "textarea", "id": "lifestyle_text", "label": "Text", "default": "Products that fit your life—and your pet's kind of joy." },
-        { "type": "text", "id": "lifestyle_link_label", "label": "Link label", "default": "Shop now" },
-        { "type": "url", "id": "lifestyle_link", "label": "Custom link override" }
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "lifestyle_image",
+          "label": "Custom image override"
+        },
+        {
+          "type": "text",
+          "id": "lifestyle_heading",
+          "label": "Heading",
+          "default": "Good days, better together."
+        },
+        {
+          "type": "checkbox",
+          "id": "use_catalog_title",
+          "label": "Use product or collection title",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "lifestyle_text",
+          "label": "Text",
+          "default": "Products that fit your life—and your pet's kind of joy."
+        },
+        {
+          "type": "text",
+          "id": "lifestyle_link_label",
+          "label": "Link label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "lifestyle_link",
+          "label": "Custom link override"
+        }
       ]
     }
   ],
@@ -76,8 +202,19 @@
     {
       "name": "Pet lifestyle pair",
       "blocks": [
-        { "type": "lifestyle", "settings": { "lifestyle_heading": "Good days, better together." } },
-        { "type": "lifestyle", "settings": { "lifestyle_heading": "Rest well. Play harder.", "lifestyle_text": "Beds, toys and everyday essentials made for their best life." } }
+        {
+          "type": "lifestyle",
+          "settings": {
+            "lifestyle_heading": "Good days, better together."
+          }
+        },
+        {
+          "type": "lifestyle",
+          "settings": {
+            "lifestyle_heading": "Rest well. Play harder.",
+            "lifestyle_text": "Beds, toys and everyday essentials made for their best life."
+          }
+        }
       ]
     }
   ]

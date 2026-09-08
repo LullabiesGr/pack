@@ -55,29 +55,155 @@
   "name": "Shop by personality",
   "max_blocks": 4,
   "settings": [
-    { "type": "text", "id": "personality_heading", "label": "Heading", "default": "Shop by personality" },
-    { "type": "text", "id": "personality_link_label", "label": "Link label", "default": "View all" },
-    { "type": "url", "id": "personality_link", "label": "Link" },
-    { "type": "header", "content": "Animation" },
-    { "type": "select", "id": "personality_animation", "label": "Card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "none" },
-    { "type": "select", "id": "personality_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "text",
+      "id": "personality_heading",
+      "label": "Heading",
+      "default": "Shop by personality"
+    },
+    {
+      "type": "text",
+      "id": "personality_link_label",
+      "label": "Link label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "personality_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "personality_animation",
+      "label": "Card animation",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Staggered fade up"
+        },
+        {
+          "value": "zoom-in",
+          "label": "Staggered zoom"
+        },
+        {
+          "value": "pop",
+          "label": "Staggered playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "personality_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
   "blocks": [
     {
       "type": "personality",
       "name": "Personality",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product" },
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "image_picker", "id": "image", "label": "Custom image override" },
-        { "type": "text", "id": "title", "label": "Title", "default": "The Couch Potato" },
-        { "type": "checkbox", "id": "use_catalog_title", "label": "Use product or collection title", "default": false },
-        { "type": "url", "id": "link", "label": "Custom link override" },
-        { "type": "color", "id": "card_background", "label": "Background", "default": "#FFD23F" }
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image override"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "The Couch Potato"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_catalog_title",
+          "label": "Use product or collection title",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link override"
+        },
+        {
+          "type": "color",
+          "id": "card_background",
+          "label": "Background",
+          "default": "#FFD23F"
+        }
       ]
     }
   ],
@@ -85,10 +211,34 @@
     {
       "name": "Shop by personality",
       "blocks": [
-        { "type": "personality", "settings": { "title": "The Couch Potato", "card_background": "#FFD23F" } },
-        { "type": "personality", "settings": { "title": "The Chaos Agent", "card_background": "#F04B32" } },
-        { "type": "personality", "settings": { "title": "The Food Critic", "card_background": "#F49AC2" } },
-        { "type": "personality", "settings": { "title": "The Explorer", "card_background": "#B9E769" } }
+        {
+          "type": "personality",
+          "settings": {
+            "title": "The Couch Potato",
+            "card_background": "#FFD23F"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "title": "The Chaos Agent",
+            "card_background": "#F04B32"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "title": "The Food Critic",
+            "card_background": "#F49AC2"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "title": "The Explorer",
+            "card_background": "#B9E769"
+          }
+        }
       ]
     }
   ]

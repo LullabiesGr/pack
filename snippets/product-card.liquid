@@ -1,5 +1,8 @@
 {%- liquid
   assign card_product = product
+  if settings.card_hover_override != blank and settings.card_hover_override != 'section'
+    assign interaction_style = settings.card_hover_override
+  endif
   assign card_color = card_color | default: '#F49AC2'
   assign card_index = index | default: 1
   assign loading_strategy = 'lazy'

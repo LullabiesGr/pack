@@ -92,34 +92,157 @@
 {
   "name": "Collections directory",
   "settings": [
-    { "type": "text", "id": "list_eyebrow", "label": "Eyebrow", "default": "Pick their favorites" },
-    { "type": "text", "id": "list_heading", "label": "Heading", "default": "Shop all collections" },
-    { "type": "richtext", "id": "list_text", "label": "Text", "default": "<p>Real collections from your Shopify catalog, ready for every kind of best friend.</p>" },
-    { "type": "select", "id": "list_columns", "label": "Desktop columns", "options": [
-      { "value": "2", "label": "2" },
-      { "value": "3", "label": "3" },
-      { "value": "4", "label": "4" }
-    ], "default": "3" },
-    { "type": "range", "id": "list_collections_per_page", "min": 6, "max": 24, "step": 3, "label": "Collections per page", "default": 12 },
-    { "type": "checkbox", "id": "list_show_count", "label": "Show product count", "default": true },
-    { "type": "checkbox", "id": "list_show_description", "label": "Show collection description", "default": false },
-    { "type": "checkbox", "id": "list_show_empty", "label": "Show empty collections", "default": false },
-    { "type": "color", "id": "list_background", "label": "Background", "default": "#FFF8E9" },
-    { "type": "select", "id": "list_animation", "label": "Card entrance", "options": [
-      { "value": "none", "label": "None" },
-      { "value": "fade-up", "label": "Fade up" },
-      { "value": "pop", "label": "Playful pop" },
-      { "value": "blur-in", "label": "Candy blur" },
-      { "value": "flip-up", "label": "Editorial flip" },
-      { "value": "squish", "label": "Playful squish" }
-    ], "default": "pop" },
-    { "type": "select", "id": "list_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" },
-      { "value": "tilt", "label": "3D tilt" },
-      { "value": "jelly", "label": "Jelly" },
-      { "value": "bounce", "label": "Bounce" },
-      { "value": "none", "label": "None" }
-    ], "default": "tilt" }
+    {
+      "type": "text",
+      "id": "list_eyebrow",
+      "label": "Eyebrow",
+      "default": "Pick their favorites"
+    },
+    {
+      "type": "text",
+      "id": "list_heading",
+      "label": "Heading",
+      "default": "Shop all collections"
+    },
+    {
+      "type": "richtext",
+      "id": "list_text",
+      "label": "Text",
+      "default": "<p>Real collections from your Shopify catalog, ready for every kind of best friend.</p>"
+    },
+    {
+      "type": "select",
+      "id": "list_columns",
+      "label": "Desktop columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "range",
+      "id": "list_collections_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "label": "Collections per page",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "list_show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "list_show_description",
+      "label": "Show collection description",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "list_show_empty",
+      "label": "Show empty collections",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "list_background",
+      "label": "Background",
+      "default": "#FFF8E9"
+    },
+    {
+      "type": "select",
+      "id": "list_animation",
+      "label": "Card entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "pop"
+    },
+    {
+      "type": "select",
+      "id": "list_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "tilt"
+    }
   ]
 }
 {% endschema %}

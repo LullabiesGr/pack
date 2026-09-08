@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "PACK",
-    "theme_version": "1.9.0",
+    "theme_version": "1.9.1",
     "theme_author": "LullabiesGr",
     "theme_documentation_url": "https://github.com/LullabiesGr/pack",
     "theme_support_url": "https://github.com/LullabiesGr/pack/issues"
@@ -10,182 +10,824 @@
   {
     "name": "Brand",
     "settings": [
-      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
-      { "type": "color", "id": "color_primary", "label": "Cobalt", "default": "#0755D9" },
-      { "type": "color", "id": "color_secondary", "label": "Butter yellow", "default": "#FFD23F" },
-      { "type": "color", "id": "color_accent", "label": "Bubblegum pink", "default": "#F49AC2" },
-      { "type": "color", "id": "color_green", "label": "Pistachio", "default": "#B9E769" },
-      { "type": "color", "id": "color_red", "label": "Tomato", "default": "#F04B32" },
-      { "type": "color", "id": "color_background", "label": "Cream", "default": "#FFF8E9" },
-      { "type": "color", "id": "color_text", "label": "Ink", "default": "#111111" }
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Cobalt",
+        "default": "#0755D9"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Butter yellow",
+        "default": "#FFD23F"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Bubblegum pink",
+        "default": "#F49AC2"
+      },
+      {
+        "type": "color",
+        "id": "color_green",
+        "label": "Pistachio",
+        "default": "#B9E769"
+      },
+      {
+        "type": "color",
+        "id": "color_red",
+        "label": "Tomato",
+        "default": "#F04B32"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Cream",
+        "default": "#FFF8E9"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Ink",
+        "default": "#111111"
+      }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      { "type": "font_picker", "id": "type_display_font", "label": "Display font", "default": "assistant_n7" },
-      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "assistant_n4" }
+      {
+        "type": "font_picker",
+        "id": "type_display_font",
+        "label": "Display font",
+        "default": "assistant_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body font",
+        "default": "assistant_n4"
+      }
     ]
   },
   {
     "name": "Layout",
     "settings": [
-      { "type": "range", "id": "page_width", "min": 1080, "max": 1600, "step": 40, "unit": "px", "label": "Page width", "default": 1360 },
-      { "type": "range", "id": "card_radius", "min": 0, "max": 36, "step": 2, "unit": "px", "label": "Card corner radius", "default": 18 },
-      { "type": "header", "content": "Borders" },
-      { "type": "color", "id": "border_color", "label": "Border color", "default": "#111111" },
-      { "type": "select", "id": "card_border_style", "label": "Card border style", "options": [
-        { "value": "solid", "label": "Solid" },
-        { "value": "dashed", "label": "Dashed" },
-        { "value": "dotted", "label": "Dotted" },
-        { "value": "double", "label": "Double" },
-        { "value": "none", "label": "None" }
-      ], "default": "solid" },
-      { "type": "select", "id": "section_border_style", "label": "Section boundary style", "options": [
-        { "value": "solid", "label": "Solid" },
-        { "value": "dashed", "label": "Dashed" },
-        { "value": "dotted", "label": "Dotted" },
-        { "value": "none", "label": "None" }
-      ], "default": "solid" }
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1080,
+        "max": 1600,
+        "step": 40,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1360
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "min": 0,
+        "max": 36,
+        "step": 2,
+        "unit": "px",
+        "label": "Card corner radius",
+        "default": 18
+      },
+      {
+        "type": "header",
+        "content": "Borders"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border color",
+        "default": "#111111"
+      },
+      {
+        "type": "select",
+        "id": "card_border_style",
+        "label": "Card border style",
+        "options": [
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          },
+          {
+            "value": "dotted",
+            "label": "Dotted"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ],
+        "default": "solid"
+      },
+      {
+        "type": "select",
+        "id": "section_border_style",
+        "label": "Section boundary style",
+        "options": [
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          },
+          {
+            "value": "dotted",
+            "label": "Dotted"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ],
+        "default": "solid"
+      }
     ]
   },
   {
     "name": "Product cards",
     "settings": [
-      { "type": "checkbox", "id": "card_show_secondary_image", "label": "Show second image on hover", "default": true },
-      { "type": "checkbox", "id": "card_show_vendor", "label": "Show vendor", "default": false },
-      { "type": "checkbox", "id": "card_enable_quick_add", "label": "Enable quick add", "default": true },
-      { "type": "checkbox", "id": "card_show_sale_badge", "label": "Show sale badge", "default": true },
-      { "type": "header", "content": "Optional playful visuals" },
-      { "type": "select", "id": "card_pet_style", "label": "Pet sitter style", "options": [
-        { "value": "none", "label": "None" }, { "value": "single-paw", "label": "Single corner paw" }, { "value": "corner-paws", "label": "Two corner paws" }, { "value": "paws-tail", "label": "Paws and tail" }, { "value": "face-paws", "label": "Face and paws" }, { "value": "face-paws-tail", "label": "Face, paws and tail" }
-      ], "default": "corner-paws" },
-      { "type": "select", "id": "card_pet_type", "label": "Card pet", "options": [
-        { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }, { "value": "mixed", "label": "Alternate cat and dog" }
-      ], "default": "mixed" },
-      { "type": "select", "id": "card_pet_position", "label": "Pet position", "options": [
-        { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }
-      ], "default": "center" },
-      { "type": "range", "id": "card_pet_size", "min": 72, "max": 144, "step": 4, "unit": "px", "label": "Pet size", "default": 112 },
-      { "type": "color", "id": "card_pet_color", "label": "Pet coat color", "default": "#111111" },
-      { "type": "color", "id": "card_pet_detail_color", "label": "Paw color", "default": "#FFFFFF" },
-      { "type": "select", "id": "card_pet_motion", "label": "Pet animation", "options": [
-        { "value": "none", "label": "None" }, { "value": "float", "label": "Gentle float" }, { "value": "wiggle", "label": "Playful wiggle" }
-      ], "default": "none" },
-      { "type": "checkbox", "id": "card_pet_show_mobile", "label": "Show card pets on mobile", "default": true },
-      { "type": "checkbox", "id": "card_show_hanging_tag", "label": "Show hanging tag", "default": false },
-      { "type": "text", "id": "card_hanging_tag_text", "label": "Hanging tag text", "default": "Good stuff!" },
-      { "type": "checkbox", "id": "card_show_sticker", "label": "Show card sticker", "default": false },
-      { "type": "text", "id": "card_sticker_text", "label": "Sticker text", "default": "Fan favorite!" },
-      { "type": "color", "id": "card_visual_color", "label": "Visual color", "default": "#FFD23F" },
-      { "type": "color", "id": "card_visual_accent", "label": "Visual accent", "default": "#F49AC2" }
+      {
+        "type": "select",
+        "id": "card_hover_override",
+        "label": "Product card hover",
+        "info": "Use section settings for individual effects; another choice overrides product cards throughout the theme.",
+        "options": [
+          {
+            "value": "section",
+            "label": "Use section settings"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "lift",
+            "label": "Lift"
+          },
+          {
+            "value": "tilt",
+            "label": "3D tilt"
+          },
+          {
+            "value": "jelly",
+            "label": "Jelly"
+          },
+          {
+            "value": "bounce",
+            "label": "Bounce"
+          },
+          {
+            "label": "Black offset frame",
+            "value": "offset"
+          },
+          {
+            "label": "Soft elevation",
+            "value": "soft"
+          },
+          {
+            "label": "Accent outline",
+            "value": "outline"
+          },
+          {
+            "label": "Image zoom",
+            "value": "zoom"
+          },
+          {
+            "label": "Editorial rotate",
+            "value": "rotate"
+          }
+        ],
+        "default": "section"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_secondary_image",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_quick_add",
+        "label": "Enable quick add",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sale_badge",
+        "label": "Show sale badge",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Optional playful visuals"
+      },
+      {
+        "type": "select",
+        "id": "card_pet_style",
+        "label": "Pet sitter style",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "single-paw",
+            "label": "Single corner paw"
+          },
+          {
+            "value": "corner-paws",
+            "label": "Two corner paws"
+          },
+          {
+            "value": "paws-tail",
+            "label": "Paws and tail"
+          },
+          {
+            "value": "face-paws",
+            "label": "Face and paws"
+          },
+          {
+            "value": "face-paws-tail",
+            "label": "Face, paws and tail"
+          }
+        ],
+        "default": "corner-paws"
+      },
+      {
+        "type": "select",
+        "id": "card_pet_type",
+        "label": "Card pet",
+        "options": [
+          {
+            "value": "cat",
+            "label": "Cat"
+          },
+          {
+            "value": "dog",
+            "label": "Dog"
+          },
+          {
+            "value": "mixed",
+            "label": "Alternate cat and dog"
+          }
+        ],
+        "default": "mixed"
+      },
+      {
+        "type": "select",
+        "id": "card_pet_position",
+        "label": "Pet position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "range",
+        "id": "card_pet_size",
+        "min": 72,
+        "max": 144,
+        "step": 4,
+        "unit": "px",
+        "label": "Pet size",
+        "default": 112
+      },
+      {
+        "type": "color",
+        "id": "card_pet_color",
+        "label": "Pet coat color",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "card_pet_detail_color",
+        "label": "Paw color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "select",
+        "id": "card_pet_motion",
+        "label": "Pet animation",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "float",
+            "label": "Gentle float"
+          },
+          {
+            "value": "wiggle",
+            "label": "Playful wiggle"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_pet_show_mobile",
+        "label": "Show card pets on mobile",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_hanging_tag",
+        "label": "Show hanging tag",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "card_hanging_tag_text",
+        "label": "Hanging tag text",
+        "default": "Good stuff!"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sticker",
+        "label": "Show card sticker",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "card_sticker_text",
+        "label": "Sticker text",
+        "default": "Fan favorite!"
+      },
+      {
+        "type": "color",
+        "id": "card_visual_color",
+        "label": "Visual color",
+        "default": "#FFD23F"
+      },
+      {
+        "type": "color",
+        "id": "card_visual_accent",
+        "label": "Visual accent",
+        "default": "#F49AC2"
+      }
     ]
   },
   {
     "name": "Playful details",
     "settings": [
-      { "type": "header", "content": "Paw trail" },
-      { "type": "checkbox", "id": "show_paw_trail", "label": "Show decorative paw trail", "default": false },
+      {
+        "type": "header",
+        "content": "Paw trail"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_paw_trail",
+        "label": "Show decorative paw trail",
+        "default": false
+      },
       {
         "type": "select",
         "id": "paw_trail_position",
         "label": "Paw trail position",
         "options": [
-          { "value": "left", "label": "Left edge" },
-          { "value": "right", "label": "Right edge" },
-          { "value": "both", "label": "Both edges" }
+          {
+            "value": "left",
+            "label": "Left edge"
+          },
+          {
+            "value": "right",
+            "label": "Right edge"
+          },
+          {
+            "value": "both",
+            "label": "Both edges"
+          }
         ],
         "default": "right"
       },
-      { "type": "color", "id": "paw_trail_color", "label": "Paw trail color", "default": "#FFD23F" },
-      { "type": "range", "id": "paw_trail_opacity", "min": 10, "max": 100, "step": 5, "unit": "%", "label": "Paw trail opacity", "default": 65 },
-      { "type": "checkbox", "id": "animate_paw_trail", "label": "Animate paw trail", "default": true },
-      { "type": "header", "content": "Corner doodles" },
-      { "type": "checkbox", "id": "show_corner_doodles", "label": "Show corner doodles", "default": false },
+      {
+        "type": "color",
+        "id": "paw_trail_color",
+        "label": "Paw trail color",
+        "default": "#FFD23F"
+      },
+      {
+        "type": "range",
+        "id": "paw_trail_opacity",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Paw trail opacity",
+        "default": 65
+      },
+      {
+        "type": "checkbox",
+        "id": "animate_paw_trail",
+        "label": "Animate paw trail",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Corner doodles"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_corner_doodles",
+        "label": "Show corner doodles",
+        "default": false
+      },
       {
         "type": "select",
         "id": "corner_doodle_style",
         "label": "Doodle style",
         "options": [
-          { "value": "bones", "label": "Bones" },
-          { "value": "hearts", "label": "Hearts" },
-          { "value": "mixed", "label": "Bones and hearts" }
+          {
+            "value": "bones",
+            "label": "Bones"
+          },
+          {
+            "value": "hearts",
+            "label": "Hearts"
+          },
+          {
+            "value": "mixed",
+            "label": "Bones and hearts"
+          }
         ],
         "default": "mixed"
       },
-      { "type": "color", "id": "corner_doodle_color", "label": "Doodle color", "default": "#F49AC2" },
-      { "type": "checkbox", "id": "show_button_paws", "label": "Show paw detail on buttons", "default": false }
+      {
+        "type": "color",
+        "id": "corner_doodle_color",
+        "label": "Doodle color",
+        "default": "#F49AC2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_button_paws",
+        "label": "Show paw detail on buttons",
+        "default": false
+      }
     ]
   },
   {
     "name": "Cart",
     "settings": [
-      { "type": "select", "id": "cart_behavior", "label": "Cart opens as", "options": [
-        { "value": "drawer", "label": "Cart drawer" },
-        { "value": "page", "label": "Cart page" }
-      ], "default": "drawer" },
-      { "type": "select", "id": "cart_icon_style", "label": "Header cart icon", "options": [
-        { "value": "standard", "label": "Standard cart" },
-        { "value": "doghouse", "label": "Doghouse" }
-      ], "default": "doghouse" },
-      { "type": "select", "id": "cart_page_style", "label": "Cart page summary shape", "options": [
-        { "value": "standard", "label": "Standard card" },
-        { "value": "doghouse", "label": "Doghouse" }
-      ], "default": "standard" },
-      { "type": "select", "id": "cart_drawer_style", "label": "Cart drawer style", "options": [
-        { "value": "standard", "label": "Standard" },
-        { "value": "doghouse", "label": "Doghouse" }
-      ], "default": "doghouse" },
-      { "type": "text", "id": "cart_drawer_heading", "label": "Drawer heading", "default": "Your good stuff" },
-      { "type": "text", "id": "cart_drawer_empty_text", "label": "Empty cart text", "default": "Nothing in the doghouse yet." },
-      { "type": "text", "id": "cart_continue_label", "label": "Continue shopping label", "default": "Keep sniffing" },
-      { "type": "checkbox", "id": "cart_show_note", "label": "Show order note", "default": true },
-      { "type": "checkbox", "id": "cart_show_shipping_progress", "label": "Show free-shipping progress", "default": true },
-      { "type": "number", "id": "free_shipping_threshold", "label": "Free-shipping threshold in store currency", "default": 49 },
-      { "type": "select", "id": "cart_shipping_progress_style", "label": "Shipping progress style", "options": [
-        { "value": "classic", "label": "Classic bar" }, { "value": "bone", "label": "Bone for dogs" }, { "value": "fishbone", "label": "Fishbone for cats" }
-      ], "default": "bone" },
-      { "type": "color", "id": "cart_shipping_progress_color", "label": "Shipping progress color", "default": "#B86B3D" },
-      { "type": "color", "id": "cart_drawer_background", "label": "Drawer background", "default": "#FFF8E9" },
-      { "type": "color", "id": "cart_drawer_accent", "label": "Drawer accent", "default": "#FFD23F" },
-      { "type": "header", "content": "Optional playful cart visuals" },
-      { "type": "select", "id": "cart_counter_style", "label": "Cart counter badge", "options": [
-        { "value": "circle", "label": "Circle" }, { "value": "paw", "label": "Paw" }, { "value": "minimal", "label": "Minimal number" }, { "value": "hidden", "label": "Hidden" }
-      ], "default": "paw" },
-      { "type": "paragraph", "content": "Position the badge independently from the cart icon. Positive X moves right; positive Y moves down." },
-      { "type": "range", "id": "cart_counter_x", "min": -20, "max": 20, "step": 1, "unit": "px", "label": "Counter X position", "default": -4 },
-      { "type": "range", "id": "cart_counter_y", "min": -20, "max": 20, "step": 1, "unit": "px", "label": "Counter Y position", "default": 4 },
-      { "type": "color", "id": "cart_counter_background", "label": "Counter background", "default": "#FFD23F" },
-      { "type": "color", "id": "cart_counter_text", "label": "Counter text", "default": "#111111" },
-      { "type": "checkbox", "id": "cart_show_drawer_mascot", "label": "Show pet peeking from drawer", "default": false },
-      { "type": "select", "id": "cart_drawer_mascot", "label": "Drawer pet", "options": [
-        { "value": "cat", "label": "Cat" }, { "value": "dog", "label": "Dog" }
-      ], "default": "dog" },
-      { "type": "range", "id": "cart_mascot_x", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Mascot X position", "default": 72 },
-      { "type": "range", "id": "cart_mascot_y", "min": -40, "max": 40, "step": 2, "unit": "px", "label": "Mascot Y position", "default": 0 },
-      { "type": "color", "id": "cart_mascot_color", "label": "Mascot coat color", "default": "#B86B3D" },
-      { "type": "checkbox", "id": "cart_animate_mascot", "label": "Animate drawer pet", "default": true }
+      {
+        "type": "select",
+        "id": "cart_behavior",
+        "label": "Cart opens as",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Cart drawer"
+          },
+          {
+            "value": "page",
+            "label": "Cart page"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "select",
+        "id": "cart_icon_style",
+        "label": "Header cart icon",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard cart"
+          },
+          {
+            "value": "doghouse",
+            "label": "Doghouse"
+          }
+        ],
+        "default": "doghouse"
+      },
+      {
+        "type": "select",
+        "id": "cart_page_style",
+        "label": "Cart page summary shape",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard card"
+          },
+          {
+            "value": "doghouse",
+            "label": "Doghouse"
+          }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "select",
+        "id": "cart_drawer_style",
+        "label": "Cart drawer style",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "doghouse",
+            "label": "Doghouse"
+          }
+        ],
+        "default": "doghouse"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_heading",
+        "label": "Drawer heading",
+        "default": "Your good stuff"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_empty_text",
+        "label": "Empty cart text",
+        "default": "Nothing in the doghouse yet."
+      },
+      {
+        "type": "text",
+        "id": "cart_continue_label",
+        "label": "Continue shopping label",
+        "default": "Keep sniffing"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Show order note",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_shipping_progress",
+        "label": "Show free-shipping progress",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free-shipping threshold in store currency",
+        "default": 49
+      },
+      {
+        "type": "select",
+        "id": "cart_shipping_progress_style",
+        "label": "Shipping progress style",
+        "options": [
+          {
+            "value": "classic",
+            "label": "Classic bar"
+          },
+          {
+            "value": "bone",
+            "label": "Bone for dogs"
+          },
+          {
+            "value": "fishbone",
+            "label": "Fishbone for cats"
+          }
+        ],
+        "default": "bone"
+      },
+      {
+        "type": "color",
+        "id": "cart_shipping_progress_color",
+        "label": "Shipping progress color",
+        "default": "#B86B3D"
+      },
+      {
+        "type": "color",
+        "id": "cart_drawer_background",
+        "label": "Drawer background",
+        "default": "#FFF8E9"
+      },
+      {
+        "type": "color",
+        "id": "cart_drawer_accent",
+        "label": "Drawer accent",
+        "default": "#FFD23F"
+      },
+      {
+        "type": "header",
+        "content": "Optional playful cart visuals"
+      },
+      {
+        "type": "select",
+        "id": "cart_counter_style",
+        "label": "Cart counter badge",
+        "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "paw",
+            "label": "Paw"
+          },
+          {
+            "value": "minimal",
+            "label": "Minimal number"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "default": "paw"
+      },
+      {
+        "type": "paragraph",
+        "content": "Position the badge independently from the cart icon. Positive X moves right; positive Y moves down."
+      },
+      {
+        "type": "range",
+        "id": "cart_counter_x",
+        "min": -20,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Counter X position",
+        "default": -4
+      },
+      {
+        "type": "range",
+        "id": "cart_counter_y",
+        "min": -20,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Counter Y position",
+        "default": 4
+      },
+      {
+        "type": "color",
+        "id": "cart_counter_background",
+        "label": "Counter background",
+        "default": "#FFD23F"
+      },
+      {
+        "type": "color",
+        "id": "cart_counter_text",
+        "label": "Counter text",
+        "default": "#111111"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_drawer_mascot",
+        "label": "Show pet peeking from drawer",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "cart_drawer_mascot",
+        "label": "Drawer pet",
+        "options": [
+          {
+            "value": "cat",
+            "label": "Cat"
+          },
+          {
+            "value": "dog",
+            "label": "Dog"
+          }
+        ],
+        "default": "dog"
+      },
+      {
+        "type": "range",
+        "id": "cart_mascot_x",
+        "min": 5,
+        "max": 95,
+        "step": 1,
+        "unit": "%",
+        "label": "Mascot X position",
+        "default": 72
+      },
+      {
+        "type": "range",
+        "id": "cart_mascot_y",
+        "min": -40,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Mascot Y position",
+        "default": 0
+      },
+      {
+        "type": "color",
+        "id": "cart_mascot_color",
+        "label": "Mascot coat color",
+        "default": "#B86B3D"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_animate_mascot",
+        "label": "Animate drawer pet",
+        "default": true
+      }
     ]
   },
   {
     "name": "Motion",
     "settings": [
-      { "type": "paragraph", "content": "Animations remain off until an animation style is selected inside a section." },
-      { "type": "range", "id": "motion_duration", "min": 400, "max": 1200, "step": 100, "unit": "ms", "label": "Animation duration", "default": 700 },
-      { "type": "range", "id": "motion_distance", "min": 20, "max": 120, "step": 10, "unit": "px", "label": "Slide distance", "default": 60 },
-      { "type": "range", "id": "motion_stagger", "min": 40, "max": 200, "step": 20, "unit": "ms", "label": "Stagger between items", "default": 100 },
+      {
+        "type": "paragraph",
+        "content": "Animations remain off until an animation style is selected inside a section."
+      },
+      {
+        "type": "range",
+        "id": "motion_duration",
+        "min": 400,
+        "max": 1200,
+        "step": 100,
+        "unit": "ms",
+        "label": "Animation duration",
+        "default": 700
+      },
+      {
+        "type": "range",
+        "id": "motion_distance",
+        "min": 20,
+        "max": 120,
+        "step": 10,
+        "unit": "px",
+        "label": "Slide distance",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "motion_stagger",
+        "min": 40,
+        "max": 200,
+        "step": 20,
+        "unit": "ms",
+        "label": "Stagger between items",
+        "default": 100
+      },
       {
         "type": "select",
         "id": "motion_easing",
         "label": "Motion feel",
         "options": [
-          { "value": "smooth", "label": "Smooth" },
-          { "value": "snappy", "label": "Snappy" },
-          { "value": "playful", "label": "Playful" }
+          {
+            "value": "smooth",
+            "label": "Smooth"
+          },
+          {
+            "value": "snappy",
+            "label": "Snappy"
+          },
+          {
+            "value": "playful",
+            "label": "Playful"
+          }
         ],
         "default": "smooth"
       },
-      { "type": "checkbox", "id": "motion_repeat", "label": "Repeat when elements re-enter the screen", "default": false }
+      {
+        "type": "checkbox",
+        "id": "motion_repeat",
+        "label": "Repeat when elements re-enter the screen",
+        "default": false
+      }
     ]
   }
 ]

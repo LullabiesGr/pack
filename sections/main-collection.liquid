@@ -21,7 +21,7 @@
       <div class="product-grid">
         {%- for product in collection.products -%}
           {%- capture card_color -%}{% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}{%- endcapture -%}
-          {% render 'product-card', product: product, card_color: card_color, index: forloop.index %}
+          {% render 'product-card', product: product, card_color: card_color, index: forloop.index, interaction_style: section.settings.collection_interaction %}
         {%- else -%}
           <p>No products found.</p>
         {%- endfor -%}
@@ -43,6 +43,7 @@
 {
   "name": "Main collection",
   "settings": [
+{"type":"select","id":"collection_interaction","label":"Card hover effect","options":[{"value":"none","label":"None"},{"value":"lift","label":"Lift"},{"value":"tilt","label":"3D tilt"},{"label":"Black offset frame","value":"offset"},{"label":"Soft elevation","value":"soft"},{"label":"Accent outline","value":"outline"},{"label":"Image zoom","value":"zoom"},{"label":"Editorial rotate","value":"rotate"}],"default":"lift"},
     { "type": "text", "id": "collection_eyebrow", "label": "Eyebrow", "default": "Sniff around" },
     { "type": "range", "id": "collection_products_per_page", "min": 6, "max": 36, "step": 3, "label": "Products per page", "default": 18 }
   ]

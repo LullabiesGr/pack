@@ -4,7 +4,7 @@
   data-limit="{{ section.settings.recent_limit }}"
   data-show-price="{{ section.settings.recent_show_price }}"
   data-current-product-id="{{ product.id | default: 0 }}"
-  data-interaction="{{ section.settings.recent_interaction }}"
+  data-interaction="{% if settings.card_hover_override != blank and settings.card_hover_override != 'section' %}{{ settings.card_hover_override }}{% else %}{{ section.settings.recent_interaction }}{% endif %}"
   data-animation="{{ section.settings.recent_animation }}"
   style="--recent-bg: {{ section.settings.recent_background }};"
   {% unless request.design_mode %}hidden{% endunless %}
@@ -25,18 +25,124 @@
 {
   "name": "Recently viewed products",
   "settings": [
-    { "type": "text", "id": "recent_eyebrow", "label": "Eyebrow", "default": "Still sniffing?" },
-    { "type": "text", "id": "recent_heading", "label": "Heading", "default": "Recently viewed" },
-    { "type": "range", "id": "recent_limit", "min": 2, "max": 8, "step": 1, "label": "Maximum products", "default": 4 },
-    { "type": "checkbox", "id": "recent_show_price", "label": "Show prices", "default": true },
-    { "type": "color", "id": "recent_background", "label": "Background", "default": "#FFF8E9" },
-    { "type": "select", "id": "recent_animation", "label": "Card entrance", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "fade-up" },
-    { "type": "select", "id": "recent_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "text",
+      "id": "recent_eyebrow",
+      "label": "Eyebrow",
+      "default": "Still sniffing?"
+    },
+    {
+      "type": "text",
+      "id": "recent_heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    },
+    {
+      "type": "range",
+      "id": "recent_limit",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Maximum products",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "recent_show_price",
+      "label": "Show prices",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "recent_background",
+      "label": "Background",
+      "default": "#FFF8E9"
+    },
+    {
+      "type": "select",
+      "id": "recent_animation",
+      "label": "Card entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "fade-up"
+    },
+    {
+      "type": "select",
+      "id": "recent_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
-  "presets": [{ "name": "Recently viewed products" }]
+  "presets": [
+    {
+      "name": "Recently viewed products"
+    }
+  ]
 }
 {% endschema %}

@@ -15,7 +15,7 @@
       {%- else -%}
         {%- for i in (1..6) -%}
           {%- capture placeholder_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone', 'heart', 'fish' %}{%- endcapture -%}
-          <article class="product-card pack-interaction--{{ section.settings.featured_interaction }}"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}{% if section.settings.featured_interaction == 'tilt' %} data-pack-tilt{% endif %}>
+          <article class="product-card pack-interaction--{% if settings.card_hover_override != blank and settings.card_hover_override != 'section' %}{{ settings.card_hover_override }}{% else %}{{ section.settings.featured_interaction }}{% endif %}"{% if section.settings.featured_cards_animation != 'none' %} data-pack-reveal="{{ section.settings.featured_cards_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}{% if settings.card_hover_override == 'tilt' %} data-pack-tilt{% elsif settings.card_hover_override == blank or settings.card_hover_override == 'section' %}{% if section.settings.featured_interaction == 'tilt' %} data-pack-tilt{% endif %}{% endif %}>
             <div class="product-card__media" style="--card-bg: {% cycle '#F49AC2', '#FFD23F', '#9ED8FF', '#B9E769', '#F04B32', '#FFF8E9' %}"><span class="pack-product-placeholder">{% render 'icon', icon: placeholder_icon %}</span></div>
             <div class="product-card__info"><span class="product-card__title">Pet favorite {{ i }}</span><span class="product-card__price">{{ 2400 | plus: i | money }}</span></div>
           </article>
@@ -29,23 +29,161 @@
 {
   "name": "PACK featured products",
   "settings": [
-    { "type": "text", "id": "featured_eyebrow", "label": "Eyebrow", "default": "Fan favorites" },
-    { "type": "text", "id": "featured_heading", "label": "Heading", "default": "Best sniffers" },
-    { "type": "richtext", "id": "featured_text", "label": "Text", "default": "<p>Treats, chews and good stuff—hand-picked for happy tails.</p>" },
-    { "type": "collection", "id": "featured_collection", "label": "Collection" },
-    { "type": "range", "id": "featured_limit", "min": 3, "max": 9, "step": 1, "label": "Products", "default": 6 },
-    { "type": "text", "id": "featured_link_label", "label": "Link label", "default": "Shop all products" },
-    { "type": "header", "content": "Animation" },
-    { "type": "select", "id": "featured_intro_animation", "label": "Intro animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "slide-left", "label": "Slide left to right" }, { "value": "fade-in", "label": "Fade in" }
-    ], "default": "none" },
-    { "type": "select", "id": "featured_cards_animation", "label": "Product card animation", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Staggered fade up" }, { "value": "zoom-in", "label": "Staggered zoom" }, { "value": "pop", "label": "Staggered playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "none" },
-    { "type": "select", "id": "featured_interaction", "label": "Product hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "text",
+      "id": "featured_eyebrow",
+      "label": "Eyebrow",
+      "default": "Fan favorites"
+    },
+    {
+      "type": "text",
+      "id": "featured_heading",
+      "label": "Heading",
+      "default": "Best sniffers"
+    },
+    {
+      "type": "richtext",
+      "id": "featured_text",
+      "label": "Text",
+      "default": "<p>Treats, chews and good stuff—hand-picked for happy tails.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "featured_limit",
+      "min": 3,
+      "max": 9,
+      "step": 1,
+      "label": "Products",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "featured_link_label",
+      "label": "Link label",
+      "default": "Shop all products"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "featured_intro_animation",
+      "label": "Intro animation",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "slide-left",
+          "label": "Slide left to right"
+        },
+        {
+          "value": "fade-in",
+          "label": "Fade in"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "featured_cards_animation",
+      "label": "Product card animation",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Staggered fade up"
+        },
+        {
+          "value": "zoom-in",
+          "label": "Staggered zoom"
+        },
+        {
+          "value": "pop",
+          "label": "Staggered playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "featured_interaction",
+      "label": "Product hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
-  "presets": [{ "name": "PACK featured products" }]
+  "presets": [
+    {
+      "name": "PACK featured products"
+    }
+  ]
 }
 {% endschema %}

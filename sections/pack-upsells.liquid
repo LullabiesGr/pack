@@ -48,25 +48,159 @@
   "name": "Product upsells",
   "max_blocks": 8,
   "settings": [
-    { "type": "text", "id": "upsell_eyebrow", "label": "Eyebrow", "default": "Complete their routine" },
-    { "type": "text", "id": "upsell_heading", "label": "Heading", "default": "Add a little extra happy" },
-    { "type": "textarea", "id": "upsell_text", "label": "Text", "default": "Choose a collection for automatic cards or select individual products below." },
-    { "type": "collection", "id": "upsell_collection", "label": "Upsell collection" },
-    { "type": "range", "id": "upsell_limit", "min": 2, "max": 8, "step": 1, "label": "Products from collection", "default": 4 },
-    { "type": "text", "id": "upsell_link_label", "label": "Collection link label", "default": "View all" },
-    { "type": "color", "id": "upsell_background", "label": "Background", "default": "#FFF8E9" },
-    { "type": "select", "id": "upsell_animation", "label": "Card entrance", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "pop" },
-    { "type": "select", "id": "upsell_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "lift" }
+    {
+      "type": "text",
+      "id": "upsell_eyebrow",
+      "label": "Eyebrow",
+      "default": "Complete their routine"
+    },
+    {
+      "type": "text",
+      "id": "upsell_heading",
+      "label": "Heading",
+      "default": "Add a little extra happy"
+    },
+    {
+      "type": "textarea",
+      "id": "upsell_text",
+      "label": "Text",
+      "default": "Choose a collection for automatic cards or select individual products below."
+    },
+    {
+      "type": "collection",
+      "id": "upsell_collection",
+      "label": "Upsell collection"
+    },
+    {
+      "type": "range",
+      "id": "upsell_limit",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Products from collection",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "upsell_link_label",
+      "label": "Collection link label",
+      "default": "View all"
+    },
+    {
+      "type": "color",
+      "id": "upsell_background",
+      "label": "Background",
+      "default": "#FFF8E9"
+    },
+    {
+      "type": "select",
+      "id": "upsell_animation",
+      "label": "Card entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "pop"
+    },
+    {
+      "type": "select",
+      "id": "upsell_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "lift"
+    }
   ],
   "blocks": [
-    { "type": "product", "name": "Upsell product", "settings": [
-      { "type": "product", "id": "product", "label": "Product" }
-    ] }
+    {
+      "type": "product",
+      "name": "Upsell product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
   ],
-  "presets": [{ "name": "Product upsells", "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }] }]
+  "presets": [
+    {
+      "name": "Product upsells",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

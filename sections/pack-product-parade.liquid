@@ -96,51 +96,219 @@
   "name": "Animated product parade",
   "max_blocks": 10,
   "settings": [
-    { "type": "text", "id": "parade_eyebrow", "label": "Eyebrow", "default": "Currently causing tail wags" },
-    { "type": "text", "id": "parade_heading", "label": "Heading", "default": "The good stuff parade" },
-    { "type": "richtext", "id": "parade_text", "label": "Text", "default": "<p>A moving shelf of real products from the merchant's Shopify catalog.</p>" },
-    { "type": "text", "id": "parade_link_label", "label": "Link label", "default": "Shop the full lineup" },
-    { "type": "header", "content": "Product source" },
-    { "type": "select", "id": "parade_source", "label": "Source", "options": [
-      { "value": "all", "label": "All products automatically" },
-      { "value": "collection", "label": "Selected collection" },
-      { "value": "blocks", "label": "Individual product blocks" }
-    ], "default": "all" },
-    { "type": "collection", "id": "parade_collection", "label": "Collection" },
-    { "type": "range", "id": "parade_limit", "min": 4, "max": 10, "step": 1, "label": "Products", "default": 6 },
-    { "type": "header", "content": "Animation" },
-    { "type": "checkbox", "id": "parade_motion", "label": "Animate product parade", "default": true },
-    { "type": "range", "id": "parade_speed", "min": 12, "max": 60, "step": 4, "unit": "s", "label": "Loop duration", "default": 28 },
-    { "type": "select", "id": "parade_direction", "label": "Direction", "options": [
-      { "value": "left", "label": "Move left" },
-      { "value": "right", "label": "Move right" }
-    ], "default": "left" },
-    { "type": "checkbox", "id": "parade_pause", "label": "Pause on hover or keyboard focus", "default": true },
-    { "type": "checkbox", "id": "parade_show_toy", "label": "Show floating tennis balls", "default": true },
-    { "type": "select", "id": "parade_intro_animation", "label": "Heading entrance", "options": [
-      { "value": "none", "label": "None" },
-      { "value": "fade-up", "label": "Fade up" },
-      { "value": "slide-left", "label": "Slide from left" },
-      { "value": "pop", "label": "Playful pop" },
-      { "value": "blur-in", "label": "Candy blur" }
-    ], "default": "pop" },
-    { "type": "select", "id": "parade_interaction", "label": "Product hover effect", "options": [
-      { "value": "lift", "label": "Lift" },
-      { "value": "tilt", "label": "3D tilt" },
-      { "value": "jelly", "label": "Jelly" },
-      { "value": "bounce", "label": "Bounce" },
-      { "value": "none", "label": "None" }
-    ], "default": "tilt" },
-    { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "parade_background", "label": "Background", "default": "#F49AC2" },
-    { "type": "color", "id": "parade_accent", "label": "Accent", "default": "#FFD23F" }
+    {
+      "type": "text",
+      "id": "parade_eyebrow",
+      "label": "Eyebrow",
+      "default": "Currently causing tail wags"
+    },
+    {
+      "type": "text",
+      "id": "parade_heading",
+      "label": "Heading",
+      "default": "The good stuff parade"
+    },
+    {
+      "type": "richtext",
+      "id": "parade_text",
+      "label": "Text",
+      "default": "<p>A moving shelf of real products from the merchant's Shopify catalog.</p>"
+    },
+    {
+      "type": "text",
+      "id": "parade_link_label",
+      "label": "Link label",
+      "default": "Shop the full lineup"
+    },
+    {
+      "type": "header",
+      "content": "Product source"
+    },
+    {
+      "type": "select",
+      "id": "parade_source",
+      "label": "Source",
+      "options": [
+        {
+          "value": "all",
+          "label": "All products automatically"
+        },
+        {
+          "value": "collection",
+          "label": "Selected collection"
+        },
+        {
+          "value": "blocks",
+          "label": "Individual product blocks"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "collection",
+      "id": "parade_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "parade_limit",
+      "min": 4,
+      "max": 10,
+      "step": 1,
+      "label": "Products",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "parade_motion",
+      "label": "Animate product parade",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "parade_speed",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "s",
+      "label": "Loop duration",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "parade_direction",
+      "label": "Direction",
+      "options": [
+        {
+          "value": "left",
+          "label": "Move left"
+        },
+        {
+          "value": "right",
+          "label": "Move right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "parade_pause",
+      "label": "Pause on hover or keyboard focus",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "parade_show_toy",
+      "label": "Show floating tennis balls",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "parade_intro_animation",
+      "label": "Heading entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "slide-left",
+          "label": "Slide from left"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        }
+      ],
+      "default": "pop"
+    },
+    {
+      "type": "select",
+      "id": "parade_interaction",
+      "label": "Product hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "tilt"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "parade_background",
+      "label": "Background",
+      "default": "#F49AC2"
+    },
+    {
+      "type": "color",
+      "id": "parade_accent",
+      "label": "Accent",
+      "default": "#FFD23F"
+    }
   ],
   "blocks": [
     {
       "type": "product",
       "name": "Product",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product" }
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
       ]
     }
   ],
@@ -148,10 +316,18 @@
     {
       "name": "Animated product parade",
       "blocks": [
-        { "type": "product" },
-        { "type": "product" },
-        { "type": "product" },
-        { "type": "product" }
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
       ]
     }
   ]

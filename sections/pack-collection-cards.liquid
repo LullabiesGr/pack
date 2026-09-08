@@ -59,27 +59,169 @@
   "name": "Collection cards",
   "max_blocks": 8,
   "settings": [
-    { "type": "text", "id": "collections_eyebrow", "label": "Eyebrow", "default": "Shop their world" },
-    { "type": "text", "id": "collections_heading", "label": "Heading", "default": "Pick a favorite" },
-    { "type": "select", "id": "collections_columns", "label": "Desktop columns", "options": [
-      { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }
-    ], "default": "3" },
-    { "type": "checkbox", "id": "show_collection_count", "label": "Show product count", "default": true },
-    { "type": "color", "id": "collections_background", "label": "Background", "default": "#FFF8E9" },
-    { "type": "select", "id": "collections_animation", "label": "Card entrance", "options": [
-      { "value": "none", "label": "None" }, { "value": "fade-up", "label": "Fade up" }, { "value": "pop", "label": "Playful pop" }, { "value": "blur-in", "label": "Candy blur" }, { "value": "flip-up", "label": "Editorial flip" }, { "value": "squish", "label": "Playful squish" }
-    ], "default": "pop" },
-    { "type": "select", "id": "collections_interaction", "label": "Card hover effect", "options": [
-      { "value": "lift", "label": "Lift" }, { "value": "tilt", "label": "3D tilt" }, { "value": "jelly", "label": "Jelly" }, { "value": "bounce", "label": "Bounce" }, { "value": "none", "label": "None" }
-    ], "default": "tilt" }
+    {
+      "type": "text",
+      "id": "collections_eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop their world"
+    },
+    {
+      "type": "text",
+      "id": "collections_heading",
+      "label": "Heading",
+      "default": "Pick a favorite"
+    },
+    {
+      "type": "select",
+      "id": "collections_columns",
+      "label": "Desktop columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "collections_background",
+      "label": "Background",
+      "default": "#FFF8E9"
+    },
+    {
+      "type": "select",
+      "id": "collections_animation",
+      "label": "Card entrance",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade up"
+        },
+        {
+          "value": "pop",
+          "label": "Playful pop"
+        },
+        {
+          "value": "blur-in",
+          "label": "Candy blur"
+        },
+        {
+          "value": "flip-up",
+          "label": "Editorial flip"
+        },
+        {
+          "value": "squish",
+          "label": "Playful squish"
+        }
+      ],
+      "default": "pop"
+    },
+    {
+      "type": "select",
+      "id": "collections_interaction",
+      "label": "Card hover effect",
+      "options": [
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "tilt",
+          "label": "3D tilt"
+        },
+        {
+          "value": "jelly",
+          "label": "Jelly"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "label": "Black offset frame",
+          "value": "offset"
+        },
+        {
+          "label": "Soft elevation",
+          "value": "soft"
+        },
+        {
+          "label": "Accent outline",
+          "value": "outline"
+        },
+        {
+          "label": "Image zoom",
+          "value": "zoom"
+        },
+        {
+          "label": "Editorial rotate",
+          "value": "rotate"
+        }
+      ],
+      "default": "tilt"
+    }
   ],
   "blocks": [
-    { "type": "collection", "name": "Collection", "settings": [
-      { "type": "collection", "id": "collection", "label": "Collection" },
-      { "type": "image_picker", "id": "image", "label": "Custom image override" },
-      { "type": "text", "id": "title", "label": "Custom title override" }
-    ] }
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image override"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom title override"
+        }
+      ]
+    }
   ],
-  "presets": [{ "name": "Collection cards", "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }] }]
+  "presets": [
+    {
+      "name": "Collection cards",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
