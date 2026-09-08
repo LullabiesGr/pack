@@ -11,6 +11,7 @@ PACK is a playful-editorial Shopify Online Store 2.0 theme for modern pet-care b
 - Quiz, bundle, subscription and social-proof sections
 - Responsive mobile layouts and reduced-motion support
 - Optional transparent custom animal artwork for the perched header pet
+- Reusable floating pet section with per-instance images, coordinates and motion
 
 ## Theme structure
 

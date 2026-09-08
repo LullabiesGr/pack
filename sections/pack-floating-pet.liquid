@@ -1,0 +1,58 @@
+{%- liquid
+  assign pet_source = section.settings.floating_pet_source
+  if pet_source == 'custom' and section.settings.floating_pet_image == blank
+    assign pet_source = 'illustration'
+  endif
+  assign pet_tail = section.settings.floating_pet_type
+  if pet_source == 'custom'
+    assign pet_tail = section.settings.floating_pet_tail
+  endif
+-%}
+<div class="pack-floating-pet-anchor{% unless section.settings.floating_pet_show_mobile %} pack-floating-pet-anchor--desktop-only{% endunless %}" style="--floating-pet-height:{{ section.settings.floating_pet_height }}px;--floating-pet-mobile-height:{{ section.settings.floating_pet_mobile_height }}px">
+  <div class="pack-floating-pet pack-floating-pet--{{ pet_source }} pack-floating-pet--motion-{{ section.settings.floating_pet_motion }} pack-floating-pet--shadow-{{ section.settings.floating_pet_shadow }}{% if section.settings.floating_pet_flip %} pack-floating-pet--flipped{% endif %}" style="--floating-pet-x:{{ section.settings.floating_pet_x }}%;--floating-pet-y:{{ section.settings.floating_pet_y }}px;--floating-pet-mobile-x:{{ section.settings.floating_pet_mobile_x }}%;--floating-pet-mobile-y:{{ section.settings.floating_pet_mobile_y }}px;--floating-pet-size:{{ section.settings.floating_pet_size }}px;--floating-pet-mobile-size:{{ section.settings.floating_pet_mobile_size }}px;--floating-pet-color:{{ section.settings.floating_pet_color }};--perched-pet-color:{{ section.settings.floating_pet_color }};--floating-pet-z:{{ section.settings.floating_pet_z }}" aria-hidden="true">
+    {%- unless pet_tail == 'none' -%}
+      <svg class="pack-floating-pet__tail" viewBox="0 0 90 190" role="presentation" focusable="false">
+        {%- if pet_tail == 'dog' -%}<path class="playful-pet__tail-outline" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/><path class="playful-pet__tail-color" d="M18 18c47 9 58 41 42 68-10 17-31 24-29 48 1 16 15 26 32 22"/>{%- else -%}<path class="playful-pet__tail-outline" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/><path class="playful-pet__tail-color" d="M16 15c48 5 62 35 54 65-6 22-30 35-28 62 1 19 14 28 29 22"/>{%- endif -%}
+      </svg>
+    {%- endunless -%}
+    {%- if pet_source == 'custom' -%}
+      <picture class="pack-floating-pet__picture">
+        {%- if section.settings.floating_pet_mobile_image != blank -%}<source media="(max-width:700px)" srcset="{{ section.settings.floating_pet_mobile_image | image_url: width: 320 }} 1x,{{ section.settings.floating_pet_mobile_image | image_url: width: 640 }} 2x">{%- endif -%}
+        {{ section.settings.floating_pet_image | image_url: width: 800 | image_tag: class: 'pack-floating-pet__image', widths: '160,240,320,480,640,800', sizes: '(max-width:700px) 120px,220px', loading: 'lazy', alt: '' }}
+      </picture>
+    {%- else -%}
+      {% render 'playful-pet-face', pet_type: section.settings.floating_pet_type, class: 'pack-floating-pet__illustration' %}
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name":"Floating pet","tag":"section","class":"pack-floating-pet-section",
+  "settings":[
+    {"type":"paragraph","content":"Place this section between any two sections. The pet can overlap both using the Y position controls."},
+    {"type":"select","id":"floating_pet_source","label":"Pet artwork","options":[{"value":"illustration","label":"Built-in illustration"},{"value":"custom","label":"Custom transparent image"}],"default":"illustration"},
+    {"type":"select","id":"floating_pet_type","label":"Illustrated pet","options":[{"value":"cat","label":"Cat"},{"value":"dog","label":"Dog"}],"default":"cat"},
+    {"type":"image_picker","id":"floating_pet_image","label":"Custom pet image"},
+    {"type":"image_picker","id":"floating_pet_mobile_image","label":"Custom pet image — mobile"},
+    {"type":"paragraph","content":"Use a tightly cropped transparent PNG or WebP. The mobile image is optional."},
+    {"type":"select","id":"floating_pet_tail","label":"Extra tail for custom image","options":[{"value":"none","label":"None / tail is in image"},{"value":"cat","label":"Cat tail"},{"value":"dog","label":"Dog tail"}],"default":"none"},
+    {"type":"checkbox","id":"floating_pet_flip","label":"Face the other direction","default":false},
+    {"type":"color","id":"floating_pet_color","label":"Illustration or extra-tail color","default":"#4A4D48"},
+    {"type":"select","id":"floating_pet_motion","label":"Animation","options":[{"value":"none","label":"None"},{"value":"float","label":"Gentle float"},{"value":"bob","label":"Playful bob"},{"value":"tail","label":"Tail sway"}],"default":"float"},
+    {"type":"select","id":"floating_pet_shadow","label":"Shadow","options":[{"value":"none","label":"None"},{"value":"soft","label":"Soft realistic"},{"value":"graphic","label":"Bold graphic"}],"default":"soft"},
+    {"type":"header","content":"Desktop placement"},
+    {"type":"range","id":"floating_pet_x","min":0,"max":100,"step":1,"unit":"%","label":"X position","default":88},
+    {"type":"range","id":"floating_pet_y","min":-200,"max":200,"step":5,"unit":"px","label":"Y position","default":0},
+    {"type":"range","id":"floating_pet_size","min":80,"max":320,"step":4,"unit":"px","label":"Pet size","default":180},
+    {"type":"range","id":"floating_pet_height","min":0,"max":240,"step":4,"unit":"px","label":"Section spacing","default":40},
+    {"type":"range","id":"floating_pet_z","min":1,"max":30,"step":1,"label":"Layer position","default":8},
+    {"type":"header","content":"Mobile placement"},
+    {"type":"checkbox","id":"floating_pet_show_mobile","label":"Show on mobile","default":true},
+    {"type":"range","id":"floating_pet_mobile_x","min":0,"max":100,"step":1,"unit":"%","label":"Mobile X position","default":82},
+    {"type":"range","id":"floating_pet_mobile_y","min":-120,"max":120,"step":4,"unit":"px","label":"Mobile Y position","default":0},
+    {"type":"range","id":"floating_pet_mobile_size","min":60,"max":180,"step":4,"unit":"px","label":"Mobile pet size","default":112},
+    {"type":"range","id":"floating_pet_mobile_height","min":0,"max":160,"step":4,"unit":"px","label":"Mobile section spacing","default":28}
+  ],
+  "presets":[{"name":"Floating pet","category":"Playful details"}]
+}
+{% endschema %}
