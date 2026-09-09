@@ -42,6 +42,8 @@
       "settings": {
         "floating_pet_source": "custom",
         "floating_pet_type": "cat",
+        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png",
+        "floating_pet_mobile_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
         "floating_pet_color": "#4a4d48",
