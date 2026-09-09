@@ -497,13 +497,13 @@
       "type": "pack-divider",
       "settings": {
         "show_divider": true,
-        "divider_style": "animal-mix",
+        "divider_style": "paws",
         "divider_color": "#f04b32",
         "divider_background": "#fff8e9",
         "divider_height": 48,
         "divider_thickness": 3,
         "divider_icon_size": 24,
-        "divider_animation": "scroll",
+        "divider_animation": "none",
         "divider_full_width": true
       }
     },
