@@ -23,6 +23,7 @@
     "border_color": "#111111",
     "card_border_style": "solid",
     "section_border_style": "solid",
+    "card_hover_override": "jelly",
     "card_show_secondary_image": true,
     "card_show_vendor": false,
     "card_enable_quick_add": true,

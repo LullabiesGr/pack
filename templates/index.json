@@ -12,6 +12,15 @@
     "hero": {
       "type": "pack-hero",
       "settings": {
+        "hero_show_button": true,
+        "hero_button_arrow": true,
+        "hero_button_mobile_full": false,
+        "hero_button_background": "#f49ac2",
+        "hero_button_color": "#111111",
+        "hero_button_font": 16,
+        "hero_button_mobile_font": 14,
+        "hero_button_padding": 12,
+        "hero_button_radius": 40,
         "hero_eyebrow": "Made for pets with personality",
         "hero_heading": "GOOD STUFF FOR <em>GREAT</em> PETS.",
         "hero_button_label": "Shop the good stuff",
@@ -35,7 +44,7 @@
         "floating_pet_type": "cat",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
-        "floating_pet_color": "#4A4D48",
+        "floating_pet_color": "#4a4d48",
         "floating_pet_motion": "none",
         "floating_pet_shadow": "soft",
         "floating_pet_x": 46,
@@ -242,7 +251,7 @@
         "featured_limit": 6,
         "featured_link_label": "Shop all products",
         "featured_intro_animation": "slide-left",
-        "featured_cards_animation": "fade-up",
+        "featured_cards_animation": "squish",
         "featured_interaction": "tilt"
       }
     },
@@ -636,7 +645,7 @@
         "floating_pet_type": "cat",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
-        "floating_pet_color": "#4A4D48",
+        "floating_pet_color": "#4a4d48",
         "floating_pet_motion": "none",
         "floating_pet_shadow": "soft",
         "floating_pet_x": 30,
