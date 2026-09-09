@@ -413,7 +413,7 @@
         "quiz_view_label": "View their matches",
         "quiz_background": "#f49ac2",
         "quiz_accent": "#ffd23f",
-        "quiz_show_paw_trail": true,
+        "quiz_show_paw_trail": false,
         "quiz_show_speech_bubble": true,
         "quiz_speech_text": "Good treats. Happier days.",
         "quiz_visual_x": 48,
