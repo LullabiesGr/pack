@@ -16,7 +16,7 @@
         <li><span aria-hidden="true">3</span>{{ section.settings.bundle_step_three }}</li>
       </ul>
     </div>
-    <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}" data-discount-mode="{{ section.settings.bundle_discount_mode }}" data-discount-percent="{{ section.settings.bundle_discount_percent }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
+    <form class="bundle-builder" data-bundle-builder data-min="{{ section.settings.bundle_minimum }}" data-max="{{ section.settings.bundle_maximum }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-section-id="{{ section.id }}" data-discount-mode="{{ section.settings.bundle_discount_mode }}" data-discount-percent="{{ section.settings.bundle_discount_percent }}" data-discount-code="{{ section.settings.bundle_discount_code | strip | escape }}"{% if section.settings.bundle_animation != 'none' %} data-pack-reveal="{{ section.settings.bundle_animation }}" style="--pack-reveal-delay: var(--pack-motion-stagger)"{% endif %}>
       {%- if section.settings.bundle_show_sticky_note and section.settings.bundle_sticky_note_text != blank -%}
         <span class="bundle-playful-note{% unless section.settings.bundle_visuals_mobile %} bundle-playful-visual--desktop-only{% endunless %}{% if section.settings.bundle_animate_visuals %} bundle-playful-visual--animated{% endif %}" style="--bundle-note-x: {{ section.settings.bundle_sticky_x }}%; --bundle-note-y: {{ section.settings.bundle_sticky_y }}%; --bundle-visual-color: {{ section.settings.bundle_visual_color }};" aria-hidden="true">{{ section.settings.bundle_sticky_note_text | escape }}</span>
       {%- endif -%}
@@ -83,11 +83,12 @@
     { "type": "range", "id": "bundle_product_limit", "min": 4, "max": 8, "step": 1, "label": "Products shown", "default": 6 },
     { "type": "range", "id": "bundle_minimum", "min": 1, "max": 4, "step": 1, "label": "Minimum products required", "default": 2 },
     { "type": "range", "id": "bundle_maximum", "min": 4, "max": 8, "step": 1, "label": "Maximum products allowed", "default": 4 },
-    { "type": "header", "content": "Shopify automatic discount" },
-    { "type": "paragraph", "content": "Create a matching automatic discount in Shopify Admin → Discounts. Shopify validates the eligibility and final total." },
+    { "type": "header", "content": "Shopify discount" },
+    { "type": "paragraph", "content": "Create the matching automatic discount or discount code in Shopify Admin → Discounts. The theme never changes product prices and Shopify validates the final total." },
     { "type": "select", "id": "bundle_discount_mode", "label": "Discount method", "options": [
-      { "value": "none", "label": "No box discount" }, { "value": "automatic", "label": "Use Shopify automatic discount" }
+      { "value": "none", "label": "No box discount" }, { "value": "automatic", "label": "Use Shopify automatic discount" }, { "value": "code", "label": "Apply Shopify discount code" }
     ], "default": "none" },
+    { "type": "text", "id": "bundle_discount_code", "label": "Discount code", "info": "Required only for the discount code method. Create the same code in Shopify Admin first." },
     { "type": "range", "id": "bundle_discount_percent", "min": 1, "max": 50, "step": 1, "unit": "%", "label": "Discount preview", "info": "Set this to the same percentage as the discount configured in Shopify Admin.", "default": 15 },
     { "type": "text", "id": "bundle_discount_badge", "label": "Discount badge", "default": "Box offer" },
     { "type": "header", "content": "Builder text" },

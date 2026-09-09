@@ -66,7 +66,11 @@
     <script>document.documentElement.classList.remove('no-js');</script>
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
     {{ content_for_header }}
-    {%- if request.page_type == 'product' -%}{{ product | structured_data }}{%- elsif request.page_type == 'article' -%}{{ article | structured_data }}{%- endif -%}
+    {%- if request.page_type == 'product' -%}
+      <script type="application/ld+json">{{ product | structured_data }}</script>
+    {%- elsif request.page_type == 'article' -%}
+      <script type="application/ld+json">{{ article | structured_data }}</script>
+    {%- endif -%}
   </head>
 
   <body id="PageTop" class="template-{{ template.name | handle }} pack-card-hover-shadow--{{ settings.card_hover_shadow_shape | default: 'card' }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}" data-cart-behavior="{{ settings.cart_behavior }}">

@@ -35,22 +35,9 @@
       {%- if localization.available_languages.size > 1 -%}
         {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}<label for="FooterLanguage">{{ 'localization.language_label' | t }}</label><select id="FooterLanguage" name="locale_code" onchange="this.form.submit()">{%- for language in localization.available_languages -%}<option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name | capitalize }}</option>{%- endfor -%}</select>{%- endform -%}
       {%- endif -%}
-      {%- if section.settings.show_payment_icons -%}
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
         <ul class="payment-icons" role="list" aria-label="{{ 'footer.payment_methods' | t }}">
-          {%- if section.settings.payment_icons_source == 'enabled' -%}
-            {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endfor -%}
-          {%- else -%}
-            {%- if section.settings.payment_visa -%}<li>{{ 'visa' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_mastercard -%}<li>{{ 'master' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_american_express -%}<li>{{ 'american_express' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_paypal -%}<li>{{ 'paypal' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_apple_pay -%}<li>{{ 'apple_pay' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_google_pay -%}<li>{{ 'google_pay' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_shop_pay -%}<li>{{ 'shopify_pay' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_klarna -%}<li>{{ 'klarna' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_diners_club -%}<li>{{ 'diners_club' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-            {%- if section.settings.payment_discover -%}<li>{{ 'discover' | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endif -%}
-          {%- endif -%}
+          {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endfor -%}
         </ul>
       {%- endif -%}
     </div>
@@ -84,17 +71,7 @@
     { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "All rights reserved." },
     { "type": "header", "content": "Payment icons" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
-    { "type": "select", "id": "payment_icons_source", "label": "Payment icons source", "info": "Enabled methods uses payment methods returned by Shopify. Manual selection also works in development stores without active payments.", "options": [{ "value": "custom", "label": "Manual selection" }, { "value": "enabled", "label": "Enabled payment methods" }], "default": "custom" },
-    { "type": "checkbox", "id": "payment_visa", "label": "Visa", "default": true },
-    { "type": "checkbox", "id": "payment_mastercard", "label": "Mastercard", "default": true },
-    { "type": "checkbox", "id": "payment_american_express", "label": "American Express", "default": true },
-    { "type": "checkbox", "id": "payment_paypal", "label": "PayPal", "default": true },
-    { "type": "checkbox", "id": "payment_apple_pay", "label": "Apple Pay", "default": false },
-    { "type": "checkbox", "id": "payment_google_pay", "label": "Google Pay", "default": false },
-    { "type": "checkbox", "id": "payment_shop_pay", "label": "Shop Pay", "default": false },
-    { "type": "checkbox", "id": "payment_klarna", "label": "Klarna", "default": false },
-    { "type": "checkbox", "id": "payment_diners_club", "label": "Diners Club", "default": false },
-    { "type": "checkbox", "id": "payment_discover", "label": "Discover", "default": false },
+    { "type": "paragraph", "content": "Displays the full-color payment methods enabled in Shopify Payments settings." },
     { "type": "header", "content": "Back to top" },
     { "type": "checkbox", "id": "show_back_to_top", "label": "Show back to top button", "default": true },
     { "type": "select", "id": "back_to_top_style", "label": "Button style", "options": [{ "value": "bone", "label": "Dog bone" }, { "value": "fishbone", "label": "Fish bone" }, { "value": "cat-paw", "label": "Cat paw" }, { "value": "dog-paw", "label": "Dog paw" }, { "value": "arrow-up", "label": "Minimal arrow" }], "default": "bone" },

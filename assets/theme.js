@@ -378,7 +378,8 @@ class PackBundleBuilder {
     const max = Number(builder.dataset.max || 4);
     const discountMode = builder.dataset.discountMode || 'none';
     const discountPercent = Math.max(0, Math.min(100, Number(builder.dataset.discountPercent || 0)));
-    const discountConfigured = discountMode === 'automatic';
+    const discountCode = (builder.dataset.discountCode || '').trim();
+    const discountConfigured = discountMode === 'automatic' || (discountMode === 'code' && discountCode !== '');
     const atMax = selected.length >= max;
     builder.querySelectorAll('[data-bundle-product]:not(:checked)').forEach((input) => {
       input.disabled = atMax || input.closest('.is-unavailable') !== null;
@@ -445,7 +446,28 @@ class PackBundleBuilder {
       if (!response.ok) throw new Error(result.description || 'Could not add this box.');
       boxAdded = true;
       const discountMode = builder.dataset.discountMode || 'none';
-      if (discountMode === 'automatic') completionMessage = 'Your box was added. Shopify will apply the eligible automatic discount.';
+      if (discountMode === 'code') {
+        const discountCode = (builder.dataset.discountCode || '').trim();
+        if (!discountCode) {
+          completionMessage = 'Your box was added, but no discount code is configured.';
+        } else {
+          const discountResponse = await fetch(`${window.Shopify.routes.root}cart/update.js`, {
+            method: 'POST',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ discount: discountCode })
+          });
+          const discountedCart = await discountResponse.json();
+          if (!discountResponse.ok) {
+            completionMessage = discountedCart.description || 'Your box was added, but the discount could not be applied.';
+          } else {
+            const submittedCode = discountCode.toLowerCase();
+            const codeStatus = discountedCart.discount_codes?.find((entry) => String(entry.code || '').toLowerCase() === submittedCode);
+            completionMessage = codeStatus?.applicable === false
+              ? 'Your box was added, but the configured discount is not eligible for this cart.'
+              : 'Your box was added and the discount code was applied.';
+          }
+        }
+      } else if (discountMode === 'automatic') completionMessage = 'Your box was added. Shopify will apply the eligible automatic discount.';
       else completionMessage = 'Your box was added to the cart.';
       if (window.packCartDrawer?.enabled) await window.packCartDrawer.refresh(true);
       else {

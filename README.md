@@ -17,6 +17,8 @@ PACK is a playful-editorial Shopify Online Store 2.0 theme for modern pet-care b
 
 The repository root is Shopify-ready and contains only supported theme directories. Connect the `main` branch directly through Shopify's GitHub integration or run it with Shopify CLI.
 
+The `main` branch is the canonical, portable theme source. Demo-store media remains configured inside Shopify and must not be committed as store-specific defaults. Payment icons are rendered only from `shop.enabled_payment_types`.
+
 ```sh
 shopify theme dev --store your-store.myshopify.com
 shopify theme check

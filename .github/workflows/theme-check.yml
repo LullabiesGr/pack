@@ -2,7 +2,7 @@ name: Theme Check
 
 on:
   push:
-    branches: [main]
+    branches: [main, theme-store-submission]
   pull_request:
 
 permissions:
