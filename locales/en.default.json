@@ -22,6 +22,6 @@
   "blogs":{"article":{"no_articles":"No articles yet."},"comments":{"title":"Comments","success":"Your comment was submitted.","name":"Name","email":"Email","message":"Comment","post":"Post comment"}},
   "password":{"general":{"password":"Store password","enter":"Enter store","email":"Email","notify":"Notify me"}},
   "localization":{"country_label":"Country/region","language_label":"Language"},
-  "footer":{"payment_methods":"Payment methods"},
+  "footer":{"payment_methods":"Payment methods","back_to_top":"Back to top"},
   "gift_cards":{"issued":{"title":"{{ value }} gift card for {{ shop }}","subtext":"Your gift card","expired":"This gift card is expired or disabled.","expiration_date":"Expires {{ expires_on }}","send_on":"Scheduled for {{ send_on }}","shop_link":"Continue shopping","print":"Print"}}
 }

@@ -1935,10 +1935,21 @@ a {
   gap:40px
 }
 .site-footer__brand {
+  display:inline-block;
   font-family:var(--pack-display);
   font-size:3.6rem;
   font-weight:800;
-  letter-spacing:-.08em
+  letter-spacing:-.08em;
+  text-decoration:none
+}
+.site-footer__logo {
+  display:block;
+  width:min(var(--footer-logo-width),100%);
+  line-height:0
+}
+.site-footer__logo img {
+  width:100%;
+  height:auto
 }
 .site-footer h3 {
   font-size:.76rem;
@@ -4570,9 +4581,68 @@ html.pack-reveal-ready [data-pack-reveal].is-visible {
   padding:0;
   list-style:none
 }
+.payment-icons li {
+  display:flex;
+  overflow:hidden;
+  padding:2px;
+  border-radius:5px;
+  background:#fff
+}
 .payment-icons svg {
   width:38px;
   height:24px
+}
+.site-footer__back-to-top {
+  position:fixed;
+  z-index:30;
+  bottom:22px;
+  display:grid;
+  place-items:center;
+  width:60px;
+  height:60px;
+  border:2px solid var(--pack-ink);
+  border-radius:50%;
+  background:var(--back-top-bg);
+  color:var(--back-top-color);
+  box-shadow:4px 5px 0 var(--pack-ink);
+  text-decoration:none;
+  transition:opacity .2s ease,transform .2s ease,box-shadow .2s ease
+}
+.site-footer__back-to-top--right {
+  right:22px
+}
+.site-footer__back-to-top--left {
+  left:22px
+}
+.site-footer__back-to-top svg {
+  width:34px;
+  height:34px
+}
+.site-footer__back-to-top--bone {
+  width:82px;
+  border-radius:999px
+}
+.site-footer__back-to-top--fishbone {
+  width:76px;
+  border-radius:18px 50% 50% 18px
+}
+.site-footer__back-to-top:hover,.site-footer__back-to-top:focus-visible {
+  transform:translateY(-4px) rotate(-2deg);
+  box-shadow:6px 8px 0 var(--pack-ink);
+  text-decoration:none
+}
+.js .site-footer__back-to-top {
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(16px)
+}
+.js .site-footer__back-to-top.is-visible {
+  opacity:1;
+  pointer-events:auto;
+  transform:none
+}
+.js .site-footer__back-to-top.is-visible:hover,.js .site-footer__back-to-top.is-visible:focus-visible {
+  transform:translateY(-4px) rotate(-2deg)
 }
 .standard-page__narrow,.article-page {
   max-width:880px
@@ -4723,6 +4793,24 @@ html.pack-reveal-ready [data-pack-reveal].is-visible {
   }
   .payment-icons {
     margin-left:0
+  }
+  .site-footer__back-to-top {
+    bottom:14px;
+    width:52px;
+    height:52px
+  }
+  .site-footer__back-to-top--right {
+    right:14px
+  }
+  .site-footer__back-to-top--left {
+    left:14px
+  }
+  .site-footer__back-to-top--bone,.site-footer__back-to-top--fishbone {
+    width:68px
+  }
+  .site-footer__back-to-top svg {
+    width:30px;
+    height:30px
   }
   .gift-card__inner {
     padding:24px

@@ -717,6 +717,21 @@ class PackRecentlyViewed {
   }
 }
 
+class PackBackToTop {
+  constructor(root = document) {
+    this.button = root.querySelector('[data-back-to-top]') || document.querySelector('[data-back-to-top]');
+    if (!this.button || this.button.dataset.backToTopBound === 'true') return;
+    this.button.dataset.backToTopBound = 'true';
+    this.button.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+    this.update = () => this.button.classList.toggle('is-visible', window.scrollY > 420);
+    window.addEventListener('scroll', this.update, { passive: true });
+    this.update();
+  }
+}
+
 if (!customElements.get('product-recommendations')) {
   customElements.define('product-recommendations', class extends HTMLElement {
     connectedCallback() {
@@ -751,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.packReveal = new PackReveal();
   window.packTilt = new PackTilt();
   window.packRecentlyViewed = new PackRecentlyViewed();
+  window.packBackToTop = new PackBackToTop();
 });
 
 document.addEventListener('shopify:section:load', (event) => {
@@ -770,4 +786,5 @@ document.addEventListener('shopify:section:load', (event) => {
     window.packRecentlyViewed.recordCurrent(event.target);
     window.packRecentlyViewed.render(event.target);
   }
+  if (event.target.querySelector('[data-back-to-top]')) window.packBackToTop = new PackBackToTop(event.target);
 });
