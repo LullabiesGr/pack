@@ -171,7 +171,7 @@
         "couch": {
           "type": "personality",
           "settings": {
-            "product": "",
+            "product": "beef-liver-training-treats",
             "collection": "",
             "title": "The Couch Potato",
             "use_catalog_title": false,
@@ -182,7 +182,7 @@
         "chaos": {
           "type": "personality",
           "settings": {
-            "product": "",
+            "product": "calm-soft-chews",
             "collection": "",
             "title": "The Chaos Agent",
             "use_catalog_title": false,
@@ -193,7 +193,7 @@
         "critic": {
           "type": "personality",
           "settings": {
-            "product": "",
+            "product": "dental-sticks",
             "collection": "",
             "title": "The Food Critic",
             "use_catalog_title": false,
@@ -204,7 +204,7 @@
         "explorer": {
           "type": "personality",
           "settings": {
-            "product": "",
+            "product": "salmon-jerky-training-treats",
             "collection": "",
             "title": "The Explorer",
             "use_catalog_title": false,
