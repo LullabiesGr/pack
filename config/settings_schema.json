@@ -220,6 +220,27 @@
         "default": "section"
       },
       {
+        "type": "select",
+        "id": "card_hover_shadow_shape",
+        "label": "Hover shadow corners",
+        "info": "Controls the outer shape of card shadows, including Black offset frame, Lift and Editorial rotate.",
+        "options": [
+          {
+            "value": "card",
+            "label": "Match product card"
+          },
+          {
+            "value": "rounded",
+            "label": "Rounded"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          }
+        ],
+        "default": "card"
+      },
+      {
         "type": "checkbox",
         "id": "card_show_secondary_image",
         "label": "Show second image on hover",

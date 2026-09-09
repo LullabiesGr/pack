@@ -851,7 +851,17 @@ a {
 }
 .product-card {
   position:relative;
-  min-width:0
+  min-width:0;
+  border-radius:var(--pack-hover-shadow-radius,var(--pack-radius))
+}
+.pack-card-hover-shadow--square .product-card {
+  --pack-hover-shadow-radius:0
+}
+.pack-card-hover-shadow--rounded .product-card {
+  --pack-hover-shadow-radius:26px
+}
+.pack-card-hover-shadow--card .product-card {
+  --pack-hover-shadow-radius:var(--pack-radius)
 }
 .product-card__media-wrap {
   position:relative;

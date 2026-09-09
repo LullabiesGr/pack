@@ -69,7 +69,7 @@
     {%- if request.page_type == 'product' -%}{{ product | structured_data }}{%- elsif request.page_type == 'article' -%}{{ article | structured_data }}{%- endif -%}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}" data-cart-behavior="{{ settings.cart_behavior }}">
+  <body class="template-{{ template.name | handle }} pack-card-hover-shadow--{{ settings.card_hover_shadow_shape | default: 'card' }}{% if settings.show_button_paws %} pack-buttons-with-paws{% endif %}" data-pack-motion-repeat="{{ settings.motion_repeat }}" data-cart-behavior="{{ settings.cart_behavior }}">
     <a class="skip-to-content-link" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
     {% sections 'header-group' %}
     {% render 'pack-decorations' %}
