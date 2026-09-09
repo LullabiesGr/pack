@@ -54,7 +54,7 @@
     "show_button_paws": false,
     "cart_behavior": "drawer",
     "cart_icon_style": "doghouse",
-    "cart_page_style": "standard",
+    "cart_page_style": "doghouse",
     "cart_drawer_style": "doghouse",
     "cart_drawer_heading": "Your good stuff",
     "cart_drawer_empty_text": "Nothing in the doghouse yet.",
