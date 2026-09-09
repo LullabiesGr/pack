@@ -21,6 +21,7 @@
         "announcement_style": "ticker",
         "announcement_background": "#ffd23f",
         "announcement_text_color": "#111111",
+        "logo": "shopify://shop_images/ChatGPT_Image_9_2026_11_11_24_._..png",
         "wordmark": "PALS!",
         "menu": "main-menu",
         "customer_account_menu": "customer-account-main-menu",
