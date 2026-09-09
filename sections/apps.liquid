@@ -1,0 +1,6 @@
+<div class="apps-section{% if section.settings.include_padding %} page-width section-pad{% endif %}">
+  {%- for block in section.blocks -%}{% render block %}{%- endfor -%}
+</div>
+{% schema %}
+{"name":"Apps","settings":[{"type":"checkbox","id":"include_padding","label":"Use theme spacing","default":true}],"blocks":[{"type":"@app"}],"presets":[{"name":"Apps"}]}
+{% endschema %}

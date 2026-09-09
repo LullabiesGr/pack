@@ -44,13 +44,14 @@
                     {%- endif -%}
                   </a>
                   <div class="cart-drawer__item-info">
-                    <a class="cart-drawer__item-title" href="{{ item.url }}">{{ item.product.title }}</a>
-                    {%- unless item.product.has_only_default_variant -%}<p>{{ item.variant.title }}</p>{%- endunless -%}
+                    <a class="cart-drawer__item-title" href="{{ item.url }}">{{ item.title }}</a>
+                    {%- unless item.product.has_only_default_variant -%}{%- for option in item.options_with_values -%}<p>{{ option.name }}: {{ option.value }}</p>{%- endfor -%}{%- endunless -%}
                     {%- if item.selling_plan_allocation -%}<p>{{ item.selling_plan_allocation.selling_plan.name }}</p>{%- endif -%}
                     {%- for property in item.properties -%}
                       {%- assign property_first_character = property.first | slice: 0 -%}
-                      {%- if property.last != blank and property_first_character != '_' -%}<p>{{ property.first }}: {{ property.last }}</p>{%- endif -%}
+                      {%- if property.last != blank and property_first_character != '_' -%}<p>{{ property.first }}: {% if property.last contains '/uploads/' %}<a href="{{ property.last }}" target="_blank">{{ property.last | split: '/' | last }}</a>{% else %}{{ property.last }}{% endif %}</p>{%- endif -%}
                     {%- endfor -%}
+                    {% render 'unit-price', variant: item.variant %}
                     <div class="cart-drawer__quantity" aria-label="Quantity for {{ item.product.title | escape }}">
                       <button type="button" aria-label="Decrease quantity" data-cart-line-change data-line="{{ item.index }}" data-quantity="{{ minus_quantity }}">−</button>
                       <input type="number" min="0" value="{{ item.quantity }}" aria-label="Quantity" data-cart-quantity data-line="{{ item.index }}">
@@ -58,7 +59,7 @@
                     </div>
                     <button class="cart-drawer__remove" type="button" data-cart-line-change data-line="{{ item.index }}" data-quantity="0">Remove</button>
                   </div>
-                  <strong class="cart-drawer__price">{{ item.final_line_price | money }}</strong>
+                  <div class="cart-drawer__price">{%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money }}</s>{%- endif -%}<strong>{{ item.final_line_price | money }}</strong><small>{{ item.final_price | money }} {{ 'cart.general.each' | t }}</small>{%- for discount in item.line_level_discount_allocations -%}<small>{{ discount.discount_application.title }} (−{{ discount.amount | money }})</small>{%- endfor -%}</div>
                 </article>
               {%- endfor -%}
             </div>
@@ -74,6 +75,8 @@
             <textarea class="cart-note" id="CartDrawerNote" rows="2" data-cart-note placeholder="Add delivery details or a note for the store">{{ cart.note }}</textarea>
           {%- endif -%}
           <div class="cart-drawer__subtotal"><span>{{ 'cart.general.subtotal' | t }}</span><strong>{{ cart.total_price | money }}</strong></div>
+          {%- for discount in cart.cart_level_discount_applications -%}<p class="cart-discount"><span>{{ discount.title }}</span><strong>−{{ discount.total_allocated_amount | money }}</strong></p>{%- endfor -%}
+          <p class="cart-summary__tax-note">{%- if cart.taxes_included -%}{{ 'cart.general.taxes_included' | t }}{%- else -%}{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}{%- endif -%}</p>
           <button class="pack-button" type="submit" name="checkout" form="CartDrawerForm">{{ 'cart.general.checkout' | t }}</button>
           <a class="cart-drawer__view-cart" href="{{ routes.cart_url }}">View cart</a>
         </footer>

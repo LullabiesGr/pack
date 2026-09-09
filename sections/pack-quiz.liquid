@@ -4,6 +4,7 @@
     assign quiz_media = section.settings.quiz_featured_product.featured_media
   endif
   assign quiz_motion_class = 'pack-idle pack-idle--' | append: section.settings.quiz_idle_motion
+  assign quiz_focal_style = 'object-position:' | append: quiz_media.presentation.focal_point | append: ';'
   assign question_count = 0
   assign result_count = 0
   for block in section.blocks
@@ -26,7 +27,7 @@
   <div class="pack-quiz__inner page-width">
     <div class="pack-quiz__peek"{% if section.settings.quiz_image_animation != 'none' %} data-pack-reveal="{{ section.settings.quiz_image_animation }}"{% endif %}>
       {%- if quiz_media != blank -%}
-        {{ quiz_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', class: quiz_motion_class, alt: quiz_media.alt | default: section.settings.quiz_heading }}
+        {{ quiz_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 38vw, 100vw', loading: 'lazy', class: quiz_motion_class, style: quiz_focal_style, alt: quiz_media.alt | default: section.settings.quiz_heading }}
       {%- else -%}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
@@ -100,10 +101,10 @@
     { "type": "checkbox", "id": "quiz_show_speech_bubble", "label": "Show speech bubble", "default": false },
     { "type": "text", "id": "quiz_speech_text", "label": "Speech bubble text", "default": "Good treats. Happier days." },
     { "type": "paragraph", "content": "Coordinates are relative to this section. X moves left/right and Y moves top/bottom." },
-    { "type": "range", "id": "quiz_visual_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail X", "default": 48 },
-    { "type": "range", "id": "quiz_visual_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail Y", "default": 58 },
-    { "type": "range", "id": "quiz_speech_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble X", "default": 12 },
-    { "type": "range", "id": "quiz_speech_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble Y", "default": 12 },
+    { "type": "range", "id": "quiz_visual_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail horizontal position", "default": 48 },
+    { "type": "range", "id": "quiz_visual_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Paw trail vertical position", "default": 58 },
+    { "type": "range", "id": "quiz_speech_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble horizontal position", "default": 12 },
+    { "type": "range", "id": "quiz_speech_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Speech bubble vertical position", "default": 12 },
     { "type": "color", "id": "quiz_visual_color", "label": "Visual color", "default": "#FFD23F" },
     { "type": "checkbox", "id": "quiz_animate_visuals", "label": "Animate playful visuals", "default": true },
     { "type": "checkbox", "id": "quiz_visuals_mobile", "label": "Show visuals on mobile", "default": false },

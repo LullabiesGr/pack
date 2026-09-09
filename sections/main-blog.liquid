@@ -1,0 +1,8 @@
+<section class="standard-page section-pad"><div class="page-width">
+  <p class="pack-eyebrow">{{ section.settings.eyebrow }}</p><h1 class="pack-heading">{{ blog.title }}</h1>
+  {%- paginate blog.articles by section.settings.posts_per_page -%}
+    <div class="article-grid">{%- for article in blog.articles -%}<article class="article-card">{%- if article.image -%}<a href="{{ article.url }}">{{ article.image | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(min-width: 750px) 33vw, 100vw', loading: 'lazy', alt: article.image.alt | default: article.title }}</a>{%- endif -%}<div class="article-card__content"><p class="pack-eyebrow">{{ article.published_at | date: format: 'date' }}</p><h2><a href="{{ article.url }}">{{ article.title }}</a></h2><p>{{ article.excerpt_or_content | strip_html | truncatewords: 25 }}</p>{%- if article.tags.size > 0 -%}<div class="article-tags">{%- for tag in article.tags -%}<a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{%- endfor -%}</div>{%- endif -%}</div></article>{%- else -%}<p>{{ 'blogs.article.no_articles' | t }}</p>{%- endfor -%}</div>
+    {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+  {%- endpaginate -%}
+</div></section>
+{% schema %}{"name":"Main blog","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Stories & care"},{"type":"range","id":"posts_per_page","min":3,"max":24,"step":3,"label":"Posts per page","default":9}]}{% endschema %}

@@ -62,12 +62,12 @@
       {%- else -%}
         {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}
-      {%- if settings.card_show_sale_badge and card_product.compare_at_price > card_product.price -%}
+      {%- if settings.card_show_sale_badge and card_product.compare_at_price_max > card_product.price -%}
         <span class="product-card__badge">Save</span>
       {%- endif -%}
     </a>
 
-    {%- if settings.card_enable_quick_add and card_product.available -%}
+    {%- if settings.card_enable_quick_add and card_product.available and card_product.has_only_default_variant -%}
       <form method="post" action="{{ routes.cart_add_url }}" class="product-card__quick-form" data-quick-add>
         <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
         <input type="hidden" name="quantity" value="1">
@@ -75,16 +75,21 @@
           {% render 'icon', icon: 'plus' %}
         </button>
       </form>
+    {%- elsif settings.card_enable_quick_add and card_product.available -%}
+      <a class="product-card__quick" href="{{ card_product.url }}" aria-label="{{ 'products.product.choose_options' | t }}: {{ card_product.title | escape }}">
+        {% render 'icon', icon: 'plus' %}
+      </a>
     {%- endif -%}
   </div>
 
   <div class="product-card__info">
     <div>{%- if settings.card_show_vendor and card_product.vendor != blank -%}<span class="product-card__vendor">{{ card_product.vendor }}</span>{%- endif -%}<a class="product-card__title" href="{{ card_product.url }}">{{ card_product.title }}</a></div>
     <div class="product-card__price">
-      {%- if card_product.compare_at_price > card_product.price -%}
-        <span class="product-card__compare">{{ card_product.compare_at_price | money }}</span>
+      {%- if card_product.compare_at_price_max > card_product.price -%}
+        <span class="product-card__compare">{{ card_product.compare_at_price_max | money }}</span>
       {%- endif -%}
-      <span>{{ card_product.price | money }}</span>
+      <span>{% if card_product.price_varies %}{{ card_product.price_min | money }} – {{ card_product.price_max | money }}{% else %}{{ card_product.price | money }}{% endif %}</span>
+      {% render 'unit-price', variant: card_product.selected_or_first_available_variant %}
     </div>
   </div>
 </article>

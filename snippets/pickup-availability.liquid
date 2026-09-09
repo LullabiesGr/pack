@@ -1,0 +1,7 @@
+{%- assign pickup_locations = variant.store_availabilities | where: 'pick_up_enabled', true -%}
+{%- if pickup_locations.size > 0 -%}
+  <details class="pickup-availability">
+    <summary><strong>{% if pickup_locations.first.available %}{{ 'products.product.pickup.available' | t: location: pickup_locations.first.location.name }}{% else %}{{ 'products.product.pickup.unavailable' | t: location: pickup_locations.first.location.name }}{% endif %}</strong><span>{{ pickup_locations.first.pick_up_time }}</span></summary>
+    <ul>{%- for availability in pickup_locations -%}<li><strong>{{ availability.location.name }}</strong><span>{% if availability.available %}{{ availability.pick_up_time }}{% else %}{{ 'products.product.pickup.not_available' | t }}{% endif %}</span>{%- assign address = availability.location.address -%}<address>{{ address | format_address }}</address>{%- if address.phone != blank -%}<a href="tel:{{ address.phone | replace: ' ', '' }}">{{ address.phone }}</a>{%- endif -%}</li>{%- endfor -%}</ul>
+  </details>
+{%- endif -%}

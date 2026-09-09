@@ -1,0 +1,13 @@
+<section class="standard-page section-pad"><div class="page-width standard-page__narrow">
+  <p class="pack-eyebrow">{{ section.settings.eyebrow }}</p><h1 class="pack-heading">{{ page.title }}</h1>
+  {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+  {%- form 'contact', class: 'standard-form' -%}
+    {%- if form.posted_successfully? -%}<p class="form-message" role="status">{{ 'contact.form.success' | t }}</p>{%- endif -%}
+    {%- if form.errors -%}<div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="standard-form__row"><div><label for="ContactName">{{ 'contact.form.name' | t }}</label><input id="ContactName" type="text" name="contact[name]" value="{{ form.name }}" autocomplete="name"></div><div><label for="ContactEmail">{{ 'contact.form.email' | t }}</label><input id="ContactEmail" type="email" name="contact[email]" value="{{ form.email }}" autocomplete="email" required></div></div>
+    <label for="ContactPhone">{{ 'contact.form.phone' | t }}</label><input id="ContactPhone" type="tel" name="contact[phone]" value="{{ form.phone }}" autocomplete="tel">
+    <label for="ContactBody">{{ 'contact.form.comment' | t }}</label><textarea id="ContactBody" name="contact[body]" rows="8" required>{{ form.body }}</textarea>
+    <button class="pack-button pack-button--blue" type="submit">{{ 'contact.form.send' | t }}</button>
+  {%- endform -%}
+</div></section>
+{% schema %}{"name":"Contact form","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"Say hello"}]}{% endschema %}

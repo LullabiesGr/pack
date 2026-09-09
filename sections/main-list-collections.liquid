@@ -21,10 +21,7 @@
         {%- for card_collection in collections -%}
           {%- if card_collection.products_count > 0 or section.settings.list_show_empty -%}
             {%- liquid
-              assign collection_media = card_collection.image
-              if collection_media == blank
-                assign collection_media = card_collection.products.first.featured_media
-              endif
+              assign collection_media = card_collection.featured_image
               assign rendered_collections = rendered_collections | plus: 1
             -%}
             <a

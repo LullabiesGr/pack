@@ -24,16 +24,16 @@ shopify theme check
 
 ## Build a Box
 
-The section reads real Shopify products from All products, a merchant-selected collection, or product blocks. Customers choose variants and add the complete box in one request.
+The section reads real Shopify products from All products, a merchant-selected collection, or product blocks and adds the selected available variants in one request. Products with multiple options link to the full product picker so a buyer never adds an unintended variant.
 
 For a real box discount:
 
-1. Create a percentage discount code or automatic discount in Shopify Admin → Discounts.
+1. Create an automatic percentage discount in Shopify Admin → Discounts.
 2. Set its eligible products and minimum quantity to match the box rules.
 3. In the section, choose the matching discount method and preview percentage.
-4. For the code method, enter the exact Shopify discount code.
+4. Shopify applies the discount only when the configured eligibility rules match the selected items.
 
-The code method applies the discount through Shopify's Cart API. Shopify remains the source of truth for eligibility and the final checkout total.
+The theme previews the saving. Shopify remains the source of truth for eligibility and the final cart and checkout totals.
 
 ## Pet Finder Quiz
 
@@ -41,6 +41,18 @@ Question blocks define the answer labels and an outcome key for each answer. Res
 
 Example outcome keys: `active`, `wellness`, and `comfort`.
 
-## Status
+## Version 2.0.0
 
-Version 1.7.0 adds Classic, Bone and Fishbone free-shipping meters whose fill follows the real cart threshold. Product cards now include a modular cat, dog or alternating pet sitter with single paw, corner paws, paws and tail, face and paws, or the complete face-paws-tail composition. Position, size, coat, paw color, motion and mobile visibility remain merchant controlled.
+- Block-based product information with high-variant option values, combined-listing refreshes, swatches, rich media, selling plans, accelerated checkout, Shop Pay terms, pickup availability and gift-card recipients
+- Native collection and search filtering, sorting, pagination and mixed search result types
+- Cart line properties, selling plans, automatic discounts, cart notes, unit/final prices and accelerated checkout
+- Complete blog, article comments, contact, password and gift-card templates
+- Nested navigation, predictive search, customer accounts, localization, Follow on Shop, payment methods and social links
+- Optional cart drawer, recommendations, complementary products, recently viewed products, quiz, box builder and reusable playful visuals
+- Responsive images, image focal points, reduced-motion support and mobile navigation focus handling
+
+## Release notes
+
+Version 2.0.0 is the Theme Store readiness release. It removes demo-store product and image references, removes theme-managed discount-code behavior, and adds the native Shopify commerce and template requirements listed above. Merchants must create any advertised automatic box discount in Shopify Admin; the theme never invents checkout savings.
+
+Before submission, validate the installed release on a populated client-transfer store with `shopify theme check`, Shopify's benchmark data, the required browsers, a gift card, a multi-option product, selling plans, pickup locations, filters and test payments.

@@ -33,11 +33,12 @@
             assign card_title = card_collection.title
           endif
           assign card_url = card_url | default: routes.all_products_collection_url
+          assign card_focal_style = 'object-position:' | append: card_media.presentation.focal_point | append: ';'
         -%}
         <a class="personality-card pack-interaction--{{ section.settings.personality_interaction }}" href="{{ card_url }}" style="--card-bg: {{ block.settings.card_background }}{% if section.settings.personality_animation != 'none' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms{% endif %}"{% if section.settings.personality_animation != 'none' %} data-pack-reveal="{{ section.settings.personality_animation }}"{% endif %}{% if section.settings.personality_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
           <div class="personality-card__media">
             {%- if card_media != blank -%}
-              {{ card_media | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', alt: card_media.alt | default: card_title }}
+              {{ card_media | image_url: width: 800 | image_tag: widths: '320, 480, 640, 800', sizes: '(min-width: 990px) 25vw, 82vw', loading: 'lazy', style: card_focal_style, alt: card_media.alt | default: card_title }}
             {%- else -%}
               {%- capture personality_icon -%}{% cycle 'paw', 'tennis-ball', 'treat', 'bone' %}{%- endcapture -%}
               <span class="pack-personality-placeholder">{% render 'icon', icon: personality_icon %}</span>

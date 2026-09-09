@@ -33,7 +33,6 @@
       "settings": {
         "floating_pet_source": "custom",
         "floating_pet_type": "cat",
-        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
         "floating_pet_color": "#4A4D48",
@@ -163,7 +162,7 @@
         "couch": {
           "type": "personality",
           "settings": {
-            "product": "beef-liver-training-treats",
+            "product": "",
             "collection": "",
             "title": "The Couch Potato",
             "use_catalog_title": false,
@@ -273,8 +272,6 @@
       "settings": {
         "floating_pet_source": "custom",
         "floating_pet_type": "cat",
-        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
-        "floating_pet_mobile_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
         "floating_pet_color": "#4a4d48",
@@ -460,9 +457,8 @@
         "bundle_product_limit": 6,
         "bundle_minimum": 2,
         "bundle_maximum": 4,
-        "bundle_discount_mode": "code",
+        "bundle_discount_mode": "none",
         "bundle_discount_percent": 15,
-        "bundle_discount_code": "palsbox",
         "bundle_discount_badge": "Box offer",
         "bundle_picker_eyebrow": "Create their box",
         "bundle_picker_heading": "Choose the good stuff",
@@ -510,7 +506,6 @@
           "settings": {
             "product": "",
             "collection": "",
-            "lifestyle_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
             "lifestyle_heading": "Good days, better together.",
             "use_catalog_title": false,
             "lifestyle_text": "Products that fit your life—and your pet's kind of joy.",
@@ -523,7 +518,6 @@
           "settings": {
             "product": "",
             "collection": "",
-            "lifestyle_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png",
             "lifestyle_heading": "Rest well. Play harder.",
             "use_catalog_title": false,
             "lifestyle_text": "Beds, toys and everyday essentials made for their best life.",
@@ -640,7 +634,6 @@
       "settings": {
         "floating_pet_source": "custom",
         "floating_pet_type": "cat",
-        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_55_39_._..png",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
         "floating_pet_color": "#4A4D48",

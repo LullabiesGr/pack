@@ -20,6 +20,17 @@
         </div>
       {%- endfor -%}
     </div>
+    <div class="social-links" aria-label="Social media">{%- if section.settings.instagram_url != blank -%}<a href="{{ section.settings.instagram_url }}" aria-label="Instagram">{% render 'icon', icon: 'instagram' %}</a>{%- endif -%}{%- if section.settings.facebook_url != blank -%}<a href="{{ section.settings.facebook_url }}" aria-label="Facebook">{% render 'icon', icon: 'facebook' %}</a>{%- endif -%}{%- if section.settings.tiktok_url != blank -%}<a href="{{ section.settings.tiktok_url }}" aria-label="TikTok">{% render 'icon', icon: 'tiktok' %}</a>{%- endif -%}{%- if section.settings.pinterest_url != blank -%}<a href="{{ section.settings.pinterest_url }}" aria-label="Pinterest">{% render 'icon', icon: 'pinterest' %}</a>{%- endif -%}{%- if section.settings.youtube_url != blank -%}<a href="{{ section.settings.youtube_url }}" aria-label="YouTube">{% render 'icon', icon: 'youtube' %}</a>{%- endif -%}</div>
+    <div class="site-footer__utility">
+      {%- if section.settings.show_follow_on_shop -%}<div class="follow-on-shop">{{ shop | login_button: action: 'follow' }}</div>{%- endif -%}
+      {%- if localization.available_countries.size > 1 -%}
+        {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}<label for="FooterCountry">{{ 'localization.country_label' | t }}</label><select id="FooterCountry" name="country_code" onchange="this.form.submit()">{%- for country in localization.available_countries -%}<option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</option>{%- endfor -%}</select>{%- endform -%}
+      {%- endif -%}
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}<label for="FooterLanguage">{{ 'localization.language_label' | t }}</label><select id="FooterLanguage" name="locale_code" onchange="this.form.submit()">{%- for language in localization.available_languages -%}<option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name | capitalize }}</option>{%- endfor -%}</select>{%- endform -%}
+      {%- endif -%}
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}<ul class="payment-icons" role="list" aria-label="{{ 'footer.payment_methods' | t }}">{%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}</ul>{%- endif -%}
+    </div>
     <div class="site-footer__bottom">
       <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
       <span>{{ section.settings.footer_note }}</span>
@@ -33,7 +44,14 @@
   "settings": [
     { "type": "text", "id": "footer_wordmark", "label": "Wordmark", "default": "PALS!" },
     { "type": "textarea", "id": "footer_text", "label": "Description", "default": "Good stuff for great pets." },
-    { "type": "text", "id": "footer_note", "label": "Bottom note", "default": "Made for pets and their people." }
+    { "type": "text", "id": "footer_note", "label": "Bottom note", "default": "Made for pets and their people." },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+    ,{ "type": "checkbox", "id": "show_follow_on_shop", "label": "Show Follow on Shop", "default": true },
+    { "type": "url", "id": "instagram_url", "label": "Instagram" },
+    { "type": "url", "id": "facebook_url", "label": "Facebook" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok" },
+    { "type": "url", "id": "pinterest_url", "label": "Pinterest" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube" }
   ],
   "blocks": [
     {
@@ -42,7 +60,7 @@
       "limit": 3,
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
-        { "type": "link_list", "id": "menu", "label": "Menu" }
+        { "type": "link_list", "id": "menu", "label": "Footer menu", "default": "footer" }
       ]
     }
   ]

@@ -3,11 +3,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "vendor": {"type":"vendor","settings":{}},"title":{"type":"title","settings":{}},"price":{"type":"price","settings":{}},"inventory":{"type":"inventory","settings":{"show_sku":false}},"description":{"type":"description","settings":{}},"variants":{"type":"variant_picker","settings":{}},"buy":{"type":"buy_buttons","settings":{"show_dynamic_checkout":true,"show_gift_recipient":true}},"pickup":{"type":"pickup","settings":{}},"trust":{"type":"trust","settings":{"text":"Real ingredients · Happiness guaranteed","background":"#B9E769"}},
         "details": { "type": "collapsible_tab", "settings": { "heading": "Product details", "content": "<p>Add ingredients, materials, sizing or care instructions.</p>", "icon": "paw", "open_by_default": true } },
-        "shipping": { "type": "collapsible_tab", "settings": { "heading": "Shipping & returns", "content": "<p>Add delivery estimates and your returns policy.</p>", "icon": "bone", "open_by_default": false } }
+        "shipping": { "type": "collapsible_tab", "settings": { "heading": "Shipping and returns", "content": "<p>Add delivery estimates and your returns policy.</p>", "icon": "bone", "open_by_default": false } }
       },
-      "block_order": ["details", "shipping"],
-      "settings": { "product_show_vendor": true, "product_show_sku": false, "product_show_inventory": true, "product_low_inventory_threshold": 5, "product_show_trust": true }
+      "block_order": ["vendor","title","price","inventory","description","variants","buy","pickup","trust","details","shipping"],
+      "settings": { "low_inventory_threshold": 5 }
     },
     "recommendations": {
       "type": "pack-product-recommendations",

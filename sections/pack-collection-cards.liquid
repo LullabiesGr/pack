@@ -32,12 +32,13 @@
               assign collection_title = card_collection.title
             endif
             assign collection_url = card_collection.url | default: routes.collections_url
+            assign collection_focal_style = 'object-position:' | append: collection_media.presentation.focal_point | append: ';'
           -%}
           {%- if card_collection != blank or request.design_mode -%}
             <a class="pack-collection-card pack-interaction--{{ section.settings.collections_interaction }}" href="{{ collection_url }}" style="--collection-card-bg:{% cycle '#FFD23F', '#F49AC2', '#B9E769', '#9ED8FF', '#F04B32', '#FFF8E9' %}; --pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% if section.settings.collections_animation != 'none' %} data-pack-reveal="{{ section.settings.collections_animation }}"{% endif %}{% if section.settings.collections_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
               <div class="pack-collection-card__media">
                 {%- if collection_media != blank -%}
-                  {{ collection_media | image_url: width: 1000 | image_tag: widths: '360, 520, 760, 1000', sizes: '(min-width: 990px) 33vw, 82vw', loading: 'lazy', alt: collection_media.alt | default: collection_title }}
+                  {{ collection_media | image_url: width: 1000 | image_tag: widths: '360, 520, 760, 1000', sizes: '(min-width: 990px) 33vw, 82vw', loading: 'lazy', style: collection_focal_style, alt: collection_media.alt | default: collection_title }}
                 {%- else -%}
                   <span class="pack-product-placeholder">{% render 'icon', icon: 'paw' %}</span>
                 {%- endif -%}

@@ -25,10 +25,11 @@
         assign lifestyle_title = lifestyle_collection.title
       endif
       assign lifestyle_url = lifestyle_url | default: routes.all_products_collection_url
+      assign lifestyle_focal_style = 'object-position:' | append: lifestyle_media.presentation.focal_point | append: ';'
     -%}
     <a class="lifestyle-card pack-interaction--{{ section.settings.lifestyle_interaction }}" href="{{ lifestyle_url }}"{% if section.settings.lifestyle_animation != 'none' %} data-pack-reveal="{{ section.settings.lifestyle_animation }}" style="--pack-reveal-delay: {{ settings.motion_stagger | times: forloop.index0 }}ms"{% endif %}{% if section.settings.lifestyle_interaction == 'tilt' %} data-pack-tilt{% endif %} {{ block.shopify_attributes }}>
       {%- if lifestyle_media != blank -%}
-        {{ lifestyle_media | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', alt: lifestyle_media.alt | default: lifestyle_title }}
+        {{ lifestyle_media | image_url: width: 1400 | image_tag: widths: '500, 750, 1000, 1400', sizes: '(min-width: 700px) 50vw, 100vw', loading: 'lazy', style: lifestyle_focal_style, alt: lifestyle_media.alt | default: lifestyle_title }}
       {%- else -%}
         {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag: 'pack-placeholder' }}
       {%- endif -%}

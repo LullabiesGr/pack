@@ -22,15 +22,9 @@
     <span data-bundle-card-price>{{ selected_variant.price | money }}</span>
   </div>
   {%- unless bundle_product.has_only_default_variant -%}
-    <label class="bundle-builder-card__variant">
-      <span class="visually-hidden">Choose an option for {{ bundle_product.title }}</span>
-      <select data-bundle-variant {% unless bundle_product.available %}disabled{% endunless %}>
-        {%- for variant in bundle_product.variants -%}
-          <option value="{{ variant.id }}" data-price="{{ variant.price }}" data-price-label="{{ variant.price | money | escape }}" {% if variant == selected_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}</option>
-        {%- endfor -%}
-      </select>
-    </label>
-  {%- else -%}
-    <input type="hidden" data-bundle-variant value="{{ selected_variant.id }}" data-price="{{ selected_variant.price }}" data-price-label="{{ selected_variant.price | money | escape }}">
+    <p class="bundle-builder-card__variant-note">
+      {{ selected_variant.title }} · <a href="{{ bundle_product.url }}">Change options</a>
+    </p>
   {%- endunless -%}
+  <input type="hidden" data-bundle-variant value="{{ selected_variant.id }}" data-price="{{ selected_variant.price }}" data-price-label="{{ selected_variant.price | money | escape }}">
 </article>

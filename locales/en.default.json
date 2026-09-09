@@ -1,34 +1,27 @@
 {
-  "accessibility": {
-    "skip_to_text": "Skip to content",
-    "close": "Close",
-    "loading": "Loading"
-  },
+  "accessibility": {"skip_to_text":"Skip to content","close":"Close","loading":"Loading"},
+  "date_formats": {"date":"%B %d, %Y"},
   "general": {
-    "meta": {
-      "tags": "Tagged {{ tags }}",
-      "page": "Page {{ page }}"
-    },
-    "search": {
-      "search": "Search",
-      "placeholder": "Search treats, toys and care"
-    }
+    "meta":{"tags":"Tagged {{ tags }}","page":"Page {{ page }}"},
+    "search":{"search":"Search","placeholder":"Search treats, toys and care","suggestions":"Search suggestions","result_count":"{{ count }} results","no_results":"No results for “{{ terms }}”."},
+    "pagination":{"label":"Pagination","previous":"Previous page","next":"Next page"}
   },
-  "products": {
-    "product": {
-      "add_to_cart": "Add to cart",
-      "sold_out": "Sold out",
-      "unavailable": "Unavailable",
-      "quantity": "Quantity"
-    }
+  "products": {"product": {
+    "add_to_cart":"Add to cart","sold_out":"Sold out","unavailable":"Unavailable","quantity":"Quantity","sku":"SKU","unit_price":"Unit price","in_stock":"In stock and ready to ship","low_stock":"Only {{ count }} left","purchase_option":"Purchase option","one_time_purchase":"One-time purchase","from_price":"From {{ price }}","choose_options":"Choose options","select_product":"Select a product in the theme editor","taxes_included":"Taxes included. Shipping calculated at checkout.","taxes_at_checkout":"Taxes and shipping calculated at checkout.",
+    "media":{"previous":"Previous product image","next":"Next product image"},
+    "gift_recipient":{"send":"Send this gift card to a recipient","email":"Recipient email","name":"Recipient name (optional)","message":"Message (optional)","send_on":"Send on (optional)"},
+    "pickup":{"available":"Pickup available at {{ location }}","unavailable":"Pickup unavailable at {{ location }}","not_available":"Pickup currently unavailable"}
+  }},
+  "collections": {
+    "general":{"product_count":"{{ count }} products","no_matches":"No products match these filters."},
+    "sorting":{"title":"Sort by"},
+    "filters":{"filter":"Filter","from":"From","to":"To","apply":"Apply filters","clear":"Clear all","active":"Active filters"}
   },
-  "cart": {
-    "general": {
-      "title": "Your good stuff",
-      "empty": "Your cart is waiting for a treat.",
-      "checkout": "Checkout",
-      "subtotal": "Subtotal",
-      "remove": "Remove"
-    }
-  }
+  "cart": {"general":{"title":"Your good stuff","empty":"Your cart is waiting for a treat.","checkout":"Checkout","subtotal":"Subtotal","remove":"Remove","each":"each","taxes_included":"Taxes included. Shipping calculated at checkout.","taxes_and_shipping_at_checkout":"Taxes and shipping calculated at checkout."}},
+  "contact":{"form":{"name":"Name","email":"Email","phone":"Phone","comment":"Message","send":"Send message","success":"Thanks. We will get back to you soon."}},
+  "blogs":{"article":{"no_articles":"No articles yet."},"comments":{"title":"Comments","success":"Your comment was submitted.","name":"Name","email":"Email","message":"Comment","post":"Post comment"}},
+  "password":{"general":{"password":"Store password","enter":"Enter store","email":"Email","notify":"Notify me"}},
+  "localization":{"country_label":"Country/region","language_label":"Language"},
+  "footer":{"payment_methods":"Payment methods"},
+  "gift_cards":{"issued":{"title":"{{ value }} gift card for {{ shop }}","subtext":"Your gift card","expired":"This gift card is expired or disabled.","expiration_date":"Expires {{ expires_on }}","send_on":"Scheduled for {{ send_on }}","shop_link":"Continue shopping","print":"Print"}}
 }

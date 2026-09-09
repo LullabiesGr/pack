@@ -18,6 +18,7 @@
   endif
   assign hero_url = hero_url | default: routes.all_products_collection_url
   assign hero_motion_class = 'pack-idle pack-idle--' | append: section.settings.hero_idle_motion
+  assign hero_focal_style = 'object-position:' | append: hero_media.presentation.focal_point | append: ';'
 -%}
 <section class="pack-hero" style="--hero-bg: {{ section.settings.hero_background }}; --hero-text: {{ section.settings.hero_text_color }}">
   <div class="pack-hero__inner page-width">
@@ -42,6 +43,7 @@
             loading: 'eager',
             fetchpriority: 'high',
             class: hero_motion_class,
+            style: hero_focal_style,
             alt: hero_media.alt | default: section.settings.hero_heading
         }}
       {%- else -%}

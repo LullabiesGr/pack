@@ -1,0 +1,2 @@
+<section class="custom-liquid section-pad"><div class="{% if section.settings.full_width %}page-width{% else %}page-width standard-page__narrow{% endif %}">{{ section.settings.custom_liquid }}</div></section>
+{% schema %}{"name":"Custom Liquid","settings":[{"type":"liquid","id":"custom_liquid","label":"Custom Liquid"},{"type":"checkbox","id":"full_width","label":"Use full width","default":false}],"presets":[{"name":"Custom Liquid"}]}{% endschema %}

@@ -35,20 +35,25 @@
 
     <nav class="site-nav" aria-label="Primary navigation">
       {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        {%- if link.links != blank -%}
+          <details class="site-nav__dropdown"><summary>{{ link.title }}</summary><div class="site-nav__dropdown-panel">{%- for child_link in link.links -%}<a href="{{ child_link.url }}"{% if child_link.current %} aria-current="page"{% endif %}>{{ child_link.title }}{%- if child_link.links != blank -%}<span aria-hidden="true"> →</span>{%- endif -%}</a>{%- if child_link.links != blank -%}<div class="site-nav__grandchildren">{%- for grandchild_link in child_link.links -%}<a href="{{ grandchild_link.url }}"{% if grandchild_link.current %} aria-current="page"{% endif %}>{{ grandchild_link.title }}</a>{%- endfor -%}</div>{%- endif -%}{%- endfor -%}</div></details>
+        {%- else -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>{%- endif -%}
       {%- else -%}
         <a href="{{ routes.all_products_collection_url }}">Shop</a>
         <a href="{{ routes.collections_url }}">Dog</a>
         <a href="{{ routes.collections_url }}">Cat</a>
         <a href="{{ routes.root_url }}#build-a-box">Build a box</a>
-        <a href="/pages/about">About</a>
+        <a href="{{ routes.root_url }}pages/about">About</a>
       {%- endfor -%}
     </nav>
 
     <div class="site-header__actions">
-      <a class="icon-button" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">{% render 'icon', icon: 'search' %}</a>
+      <details class="header-search" data-predictive-search>
+        <summary class="icon-button" aria-label="{{ 'general.search.search' | t }}">{% render 'icon', icon: 'search' %}</summary>
+        <form class="header-search__panel" action="{{ routes.search_url }}" method="get" role="search"><label class="visually-hidden" for="HeaderSearch-{{ section.id }}">{{ 'general.search.search' | t }}</label><input id="HeaderSearch-{{ section.id }}" type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" data-predictive-search-input><input type="hidden" name="options[prefix]" value="last"><button type="submit">{{ 'general.search.search' | t }}</button><div class="predictive-search-results" data-predictive-search-results role="listbox" aria-label="{{ 'general.search.suggestions' | t }}"></div></form>
+      </details>
       {%- if shop.customer_accounts_enabled -%}
-        <a class="icon-button account-link" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', icon: 'account' %}</a>
+        <shopify-account class="account-link" menu="{{ section.settings.customer_account_menu }}"></shopify-account>
       {%- endif -%}
       <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" style="--cart-counter-x: {{ settings.cart_counter_x }}px; --cart-counter-y: {{ settings.cart_counter_y }}px; --cart-counter-bg: {{ settings.cart_counter_background }}; --cart-counter-text: {{ settings.cart_counter_text }};" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
         {% if settings.cart_icon_style == 'doghouse' %}
@@ -103,15 +108,15 @@
   %}
 {%- endunless -%}
 
-<nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
+<nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav aria-hidden="true">
   {%- for link in section.settings.menu.links -%}
-    <a href="{{ link.url }}">{{ link.title }}</a>
+    {%- if link.links != blank -%}<details class="mobile-nav__group"><summary>{{ link.title }}</summary><div>{%- for child_link in link.links -%}<a href="{{ child_link.url }}">{{ child_link.title }}</a>{%- if child_link.links != blank -%}<div class="mobile-nav__grandchildren">{%- for grandchild_link in child_link.links -%}<a href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>{%- endfor -%}</div>{%- endif -%}{%- endfor -%}</div></details>{%- else -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endif -%}
   {%- else -%}
     <a href="{{ routes.all_products_collection_url }}">Shop</a>
     <a href="{{ routes.collections_url }}">Dog</a>
     <a href="{{ routes.collections_url }}">Cat</a>
     <a href="{{ routes.root_url }}#build-a-box">Build a box</a>
-    <a href="/pages/about">About</a>
+    <a href="{{ routes.root_url }}pages/about">About</a>
   {%- endfor -%}
 </nav>
 
@@ -132,7 +137,8 @@
     { "type": "header", "content": "Header design" },
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "text", "id": "wordmark", "label": "Text logo", "default": "PALS!" },
-    { "type": "link_list", "id": "menu", "label": "Menu" },
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
+    { "type": "link_list", "id": "customer_account_menu", "label": "Customer account menu", "default": "customer-account-main-menu" },
     { "type": "select", "id": "header_style", "label": "Header style", "options": [
       { "value": "classic", "label": "Classic" }, { "value": "bubble", "label": "Bubble menu" }, { "value": "ticket", "label": "Ticket edge" }, { "value": "kennel", "label": "Kennel sign" }
     ], "default": "classic" },
@@ -169,11 +175,11 @@
       { "value": "home", "label": "Homepage only" }, { "value": "all", "label": "All pages" }
     ], "default": "home" },
     { "type": "checkbox", "id": "show_perched_pet_mobile", "label": "Show on mobile", "default": true },
-    { "type": "paragraph", "content": "X moves the pet left/right. Positive Y moves it up; negative Y moves it down toward the hero." },
-    { "type": "range", "id": "perched_pet_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Desktop X position", "default": 84 },
-    { "type": "range", "id": "perched_pet_y", "min": -60, "max": 60, "step": 2, "unit": "px", "label": "Desktop Y position", "default": 0 },
-    { "type": "range", "id": "perched_pet_mobile_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Mobile X position", "default": 62 },
-    { "type": "range", "id": "perched_pet_mobile_y", "min": -40, "max": 40, "step": 2, "unit": "px", "label": "Mobile Y position", "default": 0 },
+    { "type": "paragraph", "content": "Horizontal position moves the pet left or right. Positive vertical position moves it up; negative values move it toward the hero." },
+    { "type": "range", "id": "perched_pet_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Desktop horizontal position", "default": 84 },
+    { "type": "range", "id": "perched_pet_y", "min": -60, "max": 60, "step": 2, "unit": "px", "label": "Desktop vertical position", "default": 0 },
+    { "type": "range", "id": "perched_pet_mobile_position", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Mobile horizontal position", "default": 62 },
+    { "type": "range", "id": "perched_pet_mobile_y", "min": -40, "max": 40, "step": 2, "unit": "px", "label": "Mobile vertical position", "default": 0 },
     { "type": "range", "id": "perched_pet_size", "min": 80, "max": 160, "step": 4, "unit": "px", "label": "Pet size", "default": 120 },
     { "type": "color", "id": "perched_pet_color", "label": "Pet coat color", "default": "#111111" },
     { "type": "checkbox", "id": "perched_pet_flip", "label": "Face the other direction", "default": false },

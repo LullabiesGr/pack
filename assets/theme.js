@@ -1,8 +1,9 @@
 class PackMenu {
-  constructor() {
-    this.button = document.querySelector('[data-menu-toggle]');
-    this.menu = document.querySelector('[data-mobile-nav]');
+  constructor(root = document) {
+    this.button = root.querySelector('[data-menu-toggle]');
+    this.menu = root.querySelector('[data-mobile-nav]') || document.querySelector('[data-mobile-nav]');
     if (!this.button || !this.menu) return;
+    this.menu.inert = true;
     this.button.addEventListener('click', () => this.toggle());
     this.menu.addEventListener('click', (event) => {
       if (event.target.closest('a')) this.close();
@@ -16,12 +17,143 @@ class PackMenu {
     this.button.setAttribute('aria-expanded', String(!open));
     this.menu.classList.toggle('is-open', !open);
     document.body.classList.toggle('menu-open', !open);
+    this.menu.setAttribute('aria-hidden', String(open));
+    this.menu.inert = open;
+    if (!open) window.requestAnimationFrame(() => this.menu.querySelector('a, button')?.focus());
   }
   close() {
     if (this.button.getAttribute('aria-expanded') !== 'true') return;
     this.button.setAttribute('aria-expanded', 'false');
     this.menu.classList.remove('is-open');
+    this.menu.setAttribute('aria-hidden', 'true');
+    this.menu.inert = true;
     document.body.classList.remove('menu-open');
+    this.button.focus();
+  }
+}
+
+class PackProduct {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-product-section]').forEach((section) => {
+      if (section.dataset.productBound === 'true') return;
+      section.dataset.productBound = 'true';
+      section.addEventListener('change', (event) => {
+        if (event.target.matches('[data-option-value-id]')) this.changeVariant(section, event.target);
+        if (event.target.matches('[data-gift-recipient-toggle]')) this.toggleRecipient(section, event.target);
+      });
+      section.querySelectorAll('[data-gift-recipient-toggle]').forEach((toggle) => this.toggleRecipient(section, toggle));
+    });
+  }
+  toggleRecipient(section, toggle) {
+    const fields = toggle.closest('[data-gift-recipient]')?.querySelector('[data-gift-recipient-fields]');
+    if (!fields) return;
+    fields.hidden = !toggle.checked;
+    fields.querySelectorAll('input, textarea').forEach((field) => { field.disabled = !toggle.checked; });
+    const offset = fields.querySelector('[data-gift-recipient-offset]');
+    if (offset && toggle.checked) offset.value = String(new Date().getTimezoneOffset());
+  }
+  async changeVariant(section, changedInput) {
+    const selected = [...section.querySelectorAll('[data-option-value-id]:checked')];
+    const optionValues = selected.map((input) => input.dataset.optionValueId).filter(Boolean).join(',');
+    const nextProductUrl = changedInput.dataset.productUrl || section.dataset.productUrl || window.location.pathname;
+    const requestUrl = new URL(nextProductUrl, window.location.origin);
+    requestUrl.searchParams.set('section_id', section.dataset.sectionId);
+    if (optionValues) requestUrl.searchParams.set('option_values', optionValues);
+    section.classList.add('is-loading');
+    section.setAttribute('aria-busy', 'true');
+    try {
+      const response = await fetch(requestUrl.toString(), { headers: { Accept: 'text/html' } });
+      if (!response.ok) throw new Error('Could not load this option.');
+      const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const replacement = html.querySelector(`#MainProduct-${CSS.escape(section.dataset.sectionId)}`);
+      if (!replacement) throw new Error('Product information is unavailable.');
+      const productChanged = new URL(nextProductUrl, window.location.origin).pathname !== new URL(section.dataset.productUrl, window.location.origin).pathname;
+      section.replaceWith(replacement);
+      this.bind(document);
+      window.packProductGallery?.bind(replacement);
+      const visibleUrl = new URL(nextProductUrl, window.location.origin);
+      visibleUrl.searchParams.delete('section_id');
+      if (optionValues) visibleUrl.searchParams.set('option_values', optionValues);
+      window.history.replaceState({}, '', visibleUrl);
+      if (productChanged && replacement.dataset.productId) {
+        document.querySelectorAll('product-recommendations[data-url]').forEach((recommendations) => {
+          const recommendationsUrl = new URL(recommendations.dataset.url, window.location.origin);
+          recommendationsUrl.searchParams.set('product_id', replacement.dataset.productId);
+          recommendations.dataset.url = recommendationsUrl.toString();
+          recommendations.replaceChildren();
+          recommendations.connectedCallback?.();
+        });
+        window.packRecentlyViewed?.recordCurrent(replacement);
+      }
+      const refocus = replacement.querySelector(`[data-option-value-id="${CSS.escape(changedInput.dataset.optionValueId || '')}"]`);
+      refocus?.focus();
+      if (productChanged) document.title = html.title || document.title;
+    } catch (error) {
+      const message = section.querySelector('[data-product-form-error]');
+      if (message) { message.textContent = error.message || 'Could not load this option.'; message.hidden = false; }
+      section.classList.remove('is-loading');
+      section.removeAttribute('aria-busy');
+    }
+  }
+}
+
+class PackFacets {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-facets-form]').forEach((form) => {
+      if (form.dataset.facetsBound === 'true') return;
+      form.dataset.facetsBound = 'true';
+      const toggle = form.querySelector('[data-facets-toggle]');
+      const panel = form.querySelector('[data-facets]');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        panel.hidden = open;
+      });
+      form.querySelector('[data-sort-by]')?.addEventListener('change', () => form.submit());
+    });
+  }
+}
+
+class PackPredictiveSearch {
+  constructor(root = document) { this.bind(root); }
+  bind(root = document) {
+    root.querySelectorAll('[data-predictive-search]').forEach((search) => {
+      if (search.dataset.predictiveBound === 'true') return;
+      search.dataset.predictiveBound = 'true';
+      const input = search.querySelector('[data-predictive-search-input]');
+      const results = search.querySelector('[data-predictive-search-results]');
+      if (!input || !results) return;
+      input.addEventListener('input', () => {
+        window.clearTimeout(search.packPredictiveTimer);
+        search.packPredictiveTimer = window.setTimeout(() => this.load(input.value, results), 180);
+      });
+    });
+  }
+  async load(query, results) {
+    const term = query.trim();
+    if (term.length < 2) { results.replaceChildren(); return; }
+    const url = `${window.Shopify.routes.root}search/suggest.json?q=${encodeURIComponent(term)}&resources[type]=product,page,article&resources[limit]=6&resources[options][unavailable_products]=last`;
+    try {
+      const response = await fetch(url, { headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      const suggestions = data.resources?.results || {};
+      const items = [...(suggestions.products || []), ...(suggestions.pages || []), ...(suggestions.articles || [])].slice(0, 6);
+      results.replaceChildren();
+      items.forEach((item) => {
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.setAttribute('role', 'option');
+        const text = document.createElement('span');
+        text.textContent = item.title;
+        link.appendChild(text);
+        if (item.price) { const price = document.createElement('small'); price.textContent = item.price; link.appendChild(price); }
+        results.appendChild(link);
+      });
+      if (!items.length) { const empty = document.createElement('p'); empty.textContent = 'No suggestions found.'; results.appendChild(empty); }
+    } catch (error) { results.replaceChildren(); }
   }
 }
 
@@ -31,6 +163,7 @@ class PackCartDrawer {
     this.drawer = document.querySelector('[data-cart-drawer]');
     this.lastTrigger = null;
     if (!this.enabled || !this.drawer) return;
+    this.drawer.inert = true;
     document.addEventListener('click', (event) => this.handleClick(event));
     document.addEventListener('change', (event) => this.handleChange(event));
     document.addEventListener('keydown', (event) => this.handleKeydown(event));
@@ -92,6 +225,7 @@ class PackCartDrawer {
     if (!this.drawer) return;
     this.drawer.classList.add('is-open');
     this.drawer.setAttribute('aria-hidden', 'false');
+    this.drawer.inert = false;
     document.body.classList.add('cart-drawer-open');
     if (moveFocus) window.requestAnimationFrame(() => this.drawer.querySelector('[data-cart-drawer-panel]')?.focus());
   }
@@ -99,6 +233,7 @@ class PackCartDrawer {
     if (!this.drawer) return;
     this.drawer.classList.remove('is-open');
     this.drawer.setAttribute('aria-hidden', 'true');
+    this.drawer.inert = true;
     document.body.classList.remove('cart-drawer-open');
     this.lastTrigger?.focus();
   }
@@ -169,6 +304,7 @@ class PackQuickAdd {
     document.addEventListener('submit', (event) => {
       const form = event.target.closest('[data-quick-add], [data-product-form]');
       if (!form || !window.fetch) return;
+      if (form.matches('[data-product-form]') && !event.submitter?.matches('.pack-button')) return;
       if (form.matches('[data-product-form]') && document.body.dataset.cartBehavior !== 'drawer') return;
       event.preventDefault();
       this.add(form);
@@ -242,8 +378,7 @@ class PackBundleBuilder {
     const max = Number(builder.dataset.max || 4);
     const discountMode = builder.dataset.discountMode || 'none';
     const discountPercent = Math.max(0, Math.min(100, Number(builder.dataset.discountPercent || 0)));
-    const discountCode = (builder.dataset.discountCode || '').trim();
-    const discountConfigured = discountMode === 'automatic' || (discountMode === 'code' && discountCode.length > 0);
+    const discountConfigured = discountMode === 'automatic';
     const atMax = selected.length >= max;
     builder.querySelectorAll('[data-bundle-product]:not(:checked)').forEach((input) => {
       input.disabled = atMax || input.closest('.is-unavailable') !== null;
@@ -268,7 +403,6 @@ class PackBundleBuilder {
     const status = builder.querySelector('[data-bundle-status]');
     if (status) {
       if (selected.length < min) status.textContent = `Choose ${min - selected.length} more to complete the box.`;
-      else if (discountMode === 'code' && !discountCode) status.textContent = 'Your box is ready. The merchant has not configured its discount code.';
       else if (atMax) status.textContent = 'Your box is full.';
       else status.textContent = `${max - selected.length} more can be added.`;
     }
@@ -311,18 +445,7 @@ class PackBundleBuilder {
       if (!response.ok) throw new Error(result.description || 'Could not add this box.');
       boxAdded = true;
       const discountMode = builder.dataset.discountMode || 'none';
-      const discountCode = (builder.dataset.discountCode || '').trim();
-      if (discountMode === 'code' && discountCode) {
-        const discountResponse = await fetch(`${window.Shopify.routes.root}cart/update.js`, {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ discount: discountCode })
-        });
-        const discountResult = await discountResponse.json();
-        if (!discountResponse.ok) throw new Error(discountResult.description || 'Your box was added, but the discount could not be applied.');
-      }
-      if (discountMode === 'code' && discountCode) completionMessage = `Your box was added with discount code ${discountCode}.`;
-      else if (discountMode === 'automatic') completionMessage = 'Your box was added. Shopify will apply the eligible automatic discount.';
+      if (discountMode === 'automatic') completionMessage = 'Your box was added. Shopify will apply the eligible automatic discount.';
       else completionMessage = 'Your box was added to the cart.';
       if (window.packCartDrawer?.enabled) await window.packCartDrawer.refresh(true);
       else {
@@ -429,6 +552,11 @@ class PackProductGallery {
       if (!track) return;
       const items = [...track.querySelectorAll('.product-gallery__item')];
       if (items.length < 2) return;
+      const productSection = gallery.closest('[data-product-section]');
+      const selectedMedia = productSection?.dataset.selectedMediaId
+        ? track.querySelector(`[data-media-id="${CSS.escape(productSection.dataset.selectedMediaId)}"]`)
+        : null;
+      if (selectedMedia) track.scrollLeft = selectedMedia.offsetLeft - track.offsetLeft;
       gallery.querySelector('[data-gallery-prev]')?.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
       gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }));
       const update = () => {
@@ -617,12 +745,19 @@ document.addEventListener('DOMContentLoaded', () => {
   window.packBundleBuilder = new PackBundleBuilder();
   window.packQuiz = new PackQuiz();
   window.packProductGallery = new PackProductGallery();
+  window.packProduct = new PackProduct();
+  window.packFacets = new PackFacets();
+  window.packPredictiveSearch = new PackPredictiveSearch();
   window.packReveal = new PackReveal();
   window.packTilt = new PackTilt();
   window.packRecentlyViewed = new PackRecentlyViewed();
 });
 
 document.addEventListener('shopify:section:load', (event) => {
+  if (event.target.querySelector('[data-menu-toggle]')) window.packMenu = new PackMenu(event.target);
+  window.packProduct?.bind(event.target);
+  window.packFacets?.bind(event.target);
+  window.packPredictiveSearch?.bind(event.target);
   window.packBundleBuilder?.bind(event.target);
   window.packQuiz?.bind(event.target);
   window.packProductGallery?.bind(event.target);
