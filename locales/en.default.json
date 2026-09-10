@@ -26,11 +26,11 @@
     "sorting":{"title":"Sort by"},
     "filters":{"filter":"Filter","from":"From","to":"To","apply":"Apply filters","clear":"Clear all","active":"Active filters"}
   },
-  "cart": {"general":{"title":"Your good stuff","empty":"Your cart is waiting for a treat.","checkout":"Checkout","subtotal":"Subtotal","remove":"Remove","each":"each","taxes_included":"Taxes included. Shipping calculated at checkout.","taxes_and_shipping_at_checkout":"Taxes and shipping calculated at checkout."}},
+  "cart": {"general":{"title":"Your good stuff","accessible_label":"Your good stuff, {{ count }} items","empty":"Your cart is waiting for a treat.","checkout":"Checkout","subtotal":"Subtotal","remove":"Remove","each":"each","taxes_included":"Taxes included. Shipping calculated at checkout.","taxes_and_shipping_at_checkout":"Taxes and shipping calculated at checkout."}},
   "contact":{"form":{"name":"Name","email":"Email","phone":"Phone","comment":"Message","send":"Send message","success":"Thanks. We will get back to you soon."}},
   "blogs":{"article":{"no_articles":"No articles yet."},"comments":{"title":"Comments","success":"Your comment was submitted.","name":"Name","email":"Email","message":"Comment","post":"Post comment"}},
   "password":{"general":{"password":"Store password","enter":"Enter store","email":"Email","notify":"Notify me"}},
   "localization":{"country_label":"Country/region","language_label":"Language"},
-  "footer":{"payment_methods":"Payment methods","back_to_top":"Back to top"},
+  "footer":{"payment_methods":"Payment methods","back_to_top":"Back to top","social_media":"Social media"},
   "gift_cards":{"issued":{"title":"{{ value }} gift card for {{ shop }}","subtext":"Your gift card","expired":"This gift card is expired or disabled.","expiration_date":"Expires {{ expires_on }}","send_on":"Scheduled for {{ send_on }}","shop_link":"Continue shopping","print":"Print"}}
 }

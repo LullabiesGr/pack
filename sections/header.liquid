@@ -55,7 +55,7 @@
       {%- if shop.customer_accounts_enabled -%}
         <shopify-account class="account-link" menu="{{ section.settings.customer_account_menu }}"></shopify-account>
       {%- endif -%}
-      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" style="--cart-counter-x: {{ settings.cart_counter_x }}px; --cart-counter-y: {{ settings.cart_counter_y }}px; --cart-counter-bg: {{ settings.cart_counter_background }}; --cart-counter-text: {{ settings.cart_counter_text }};" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.title' | t }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
+      <a class="icon-button{% if settings.cart_icon_style == 'doghouse' %} icon-button--doghouse{% endif %}" style="--cart-counter-x: {{ settings.cart_counter_x }}px; --cart-counter-y: {{ settings.cart_counter_y }}px; --cart-counter-bg: {{ settings.cart_counter_background }}; --cart-counter-text: {{ settings.cart_counter_text }};" href="{{ routes.cart_url }}" aria-label="{{ 'cart.general.accessible_label' | t: count: cart.item_count }}" data-cart-label="{{ 'cart.general.title' | t | escape }}"{% if settings.cart_behavior == 'drawer' %} data-cart-drawer-open aria-haspopup="dialog" aria-controls="CartDrawer"{% endif %}>
         {% if settings.cart_icon_style == 'doghouse' %}
           {% render 'icon', icon: 'doghouse-cart' %}
         {% else %}

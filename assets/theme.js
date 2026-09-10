@@ -294,8 +294,14 @@ class PackCartDrawer {
     if (!nextDrawer) throw new Error('Cart drawer markup is unavailable.');
     this.drawer.replaceWith(nextDrawer);
     this.drawer = nextDrawer;
-    document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+    this.updateCartCount(cart.item_count);
     if (shouldOpen || wasOpen) this.open(false);
+  }
+  updateCartCount(itemCount) {
+    document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = itemCount; });
+    document.querySelectorAll('[data-cart-label]').forEach((link) => {
+      link.setAttribute('aria-label', `${link.dataset.cartLabel}, ${itemCount} items`);
+    });
   }
 }
 
@@ -326,7 +332,7 @@ class PackQuickAdd {
         await window.packCartDrawer.refresh(true);
       } else {
         const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((cartResponse) => cartResponse.json());
-        document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+        window.packCartDrawer?.updateCartCount(cart.item_count);
         this.toast('Added to your good stuff.');
       }
     } catch (error) {
@@ -472,7 +478,7 @@ class PackBundleBuilder {
       if (window.packCartDrawer?.enabled) await window.packCartDrawer.refresh(true);
       else {
         const cart = await fetch(`${window.Shopify.routes.root}cart.js`).then((cartResponse) => cartResponse.json());
-        document.querySelectorAll('[data-cart-count]').forEach((count) => { count.textContent = cart.item_count; });
+        window.packCartDrawer?.updateCartCount(cart.item_count);
         this.toast('Your box was added to the cart.');
       }
     } catch (error) {
