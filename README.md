@@ -1,6 +1,6 @@
-# PACK
+# PALS
 
-PACK is a playful-editorial Shopify Online Store 2.0 theme for modern pet-care brands.
+PALS is a playful-editorial Shopify Online Store 2.0 theme for modern pet-care brands.
 
 ## Design direction
 

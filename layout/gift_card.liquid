@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex">
-    <title>{{ 'gift_cards.issued.title' | t: value: gift_card.balance | money_without_trailing_zeros, shop: shop.name }}</title>
+    {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros -%}
+    <title>{{ 'gift_cards.issued.title' | t: value: formatted_balance, shop: shop.name }}</title>
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script>
     {{ content_for_header }}
