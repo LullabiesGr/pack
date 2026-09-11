@@ -173,8 +173,9 @@
         "couch": {
           "type": "personality",
           "settings": {
-            "product": "beef-liver-training-treats",
+            "product": "",
             "collection": "",
+            "image": "shopify://shop_images/ChatGPT_Image_9_2026_11_09_21_._..png",
             "title": "The Couch Potato",
             "use_catalog_title": false,
             "link": "",
@@ -184,8 +185,9 @@
         "chaos": {
           "type": "personality",
           "settings": {
-            "product": "calm-soft-chews",
+            "product": "",
             "collection": "",
+            "image": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png",
             "title": "The Chaos Agent",
             "use_catalog_title": false,
             "link": "",
@@ -195,8 +197,9 @@
         "critic": {
           "type": "personality",
           "settings": {
-            "product": "dental-sticks",
+            "product": "",
             "collection": "",
+            "image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
             "title": "The Food Critic",
             "use_catalog_title": false,
             "link": "",
@@ -208,6 +211,7 @@
           "settings": {
             "product": "salmon-jerky-training-treats",
             "collection": "",
+            "image": "shopify://shop_images/ChatGPT_Image_8_2026_09_55_39_._..png",
             "title": "The Explorer",
             "use_catalog_title": false,
             "link": "",
