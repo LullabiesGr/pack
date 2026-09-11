@@ -42,6 +42,8 @@
       "settings": {
         "floating_pet_source": "custom",
         "floating_pet_type": "cat",
+        "floating_pet_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
+        "floating_pet_mobile_image": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png",
         "floating_pet_tail": "none",
         "floating_pet_flip": false,
         "floating_pet_color": "#4a4d48",
@@ -467,6 +469,7 @@
         "bundle_minimum": 2,
         "bundle_maximum": 4,
         "bundle_discount_mode": "none",
+        "bundle_discount_code": "",
         "bundle_discount_percent": 10,
         "bundle_discount_badge": "Box offer",
         "bundle_picker_eyebrow": "Create their box",
@@ -553,8 +556,7 @@
           "settings": {
             "quote": "My dog goes wild for these treats. Clean ingredients and zero weird stuff.",
             "author": "Jess",
-            "pet_name": "Maple",
-            "pet_avatar": ""
+            "pet_name": "Maple"
           }
         },
         "review2": {
@@ -562,8 +564,7 @@
           "settings": {
             "quote": "The quiz nailed it. My cat loves everything in our box.",
             "author": "Taylor",
-            "pet_name": "Miso",
-            "pet_avatar": ""
+            "pet_name": "Miso"
           }
         },
         "review3": {
@@ -571,8 +572,7 @@
           "settings": {
             "quote": "Finally, a brand that gets it. Great products and even better customer service.",
             "author": "Alex",
-            "pet_name": "Cooper",
-            "pet_avatar": ""
+            "pet_name": "Cooper"
           }
         }
       },
