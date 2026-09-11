@@ -561,7 +561,8 @@
           "settings": {
             "quote": "My dog goes wild for these treats. Clean ingredients and zero weird stuff.",
             "author": "Jess",
-            "pet_name": "Maple"
+            "pet_name": "Maple",
+            "pet_avatar": "shopify://shop_images/ChatGPT_Image_9_2026_11_09_21_._..png"
           }
         },
         "review2": {
@@ -569,7 +570,8 @@
           "settings": {
             "quote": "The quiz nailed it. My cat loves everything in our box.",
             "author": "Taylor",
-            "pet_name": "Miso"
+            "pet_name": "Miso",
+            "pet_avatar": "shopify://shop_images/ChatGPT_Image_8_2026_09_24_24_._..png"
           }
         },
         "review3": {
@@ -577,7 +579,8 @@
           "settings": {
             "quote": "Finally, a brand that gets it. Great products and even better customer service.",
             "author": "Alex",
-            "pet_name": "Cooper"
+            "pet_name": "Cooper",
+            "pet_avatar": "shopify://shop_images/ChatGPT_Image_8_2026_09_35_38_._..png"
           }
         }
       },
