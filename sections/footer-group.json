@@ -58,11 +58,11 @@
         "back_to_top_background": "#ffd23f",
         "back_to_top_color": "#111111",
         "show_follow_on_shop": true,
-        "instagram_url": "",
-        "facebook_url": "",
-        "tiktok_url": "",
-        "pinterest_url": "",
-        "youtube_url": ""
+        "instagram_url": "shopify://pages/contact",
+        "facebook_url": "shopify://pages/contact",
+        "tiktok_url": "shopify://pages/contact",
+        "pinterest_url": "shopify://products/hip-joint-support",
+        "youtube_url": "shopify://products/dental-sticks"
       }
     }
   },
